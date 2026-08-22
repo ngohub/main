@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGOHUB | منصة دعم وتطوير الجمعيات والفرص الرقمية</title>
+  <meta name="description" content="منصة ذكية لدعم الجمعيات الأهلية والمشروعات الخضراء في التحول الرقمي، إدارة المتطوعين، المكون الذكي، والمنح.">
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div>
+        <i class="fa-solid fa-seedling"></i> التقديم مفتوح الآن لخدمة إعداد "المكون الذكي" للمشروعات الخضراء مجاناً لمدة سنة!
+      </div>
+      <div class="top-bar-badge">
+        <i class="fa-solid fa-globe"></i> مصر والمملكة العربية السعودية
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-wrapper">
+      <a href="#" class="brand-logo" onclick="switchTab('home')">
+        <img src="محتوي/لوجوهات/لوجو ngohub clean.png" alt="NGOHUB Logo" id="headerLogoImg">
+        <div class="brand-text">
+          <h1>NGOHUB</h1>
+          <span>منصة دعم وتطوير الجمعيات</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+          <i class="fa-solid fa-house"></i> الرئيسية
+        </button>
+        <button class="nav-btn" id="nav-about" onclick="switchTab('about')">
+          <i class="fa-solid fa-circle-info"></i> عن المبادرة
+        </button>
+        <button class="nav-btn" id="nav-services" onclick="switchTab('services')">
+          <i class="fa-solid fa-cubes"></i> الخدمات
+        </button>
+        <button class="nav-btn" id="nav-grants" onclick="switchTab('grants')">
+          <i class="fa-solid fa-hand-holding-dollar"></i> بوابة المنح والمسابقات
+        </button>
+        <button class="nav-btn" id="nav-contact" onclick="switchTab('contact')">
+          <i class="fa-solid fa-envelope"></i> تواصل معنا
+        </button>
+      </nav>
+
+      <div class="header-action">
+        <button class="btn-smart-cta" onclick="switchTab('contact')">
+          <i class="fa-solid fa-rocket"></i> إعداد المكون الذكي
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 1. HOME SECTION ==================== -->
+  <section id="section-home" class="page-section active-section">
+    <!-- Hero Banner -->
+    <div class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-text-col">
+          <div class="hero-tag">
+            <i class="fa-solid fa-award"></i> شريك التحول الرقمي والاستدامة في الوطن العربي
+          </div>
+          <h2 class="hero-title">
+            نساعد <span class="highlight-green">الجمعيات الأهلية</span> و <span class="highlight-purple">المشروعات الخضراء</span> على التطور وتوثيق الأثر
+          </h2>
+          <p class="hero-description">
+            منصة ذكية متخصصة في دعم وتطوير الكيانات غير الهادفة للربح، عبر تقديم حلول التحول الرقمي، المواقع الإلكترونية، إدارة المتطوعين، وبناء القدرات، وإعداد المكون الذكي للمشاركات القومية والدولية.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary" onclick="switchTab('grants')">
+              <i class="fa-solid fa-magnifying-glass-dollar"></i> استكشف بوابة المنح
+            </button>
+            <button class="btn-secondary" onclick="switchTab('contact')">
+              <i class="fa-solid fa-laptop-code"></i> طلب موقع للمكون الذكي
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-visual-col">
+          <div class="hero-card-visual">
+            <h3><i class="fa-solid fa-microchip"></i> خدمات منظومة NGOHUB</h3>
+            <div class="feature-pill-list">
+              <div class="pill-item">
+                <i class="fa-solid fa-globe"></i>
+                <span>تصميم مواقع تعريفية واحترافية للجمعيات</span>
+              </div>
+              <div class="pill-item">
+                <i class="fa-solid fa-leaf"></i>
+                <span>دعم المكون الأخضر والتحول الرقمي السحابي</span>
+              </div>
+              <div class="pill-item">
+                <i class="fa-solid fa-users"></i>
+                <span>إدارة المتطوعين وتوثيق الساعات التطوعية</span>
+              </div>
+              <div class="pill-item">
+                <i class="fa-solid fa-handshake"></i>
+                <span>التأهيل والتجهيز للمنح وشراكات التمويل</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact Stats Bar -->
+    <div class="stats-section">
+      <div class="container stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">+65</div>
+          <div class="stat-label">جمعية ومبادرة شريكة (مصر والسعودية)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number purple">5</div>
+          <div class="stat-label">جمعيات منفذة بالفعل بالمملكة العربية السعودية</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">+88</div>
+          <div class="stat-label">فرصة ومسابقة تمويلية ببوابة المنح</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number purple">100%</div>
+          <div class="stat-label">خدمة تطوعية مجانية لسنة للمكون الذكي</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Past Work (سابقة الأعمال) -->
+    <div class="pastwork-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-subtitle">سابقة الأعمال والشراكات الناجحة</div>
+          <h3 class="section-title">مشروعات وكيانات نعتز بدعمها والشراكة معها</h3>
+          <p class="section-desc">مبانٍ برمجية وحلول رقمية تم إنجازها بالفعل لدعم الأثر المجتمعي والبيئي</p>
+        </div>
+
+        <div class="pastwork-grid">
+          <!-- Azolla Egypt -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/ازولا مصر.png" alt="أزولا مصر">
+            <div class="work-info">
+              <h4>مشروع أزولا مصر (Azolla Egypt)</h4>
+              <span>مشروع أخضر زراعي مستدام</span>
+              <p>تصميم وحضور رقمي متميز لعرض حلول الزراعة النظيفة والأعلاف البديلة وتقليل البصمة الكربونية.</p>
+            </div>
+          </div>
+
+          <!-- GCT -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/لوجو  gct.png" alt="GCT">
+            <div class="work-info">
+              <h4>شركة GCT للحلول التقنية</h4>
+              <span>شريك تكنولوجيا وتطوير</span>
+              <p>التعاون في تنفيذ بنية الاتصالات والمعلومات والحلول الرقمية للمبادرات والجمعيات.</p>
+            </div>
+          </div>
+
+          <!-- Saudi Arabia Work -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/لوجو ngohub clean.png" alt="جمعيات السعودية">
+            <div class="work-info">
+              <h4>5 جمعيات بالمملكة العربية السعودية</h4>
+              <span>مشروعات رقمية مكتملة</span>
+              <p>إنجاز وتطوير مواقع وأنظمة رقمية لـ 5 مؤسسات غير هادفة للربح بالسعودية بنجاح.</p>
+            </div>
+          </div>
+
+          <!-- PROTIC -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/بروتيك.png" alt="PROTIC">
+            <div class="work-info">
+              <h4>PROTIC Solutions</h4>
+              <span>الذراع الفني والاستشاري</span>
+              <p>تقديم الاستشارات التدريبية وبناء القدرات والتحول الرقمي الداعم لمنصة NGOHUB.</p>
+            </div>
+          </div>
+
+          <!-- Ministry of Social Solidarity -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/وزارة التضامن.jpg" alt="وزارة التضامن">
+            <div class="work-info">
+              <h4>وزارة التضامن الاجتماعي ومحافظة البحيرة</h4>
+              <span>المظلة التنظيمية والوطنية</span>
+              <p>العمل تحت مظلة التنمية المستدامة الرسمية ودعم الجمعيات المحلية المشهرة.</p>
+            </div>
+          </div>
+
+          <!-- Engineers Syndicate -->
+          <div class="work-card">
+            <img src="محتوي/لوجوهات/لوجو نقابة المهندسين بالبحيرة.png" alt="نقابة المهندسين">
+            <div class="work-info">
+              <h4>نقابة المهندسين بالبحيرة</h4>
+              <span>شريك الابتكار والهندسة</span>
+              <p>التعاون التخصصي لبناء قدرات الكوادر والتحول الرقمي للمكون الذكي بالمبادرات.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. ABOUT SECTION ==================== -->
+  <section id="section-about" class="page-section">
+    <div class="container" style="padding: 60px 0;">
+      <div class="section-header">
+        <div class="section-subtitle">تعرف على المنصة</div>
+        <h3 class="section-title">عن مبادرة NGOHUB</h3>
+        <p class="section-desc">نبذتنا، رؤيتنا، ورسالتنا لتمكين الجمعيات والأثر المستدام</p>
+      </div>
+
+      <div class="services-grid" style="grid-template-columns: 1fr 1fr; gap: 30px;">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h4 class="service-title">التعريف العام بالمشروع</h4>
+          <p class="service-text">
+            <strong>NGOHUB</strong> هي منصة ذكية تهدف إلى دعم وتطوير الجمعيات الأهلية والمشروعات المجتمعية، وخاصة الجمعيات الصغيرة والمتوسطة، من خلال حلول رقمية ومؤسسية تساعدها على تحسين الظهور الرقمي، توثيق الأثر، تنظيم العمل، إدارة المتطوعين، وبناء قدراتها للحصول على فرص أفضل في الشراكات والمنح.
+          </p>
+        </div>
+
+        <div class="service-card purple-theme">
+          <div class="service-icon"><i class="fa-solid fa-compass"></i></div>
+          <h4 class="service-title">الرؤية والرسالة الاستراتيجية</h4>
+          <p class="service-text">
+            نعمل على تمكين الجمعيات والمبادرات من استخدام التكنولوجيا بصورة بسيطة وعملية، بحيث تتحول الأدوات الرقمية إلى وسيلة مباشرة لزيادة الأثر، وليس مجرد واجهة شكلية. شعارنا: <em>"معًا نحو مجتمع مدني أقوى وأثر مستدام"</em>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. SERVICES SECTION ==================== -->
+  <section id="section-services" class="page-section">
+    <div class="services-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-subtitle">الخدمات الأساسية</div>
+          <h3 class="section-title">حلول متكاملة لتطوير الجمعيات والمشروعات</h3>
+          <p class="section-desc">نرافق مؤسستك من العمل التقليدي إلى منظومة رقمية مؤتمتة وموثوقة</p>
+        </div>
+
+        <div class="services-grid">
+          <!-- Service 1 -->
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h4 class="service-title">تصميم المواقع الإلكترونية</h4>
+            <p class="service-text">إنشاء مواقع تعريفية احترافية للجمعيات تعبر عن الرسالة، الأنشطة، توثق الأثر وتزيد من ثقة المانحين والشركاء.</p>
+            <span class="service-tag">حضور رقمي موثوق</span>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="service-card purple-theme">
+            <div class="service-icon"><i class="fa-solid fa-rotate"></i></div>
+            <h4 class="service-title">التحول الرقمي المؤسسي</h4>
+            <p class="service-text">الانتقال بالجمعية من العمل الورقي التقليدي إلى أدوات سحابية منظمة لتخزين البيانات وإدارة البرامج والأنشطة.</p>
+            <span class="service-tag">أتمتة العمل الإداري</span>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-users-gear"></i></div>
+            <h4 class="service-title">إدارة المتطوعين</h4>
+            <p class="service-text">تنظيم بيانات المتطوعين، متابعة التكليفات والمهام، احتساب الساعات التطوعية، وإصدار شهادات مشاركة معتمدة.</p>
+            <span class="service-tag">بناء قاعدة متطوعين</span>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="service-card purple-theme">
+            <div class="service-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h4 class="service-title">بناء القدرات والتأهيل</h4>
+            <p class="service-text">تدريب فرق الجمعيات والمبادرات على الإدارة، التسويق الرقمي، كتابة المقترحات، وتوثيق نتائج المشاريع.</p>
+            <span class="service-tag">تطوير فريق العمل</span>
+          </div>
+
+          <!-- Service 5 -->
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            <h4 class="service-title">دعم المنح والشراكات</h4>
+            <p class="service-text">تجهيز الملف المؤسسي والحضور الرقمي للجمعيات لاستيفاء متطلبات التقديم على المنح المحلية والدولية.</p>
+            <span class="service-tag">استعداد للمانحين</span>
+          </div>
+
+          <!-- Service 6 -->
+          <div class="service-card purple-theme">
+            <div class="service-icon"><i class="fa-solid fa-leaf"></i></div>
+            <h4 class="service-title">دعم المشروعات الخضراء</h4>
+            <p class="service-text">مساعدة المبادرات البيئية والجمعيات العاملة في مجال الاستدامة والمناخ على إبراز وتوثيق أثرها البيئي.</p>
+            <span class="service-tag">المكون الأخضر</span>
+          </div>
+        </div>
+
+        <!-- Free Service Guarantee Banner -->
+        <div class="free-guarantee-box" style="margin-top: 40px; text-align: center; justify-content: center;">
+          <i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>
+          <span>التقديم وإعداد الموقع الإلكتروني للمكون الذكي خدمة تطوعية مجانية مقدمة من NGOHUB بدون أي رسوم لمدة سنة كاملة من الإنشاء!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. GRANTS PORTAL SECTION ==================== -->
+  <section id="section-grants" class="page-section">
+    <div class="grants-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-subtitle">البوابة القومية للفرص والتمويل</div>
+          <h3 class="section-title">بوابة المنح والمسابقات وحاضنات الأعمال</h3>
+          <p class="section-desc">مصحوبة بروابط التقديم المباشرة وتصنيف عالي الدقة يغطي المنح الفردية والجمعيات والمشروعات</p>
+        </div>
+
+        <!-- Grants Filter & Control Card -->
+        <div class="grants-filter-card">
+          <div class="filter-bar-top">
+            <div class="search-box-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="grantsSearchInput" placeholder="ابحث باسم المنحة، الجهة المانحة، أو الكلمات المفتاحية..." oninput="filterGrants()">
+            </div>
+
+            <div class="export-actions">
+              <button class="btn-export" onclick="exportData('csv')">
+                <i class="fa-solid fa-file-csv"></i> تصدير CSV
+              </button>
+              <button class="btn-export" onclick="exportData('json')">
+                <i class="fa-solid fa-file-code"></i> تصدير JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Type Tabs: Individual / NGOs / Projects -->
+          <div class="grants-type-tabs">
+            <button class="type-tab-btn active" data-type="all" onclick="setGrantTypeFilter('all')">
+              <i class="fa-solid fa-layer-group"></i> كافة الفرص والمنح
+            </button>
+            <button class="type-tab-btn" data-type="individual" onclick="setGrantTypeFilter('individual')">
+              <i class="fa-solid fa-user-graduate"></i> منح فردية وفرص تدريب
+            </button>
+            <button class="type-tab-btn" data-type="ngo" onclick="setGrantTypeFilter('ngo')">
+              <i class="fa-solid fa-building-columns"></i> منح للجمعيات والمؤسسات
+            </button>
+            <button class="type-tab-btn" data-type="project" onclick="setGrantTypeFilter('project')">
+              <i class="fa-solid fa-lightbulb"></i> منح للمشروعات الخضراء والناشئة
+            </button>
+          </div>
+        </div>
+
+        <!-- Grants Grid Output -->
+        <div class="grants-grid" id="grantsGridContainer">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. CONTACT & FORM SECTION ==================== -->
+  <section id="section-contact" class="page-section">
+    <div class="form-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-subtitle">تواصل واستيفاء البيانات</div>
+          <h3 class="section-title">نموذج إعداد المكون الذكي للمشروعات</h3>
+          <p class="section-desc">قدم بيانات مشروعك أو جمعيتك لإعداد موقعك التعريفي ومساعدتك في المكون الذكي مجاناً لمدة سنة</p>
+        </div>
+
+        <div class="form-card-wrapper">
+          <form id="smartComponentForm" onsubmit="handleFormSubmit(event)">
+            <h4 style="font-size: 1.15rem; color: var(--primary-green); margin-bottom: 20px;">
+              <i class="fa-solid fa-user-check"></i> القسم الأول: بيانات الشخص المسؤول عن رفع البيانات
+            </h4>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="respName">اسم الشخص المسؤول *</label>
+                <input type="text" id="respName" required placeholder="الاسم ثلاثي">
+              </div>
+
+              <div class="form-group">
+                <label for="respRole">الصفة أو الدور داخل المشروع *</label>
+                <input type="text" id="respRole" required placeholder="مثال: مدير المشروع / رئيس مجلس الإدارة">
+              </div>
+
+              <div class="form-group">
+                <label for="respPhone">رقم الهاتف / واتساب *</label>
+                <input type="tel" id="respPhone" required placeholder="01xxxxxxxx">
+              </div>
+
+              <div class="form-group">
+                <label for="respExtra">وسيلة تواصل إضافية (إن وجدت)</label>
+                <input type="text" id="respExtra" placeholder="بريد إلكتروني أو رقم آخر">
+              </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border-color);">
+
+            <h4 style="font-size: 1.15rem; color: var(--primary-purple); margin-bottom: 20px;">
+              <i class="fa-solid fa-diagram-project"></i> القسم الثاني: بيانات المشروع / الجمعية
+            </h4>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="projName">اسم المشروع أو الجمعية *</label>
+                <input type="text" id="projName" required placeholder="اكتب اسم الكيان هنا">
+              </div>
+
+              <div class="form-group">
+                <label for="projCategory">نوع الكيان *</label>
+                <select id="projCategory" required>
+                  <option value="">اختر نوع الكيان...</option>
+                  <option value="ngo">جمعية أهلية صغيرة/متوسطة</option>
+                  <option value="green_project">مشروع أخضر ذكي</option>
+                  <option value="women_empowerment">مبادرة تمكين المرأة</option>
+                  <option value="community_initiative">مبادرة مجتمعية غير هادفة للربح</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="projDesc">نبذة مفصلة عن المشروع ورسالته *</label>
+                <textarea id="projDesc" rows="3" required placeholder="شرح مختصر لفكرة المشروع أو أنشطة الجمعية والمستفيدين..."></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="projServices">الخدمات أو الأنشطة التي يقدمها المشروع *</label>
+                <textarea id="projServices" rows="2" required placeholder="اذكر الخدمات المقدمة..."></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="projContactMethod">طريقة التواصل مع المشروع لطلب خدمة</label>
+                <input type="text" id="projContactMethod" placeholder="مثال: عبر الهاتف، واتساب، أو مقر الجمعية">
+              </div>
+            </div>
+
+            <!-- Free Guarantee Alert -->
+            <div class="free-guarantee-box">
+              <i class="fa-solid fa-shield-cat"></i>
+              <span>التقديم وإعداد الموقع الإلكتروني للمشروع خدمة تطوعية مقدمة من NGOHUB، ولا تدفع الجمعية أو المشروع أي رسوم لمدة سنة من تاريخ إنشاء الموقع.</span>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; font-size: 1.05rem;">
+              <i class="fa-solid fa-paper-plane"></i> إرسال نموذج إعداد المكون الذكي بنجاح
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PARTNERS & DONORS LOGO STRIP ==================== -->
+  <section class="partners-section">
+    <div class="container">
+      <div style="text-align: center; font-weight: 800; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">
+        شبكة الشركاء والجهات الداعمة وسابقة الأعمال
+      </div>
+      <div class="partners-grid">
+        <div class="partner-item"><img src="محتوي/لوجوهات/ازولا مصر.png" alt="أزولا مصر" title="مشروع أزولا مصر"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/لوجو  gct.png" alt="GCT" title="GCT"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/بروتيك.png" alt="PROTIC" title="PROTIC Solutions"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/وزارة التضامن.jpg" alt="وزارة التضامن الاجتماعي" title="وزارة التضامن الاجتماعي"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/لوجو UNDP.jpg" alt="UNDP" title="برنامج الأمم المتحدة Иنمائي"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/لوجو GEF.jpg" alt="GEF" title="مرفق البيئة العالمي"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/لوجو  SGP.jpg" alt="SGP" title="برنامج المنح الصغيرة"></div>
+        <div class="partner-item"><img src="محتوي/لوجوهات/المكتب العربي للشباب و البيئة.png" alt="المكتب العربي للشباب والبيئة" title="المكتب العربي للشباب والبيئة"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <img src="محتوي/لوجوهات/لوجو ngohub clean.png" alt="NGOHUB Logo" style="height: 38px;">
+            <h4 style="margin:0;">NGOHUB</h4>
+          </div>
+          <p>
+            منصة ذكية لدعم وتطوير الجمعيات الأهلية والمشروعات الخضراء في التحول الرقمي، إدارة المتطوعين، وبناء القدرات، وإعداد المكون الذكي.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <p><a href="#" onclick="switchTab('home')" style="color: inherit; text-decoration:none;">الرئيسية</a></p>
+          <p><a href="#" onclick="switchTab('about')" style="color: inherit; text-decoration:none;">عن المبادرة</a></p>
+          <p><a href="#" onclick="switchTab('services')" style="color: inherit; text-decoration:none;">الخدمات</a></p>
+          <p><a href="#" onclick="switchTab('grants')" style="color: inherit; text-decoration:none;">بوابة المنح والمسابقات</a></p>
+        </div>
+
+        <div class="footer-col">
+          <h4>النطاق والدعم</h4>
+          <p><i class="fa-solid fa-location-dot"></i> مصر والمملكة العربية السعودية</p>
+          <p><i class="fa-solid fa-envelope"></i> info@ngohub.org</p>
+          <p><i class="fa-brands fa-whatsapp"></i> تواصل مع مندوب المبادرة</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 NGOHUB. جميع الحقوق محفوظة | منصة دعم وتطوير الجمعيات</div>
+        <div style="color: var(--primary-green); font-weight:700;">معًا نحو مجتمع مدني أقوى وأثر مستدام</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Grant Details Modal Dialog -->
+  <div class="modal-overlay" id="grantModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title" id="mTitle">عنوان الفرصة</h3>
+      <div class="modal-donor-tag" id="mDonor">الجهة المانحة</div>
+
+      <div class="modal-body-section">
+        <h5><i class="fa-solid fa-align-right"></i> ملخص ووصف الفرصة:</h5>
+        <p id="mSummary" style="font-size: 0.95rem; color: var(--text-muted);"></p>
+      </div>
+
+      <div class="modal-body-section">
+        <h5><i class="fa-solid fa-list-check"></i> شروط الأهلية والقبول:</h5>
+        <ul class="modal-eligibility-list" id="mEligibility"></ul>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 25px;">
+        <a href="#" target="_blank" id="mOriginalLink" class="btn-secondary" style="flex: 1; text-align: center; justify-content: center; text-decoration: none;">
+          <i class="fa-solid fa-bullhorn"></i> الإعلان الأصلي
+        </a>
+        <a href="#" target="_blank" id="mDirectLink" class="btn-primary" style="flex: 1; text-align: center; justify-content: center; text-decoration: none;">
+          <i class="fa-solid fa-paper-plane"></i> التقديم المباشر
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Message -->
+  <div class="toast-msg" id="toastMsg">
+    <i class="fa-solid fa-circle-check"></i> <span id="toastText">تمت العملية بنجاح</span>
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="grants_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
