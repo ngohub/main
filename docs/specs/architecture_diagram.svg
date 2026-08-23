@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" width="100%" height="100%" style="background:#0F172A; font-family:'Cairo', 'Segoe UI', Tahoma, sans-serif;">
+  <defs>
+    <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2F6E3A"/>
+      <stop offset="100%" stop-color="#1E4B27"/>
+    </linearGradient>
+    <linearGradient id="gradPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#5B21B6"/>
+    </linearGradient>
+    <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="gradCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="gradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Title & Banner -->
+  <rect x="350" y="30" width="700" height="70" rx="35" fill="url(#gradEmerald)" filter="url(#shadow)"/>
+  <text x="700" y="65" fill="#FFFFFF" font-size="22" font-weight="900" text-anchor="middle" dominant-baseline="middle">🌿 الهيكل المعماري الشامل لمنصة NGOHUB (v9.0)</text>
+  <text x="700" y="88" fill="#A7F3D0" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="middle">منظومة التحول الرقمي والتمكين المؤسسي للجمعيات الأهلية والمجتمعية</text>
+
+  <!-- Level 1: User / Visitor Entry Point -->
+  <line x1="700" y1="100" x2="700" y2="140" stroke="#10B981" stroke-width="3" stroke-dasharray="4,4"/>
+  <rect x="525" y="140" width="350" height="50" rx="12" fill="url(#gradCard)" stroke="#38BDF8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="700" y="170" fill="#F8FAFC" font-size="16" font-weight="800" text-anchor="middle" dominant-baseline="middle">👥 زائر المنصة (جمعيات أهلية / مؤسسات / كوادر شبابية)</text>
+
+  <!-- Level 2: Main Header Navbar Splitter -->
+  <line x1="700" y1="190" x2="700" y2="230" stroke="#38BDF8" stroke-width="3"/>
+  <rect x="150" y="230" width="1100" height="50" rx="14" fill="url(#gradHeader)" stroke="#475569" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="700" y="260" fill="#E2E8F0" font-size="16" font-weight="800" text-anchor="middle" dominant-baseline="middle">🌐 شريط التنقل الرئيسي والموجه السريع (SPA Navigation Router)</text>
+
+  <!-- Connectors to 5 Main Pages -->
+  <line x1="260" y1="280" x2="260" y2="330" stroke="#10B981" stroke-width="2.5"/>
+  <line x1="480" y1="280" x2="480" y2="330" stroke="#8B5CF6" stroke-width="2.5"/>
+  <line x1="700" y1="280" x2="700" y2="330" stroke="#F59E0B" stroke-width="2.5"/>
+  <line x1="920" y1="280" x2="920" y2="330" stroke="#38BDF8" stroke-width="2.5"/>
+  <line x1="1140" y1="280" x2="1140" y2="330" stroke="#EC4899" stroke-width="2.5"/>
+
+  <!-- Column 1: Home Section -->
+  <rect x="160" y="330" width="200" height="48" rx="10" fill="url(#gradEmerald)" filter="url(#shadow)"/>
+  <text x="260" y="358" fill="#FFFFFF" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">🏠 1. الصفحة الرئيسية</text>
+
+  <rect x="160" y="395" width="200" height="245" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="260" y="425" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• الهيرو والبحث الفوري</text>
+  <text x="260" y="455" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• محاور التمكين الأربعة</text>
+  <text x="260" y="485" fill="#FCD34D" font-size="12" font-weight="800" text-anchor="middle">• حاسبة الجاهزية (6 معايير)</text>
+  <text x="260" y="515" fill="#A78BFA" font-size="12" font-weight="700" text-anchor="middle">↳ تقرير تشخيصي منبثق</text>
+  <text x="260" y="545" fill="#94A3B8" font-size="11" text-anchor="middle">(قوة / ضعف / خطة عمل)</text>
+  <text x="260" y="580" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• خارطة طريق المراحل 4</text>
+  <text x="260" y="610" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• الأسئلة الشائعة للجمعيات</text>
+
+  <!-- Column 2: Services Section -->
+  <rect x="380" y="330" width="200" height="48" rx="10" fill="url(#gradPurple)" filter="url(#shadow)"/>
+  <text x="480" y="358" fill="#FFFFFF" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">📦 2. دليل الخدمات (8)</text>
+
+  <rect x="380" y="395" width="200" height="245" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="480" y="425" fill="#C4B5FD" font-size="12" font-weight="700" text-anchor="middle">• تصميم المواقع الرسمية</text>
+  <text x="480" y="455" fill="#C4B5FD" font-size="12" font-weight="700" text-anchor="middle">• التحول الرقمي والسحابة</text>
+  <text x="480" y="485" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• برامج وحوكمة المتطوعين</text>
+  <text x="480" y="515" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• كتابة مقترحات المنح</text>
+  <text x="480" y="545" fill="#FCD34D" font-size="12" font-weight="700" text-anchor="middle">• الهوية ولوحات قياس الأثر</text>
+  <text x="480" y="580" fill="#38BDF8" font-size="12" font-weight="700" text-anchor="middle">• استشارات ومبادرات مجانية</text>
+  <text x="480" y="610" fill="#F87171" font-size="12" font-weight="700" text-anchor="middle">• موارد تقنية مدفوعة بسعرها</text>
+
+  <!-- Column 3: Grants & Opportunities Portal -->
+  <rect x="600" y="330" width="200" height="48" rx="10" fill="url(#gradGold)" filter="url(#shadow)"/>
+  <text x="700" y="358" fill="#FFFFFF" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">🌍 3. بوابة المنح (66+)</text>
+
+  <rect x="600" y="395" width="200" height="245" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="700" y="425" fill="#FCD34D" font-size="12" font-weight="700" text-anchor="middle">• منح جمعيات ومؤسسات</text>
+  <text x="700" y="455" fill="#FCD34D" font-size="12" font-weight="700" text-anchor="middle">• منح المشروعات والابتكار</text>
+  <text x="700" y="485" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• منح الشباب وريادة الأعمال</text>
+  <text x="700" y="515" fill="#60A5FA" font-size="12" font-weight="800" text-anchor="middle">• فرص تطوع الأمم المتحدة UNV</text>
+  <text x="700" y="545" fill="#34D399" font-size="11" text-anchor="middle">(Online / Youth / Direct)</text>
+  <text x="700" y="580" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• فلاتر لحظية (مجال / جغرافيا)</text>
+  <text x="700" y="610" fill="#A78BFA" font-size="12" font-weight="600" text-anchor="middle">• تصدير CSV / JSON</text>
+
+  <!-- Column 4: Partners Page -->
+  <rect x="820" y="330" width="200" height="48" rx="10" fill="url(#gradCard)" stroke="#38BDF8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="920" y="358" fill="#38BDF8" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">🤝 4. الشركاء وسابقة العمل</text>
+
+  <rect x="820" y="395" width="200" height="245" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="920" y="425" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• جمعية الإسراء (الشريك المجتمعي)</text>
+  <text x="920" y="455" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• بنيان للتدخل المبكر</text>
+  <text x="920" y="485" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• محافظة / وزارة البحيرة</text>
+  <text x="920" y="515" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• مركز التدريب البيئي</text>
+  <text x="920" y="545" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• حاضنة الأعمال البيئية</text>
+  <text x="920" y="575" fill="#FCD34D" font-size="12" font-weight="700" text-anchor="middle">• PR CUBE (الشريك السعودي)</text>
+  <text x="920" y="605" fill="#94A3B8" font-size="11" text-anchor="middle">• + GCT, PROTIC, الرحمة, SGP</text>
+
+  <!-- Column 5: About Section -->
+  <rect x="1040" y="330" width="200" height="48" rx="10" fill="url(#gradCard)" stroke="#EC4899" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1140" y="358" fill="#F472B6" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">ℹ️ 5. عن المنصة</text>
+
+  <rect x="1040" y="395" width="200" height="245" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="1140" y="435" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• الرسالة والأهداف التنموية</text>
+  <text x="1140" y="475" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• الشبكة الميدانية والشراكات</text>
+  <text x="1140" y="515" fill="#A78BFA" font-size="12" font-weight="700" text-anchor="middle">• ميزة الشباب والتكنولوجيا</text>
+  <text x="1140" y="555" fill="#E2E8F0" font-size="12" font-weight="600" text-anchor="middle">• لغة العمل التنموي والأثر</text>
+  <text x="1140" y="595" fill="#38BDF8" font-size="12" font-weight="600" text-anchor="middle">• دعم الجمعيات بالمحافظات</text>
+
+  <!-- Level 3: Form Submissions & Cloud Sync (Google Sheets Webhook) -->
+  <line x1="480" y1="640" x2="480" y2="690" stroke="#10B981" stroke-width="2.5" stroke-dasharray="3,3"/>
+  <line x1="260" y1="640" x2="480" y2="690" stroke="#10B981" stroke-width="2" stroke-dasharray="3,3"/>
+  
+  <rect x="280" y="690" width="400" height="60" rx="14" fill="url(#gradEmerald)" filter="url(#shadow)"/>
+  <text x="480" y="718" fill="#FFFFFF" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="middle">⚡ محرك الاستمارات و Google Sheets Webhook المباشر</text>
+  <text x="480" y="738" fill="#A7F3D0" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="middle">تزامن وتخزين فوري لكافة طلبات الجمعيات في جدول إكسيل موحد</text>
+
+  <!-- Level 4: Site Footer & Admin CMS Portal -->
+  <line x1="700" y1="640" x2="700" y2="780" stroke="#64748B" stroke-width="2"/>
+  <line x1="480" y1="750" x2="700" y2="780" stroke="#64748B" stroke-width="2"/>
+  <line x1="920" y1="640" x2="700" y2="780" stroke="#64748B" stroke-width="2"/>
+
+  <rect x="200" y="780" width="1000" height="140" rx="16" fill="#0B132B" stroke="#334155" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="230" y="800" width="220" height="35" rx="8" fill="#1E293B"/>
+  <text x="340" y="822" fill="#E2E8F0" font-size="13" font-weight="700" text-anchor="middle">🔻 الفوتر العام والتواصل</text>
+  
+  <text x="340" y="860" fill="#94A3B8" font-size="12" text-anchor="middle">• روابط الأقسام وسياسة الخصوصية</text>
+  <text x="340" y="890" fill="#34D399" font-size="12" font-weight="700" text-anchor="middle">• واتساب المباشر: 201026847508+</text>
+
+  <rect x="490" y="800" width="680" height="105" rx="12" fill="url(#gradCard)" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="830" y="825" fill="#A5B4FC" font-size="14" font-weight="800" text-anchor="middle">🔐 بوابة لوحة تحكم الإدارة (Admin CMS Dashboard) - بالفوتر</text>
+  
+  <text x="600" y="855" fill="#E2E8F0" font-size="11" text-anchor="middle">📊 نظرة عامة وإحصائيات</text>
+  <text x="830" y="855" fill="#E2E8F0" font-size="11" text-anchor="middle">🌍 إدارة المنح (إضافة/حذف)</text>
+  <text x="1040" y="855" fill="#E2E8F0" font-size="11" text-anchor="middle">📦 إدارة حالة الخدمات</text>
+  
+  <text x="600" y="885" fill="#E2E8F0" font-size="11" text-anchor="middle">📥 صندوق وارد الطلبات</text>
+  <text x="830" y="885" fill="#34D399" font-size="11" font-weight="700" text-anchor="middle">⚡ إعدادات واختبار Webhook</text>
+  <text x="1040" y="885" fill="#E2E8F0" font-size="11" text-anchor="middle">💾 تصدير/استيراد JSON</text>
+</svg>
