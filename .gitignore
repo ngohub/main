@@ -1,4 +1,7 @@
 # .gitignore for NGOHUB Project
+__pycache__/
+*.pyc
+*.pyo
 .system_generated/
 *.log
 .DS_Store
