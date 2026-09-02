@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محاكي تطبيق الهاتف الذكي | NGOHUB Mobile App Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0b1510 0%, #13271b 50%, #0d1e14 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .sim-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+      max-width: 1200px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    /* Left Info Panel */
+    .sim-info {
+      flex: 1;
+      min-width: 320px;
+      max-width: 460px;
+    }
+
+    .sim-badge {
+      display: inline-block;
+      background: rgba(46, 125, 50, 0.25);
+      border: 1px solid #4caf50;
+      color: #81c784;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .sim-info h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .sim-info h1 span {
+      color: #4caf50;
+    }
+
+    .sim-info p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 25px;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+    }
+
+    .features-list li i {
+      color: #4caf50;
+      font-size: 1.1rem;
+    }
+
+    .sim-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-download-apk {
+      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+      color: #ffffff;
+      border: 1px solid #4caf50;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-download-apk:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(46, 125, 50, 0.5);
+    }
+
+    .btn-open-fullscreen {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    /* Right Smartphone Frame */
+    .phone-frame {
+      width: 380px;
+      height: 760px;
+      background: #1e293b;
+      border-radius: 46px;
+      padding: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.2);
+      border: 4px solid #334155;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dynamic Island / Notch */
+    .phone-notch {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 24px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px;
+    }
+
+    .notch-camera {
+      width: 10px;
+      height: 10px;
+      background: #1e293b;
+      border-radius: 50%;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 36px;
+      border: none;
+      background: #ffffff;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sim-wrapper">
+    <!-- Left Details -->
+    <div class="sim-info">
+      <span class="sim-badge"><i class="fa-solid fa-mobile-screen"></i> الإصدار الأصلي 2026</span>
+      <h1>تطبيق <span>NGOHUB</span> الذكي</h1>
+      <p>
+        تطبيق الهاتف المتكامل للجمعيات الأهلية، يقدم كافة أدوات التحول الرقمي، حاسبة الأثر، بوابة 66 منحة، وثيقة سياسة الحماية والشكاوى، مع إمكانية التثبيت المباشر بصيغة APK.
+      </p>
+
+      <ul class="features-list">
+        <li><i class="fa-solid fa-circle-check"></i> شريط تنقل سفلي لمسي مع الحاسبات في المنتصف</li>
+        <li><i class="fa-solid fa-circle-check"></i> بوابة 66 منحة دولية موثقة مع محرك بحث وفلترة</li>
+        <li><i class="fa-solid fa-circle-check"></i> وثيقة سياسة الحماية ونموذج تقديم الشكاوى السري</li>
+        <li><i class="fa-solid fa-circle-check"></i> يعمل بنسبة 100% بدون إنترنت (PWA Offline)</li>
+        <li><i class="fa-solid fa-circle-check"></i> أمان مشدد معتمد (Zero Dangerous Permissions)</li>
+      </ul>
+
+      <div class="sim-actions">
+        <a href="NGOHUB.apk" download="NGOHUB.apk" class="btn-download-apk">
+          <i class="fa-brands fa-android"></i> تثبيت وتحميل تطبيق الهاتف (NGOHUB.apk)
+        </a>
+        <a href="تطبيق_الهاتف/www/index.html" target="_blank" class="btn-open-fullscreen">
+          <i class="fa-solid fa-up-right-from-square"></i> فتح تطبيق الويب بملء الشاشة
+        </a>
+        <a href="index.html" class="btn-open-fullscreen" style="background: transparent; border-color: rgba(255,255,255,0.2);">
+          <i class="fa-solid fa-arrow-right"></i> العودة لموقع NGOHUB الرئيسي
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Smartphone Mockup -->
+    <div class="phone-frame">
+      <div class="phone-notch">
+        <div class="notch-camera"></div>
+      </div>
+      <iframe src="تطبيق_الهاتف/www/index.html" class="phone-screen"></iframe>
+    </div>
+  </div>
+
+</body>
+</html>

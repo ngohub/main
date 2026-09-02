@@ -1,4 +1,20 @@
 # .gitignore for NGOHUB Project
+
+# Confidential & Competition Files (Strictly Private - DO NOT PUSH)
+ملفات_المسابقة_والتوثيق_الخاصة/
+مبادرة المشاريع الخضراء الذكية/
+تطبيق_الهاتف/android/
+تطبيق_الهاتف/apk/
+*.docx
+*.pptx
+*.idsig
+
+# Allow public web assets, simulator, and APK
+!تطبيق_الهاتف/www/
+!assets/apk/NGOHUB.apk
+!NGOHUB.apk
+
+# System & Cache
 __pycache__/
 *.pyc
 *.pyo

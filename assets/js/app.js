@@ -141,7 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initGrantsDatabase();
   initServices();
+  calculateEcoImpact();
   calculateReadinessScore();
+  calculateNgohubWater();
+  calculateServicesImpact();
   loadSubmissionsInboxCount();
 });
 
@@ -190,7 +193,7 @@ function closeMobileDrawer() {
   if (overlay) overlay.classList.remove('active');
 }
 
-// --- 6. SPA Router & Tab Switcher (Updated for Dedicated Partners Page & Footer Admin) ---
+// --- 6. SPA Router & Tab Switcher (Updated for Impact, Calculators, Partners, Services, Grants, About, Admin) ---
 function switchTab(tabId) {
   // Hide all sections
   const sections = document.querySelectorAll('.page-section');
@@ -200,6 +203,8 @@ function switchTab(tabId) {
   let targetSectionId = 'section-home';
   if (tabId === 'grants') targetSectionId = 'section-grants';
   else if (tabId === 'services') targetSectionId = 'section-services';
+  else if (tabId === 'impact') targetSectionId = 'section-impact';
+  else if (tabId === 'calculators') targetSectionId = 'section-calculators';
   else if (tabId === 'partners') targetSectionId = 'section-partners';
   else if (tabId === 'about') targetSectionId = 'section-about';
   else if (tabId === 'admin') targetSectionId = 'section-admin';
@@ -217,15 +222,24 @@ function switchTab(tabId) {
   if (tabId === 'admin') {
     renderAdminState();
   }
+
+  // Trigger calculators update if opened
+  if (tabId === 'calculators') {
+    if (typeof calculateNgohubWater === 'function') calculateNgohubWater();
+    if (typeof calculateServicesImpact === 'function') calculateServicesImpact();
+    if (typeof calculateReadinessScore === 'function') calculateReadinessScore();
+  }
 }
 
 function updateNavActiveState(tabId) {
   const navItems = {
     home: document.getElementById('nav-home'),
+    about: document.getElementById('nav-about'),
     services: document.getElementById('nav-services'),
+    impact: document.getElementById('nav-impact'),
+    calculators: document.getElementById('nav-calculators'),
     grants: document.getElementById('nav-grants'),
-    partners: document.getElementById('nav-partners'),
-    about: document.getElementById('nav-about')
+    partners: document.getElementById('nav-partners')
   };
 
   Object.keys(navItems).forEach(key => {
@@ -237,10 +251,12 @@ function updateNavActiveState(tabId) {
 
   const mNavItems = {
     home: document.getElementById('mNav-home'),
+    about: document.getElementById('mNav-about'),
     services: document.getElementById('mNav-services'),
+    impact: document.getElementById('mNav-impact'),
+    calculators: document.getElementById('mNav-calculators'),
     grants: document.getElementById('mNav-grants'),
-    partners: document.getElementById('mNav-partners'),
-    about: document.getElementById('mNav-about')
+    partners: document.getElementById('mNav-partners')
   };
 
   Object.keys(mNavItems).forEach(key => {
@@ -404,6 +420,229 @@ function generateGrantCardHTML(g) {
       </div>
     </div>
   `;
+}
+
+// --- 8.1 Green, Water & Economic Impact Calculator Engine ---
+function calculateEcoImpact() {
+  const paperRange = document.getElementById('ecoPaperRange');
+  const benRange = document.getElementById('ecoBeneficiariesRange');
+  const adoptRange = document.getElementById('ecoAdoptionRange');
+
+  if (!paperRange || !benRange || !adoptRange) return;
+
+  const monthlyPaper = parseFloat(paperRange.value || '500');
+  const beneficiaries = parseFloat(benRange.value || '1200');
+  const adoption = parseFloat(adoptRange.value || '80');
+
+  // Update slider label texts
+  const paperText = document.getElementById('ecoPaperValText');
+  const benText = document.getElementById('ecoBenValText');
+  const adoptText = document.getElementById('ecoAdoptionValText');
+
+  if (paperText) paperText.innerText = Number(monthlyPaper).toLocaleString('ar-EG') + " معاملة";
+  if (benText) benText.innerText = Number(beneficiaries).toLocaleString('ar-EG') + " أسرة";
+  if (adoptText) adoptText.innerText = adoption + "%";
+
+  // Calculations:
+  // 1. Annual paper sheets eliminated = monthlyPaper * 12 * (adoption / 100)
+  const annualPaperAvoided = Math.round(monthlyPaper * 12 * (adoption / 100));
+
+  // 2. Water saved: 10 Liters of pure fresh water per standard A4 sheet
+  const waterSavedLiters = Math.round(annualPaperAvoided * 10);
+
+  // 3. Trees protected: 1 mature tree equals approx 8,333 sheets of paper
+  const treesProtected = (annualPaperAvoided / 8333).toFixed(1);
+
+  // 4. CO2 avoided in kg: 0.005 kg CO2 per sheet + avoided in-person travel (0.08 kg per digital beneficiary)
+  const co2AvoidedKg = Math.round((annualPaperAvoided * 0.005) + (beneficiaries * 0.08 * (adoption / 100)));
+
+  // 5. Total Financial Savings in EGP: (Paper cost 0.65 EGP + toner 1.20 EGP + archiving/storage 0.50 EGP per sheet) + logistics savings
+  const financialSavingsEgp = Math.round((annualPaperAvoided * 2.35) + (beneficiaries * 3.5 * (adoption / 100)));
+
+  // Update DOM Output elements
+  const waterElem = document.getElementById('ecoWaterSaved');
+  const treesElem = document.getElementById('ecoTreesSaved');
+  const co2Elem = document.getElementById('ecoCo2Saved');
+  const moneyElem = document.getElementById('ecoMoneySaved');
+
+  if (waterElem) waterElem.innerText = Number(waterSavedLiters).toLocaleString('ar-EG');
+  if (treesElem) treesElem.innerText = Number(treesProtected).toLocaleString('ar-EG');
+  if (co2Elem) co2Elem.innerText = Number(co2AvoidedKg).toLocaleString('ar-EG');
+  if (moneyElem) moneyElem.innerText = Number(financialSavingsEgp).toLocaleString('ar-EG');
+}
+
+// --- 8.2 Subtab Navigator for Calculators Hub ---
+function switchCalcSubTab(calcId) {
+  const tabs = document.querySelectorAll('.calc-tab-btn');
+  tabs.forEach(tab => {
+    if (tab.getAttribute('data-calc') === calcId) tab.classList.add('active');
+    else tab.classList.remove('active');
+  });
+
+  const panels = document.querySelectorAll('.calc-panel');
+  panels.forEach(p => {
+    if (p.id === `calc-panel-${calcId}`) p.classList.add('active-panel');
+    else p.classList.remove('active-panel');
+  });
+
+  if (calcId === 'water') calculateNgohubWater();
+  else if (calcId === 'services') calculateServicesImpact();
+  else if (calcId === 'readiness') calculateReadinessScore();
+}
+
+// --- 8.3 NGOHUB Water Calculator (Direct via GCT & Indirect via Paperless Transformation) ---
+function calculateNgohubWater() {
+  const paperRange = document.getElementById('waterPaperRange');
+  const cleanupsInput = document.getElementById('waterGctCleanups');
+  const workshopsInput = document.getElementById('waterGctWorkshops');
+
+  if (!paperRange) return;
+
+  const monthlyTransactions = parseFloat(paperRange.value || '1000');
+  const workshops = parseFloat(workshopsInput ? workshopsInput.value : '8') || 0;
+
+  // Label text update
+  const paperText = document.getElementById('waterPaperValText');
+  if (paperText) paperText.innerText = Number(monthlyTransactions).toLocaleString('ar-EG') + " معاملة/شهر";
+
+  // Calculations:
+  // 1. Indirect Water (Paperless): 10 Liters of pure fresh water saved per paper sheet eliminated
+  const annualIndirectSheets = monthlyTransactions * 12;
+  const indirectWaterLiters = Math.round(annualIndirectSheets * 10);
+  const indirectMoneySaved = Math.round(annualIndirectSheets * 2.5); // 2.5 EGP paper & toner & print
+
+  // 2. Direct Water (GCT agricultural workshops & modern irrigation):
+  // 50,000 Liters of irrigation water saved per agricultural workshop / Azolla demo field
+  const directWaterLiters = workshops * 50000;
+
+  // 3. Totals
+  const totalWaterLiters = indirectWaterLiters + directWaterLiters;
+  const totalWaterM3 = (totalWaterLiters / 1000).toFixed(1);
+  const familiesDaily = Math.round(totalWaterLiters / 350); // Daily water consumption for average family (~350L)
+  const treesProtected = (annualIndirectSheets / 8333).toFixed(1);
+
+  // Update Output DOM elements
+  const elemTotal = document.getElementById('resWaterTotalLiters');
+  const elemM3 = document.getElementById('resWaterTotalM3');
+  const elemIndirect = document.getElementById('resWaterIndirect');
+  const elemDirect = document.getElementById('resWaterDirect');
+  const elemMoney = document.getElementById('resWaterMoneySaved');
+  const elemFamilies = document.getElementById('resWaterFamilies');
+  const elemTrees = document.getElementById('resWaterTrees');
+
+  if (elemTotal) elemTotal.innerText = Number(totalWaterLiters).toLocaleString('ar-EG') + " لتر";
+  if (elemM3) elemM3.innerText = Number(totalWaterM3).toLocaleString('ar-EG') + " م³";
+  if (elemIndirect) elemIndirect.innerText = Number(indirectWaterLiters).toLocaleString('ar-EG') + " لتر";
+  if (elemDirect) elemDirect.innerText = Number(directWaterLiters).toLocaleString('ar-EG') + " لتر";
+  if (elemMoney) elemMoney.innerText = Number(indirectMoneySaved).toLocaleString('ar-EG') + " ج.م";
+  if (elemFamilies) elemFamilies.innerText = Number(familiesDaily).toLocaleString('ar-EG') + " أسرة";
+  if (elemTrees) elemTrees.innerText = Number(treesProtected).toLocaleString('ar-EG') + " شجرة";
+}
+
+// --- 8.4 Services Impact Calculator for NGOs ---
+const NGOHUB_SERVICES_IMPACT_DATA = {
+  srv_web: { name: "موقع إلكتروني تعريفي ورسمي (.org)", water: 150000, money: 37500, paper: 15000, readiness: 15, hours: 180 },
+  srv_portal: { name: "منصة التحول الرقمي وأتمتة السجلات", water: 250000, money: 62500, paper: 25000, readiness: 25, hours: 320 },
+  srv_volunteers: { name: "نظام إدارة المتطوعين وتوثيق الساعات", water: 80000, money: 20000, paper: 8000, readiness: 15, hours: 120 },
+  srv_grants: { name: "التأهيل لمنح المناخ والتمويل الدولي", water: 120000, money: 45000, paper: 12000, readiness: 25, hours: 200 },
+  srv_water_gct: { name: "ورش ترشيد مياه الري والحلول الخضراء مع GCT", water: 300000, money: 50000, paper: 0, readiness: 15, hours: 150 },
+  srv_smart_comp: { name: "إعداد المكون الذكي للمشروعات الخضراء", water: 100000, money: 25000, paper: 10000, readiness: 20, hours: 100 }
+};
+
+function calculateServicesImpact() {
+  let totalWater = 0;
+  let totalMoney = 0;
+  let totalPaper = 0;
+  let totalReadiness = 10; // Baseline 10%
+  let totalHours = 0;
+  let selectedCount = 0;
+
+  Object.keys(NGOHUB_SERVICES_IMPACT_DATA).forEach(srvKey => {
+    const chk = document.getElementById(`chk_${srvKey}`);
+    const card = document.getElementById(`card_${srvKey}`);
+    if (chk && chk.checked) {
+      selectedCount++;
+      if (card) card.classList.add('selected');
+      const data = NGOHUB_SERVICES_IMPACT_DATA[srvKey];
+      totalWater += data.water;
+      totalMoney += data.money;
+      totalPaper += data.paper;
+      totalReadiness += data.readiness;
+      totalHours += data.hours;
+    } else if (card) {
+      card.classList.remove('selected');
+    }
+  });
+
+  if (totalReadiness > 100) totalReadiness = 100;
+
+  // DOM Outputs
+  const outWater = document.getElementById('srvOutWater');
+  const outMoney = document.getElementById('srvOutMoney');
+  const outPaper = document.getElementById('srvOutPaper');
+  const outScore = document.getElementById('srvOutScore');
+  const outHours = document.getElementById('srvOutHours');
+  const outCount = document.getElementById('srvOutCountBadge');
+
+  if (outWater) outWater.innerText = Number(totalWater).toLocaleString('ar-EG') + " لتر";
+  if (outMoney) outMoney.innerText = Number(totalMoney).toLocaleString('ar-EG') + " ج.م";
+  if (outPaper) outPaper.innerText = Number(totalPaper).toLocaleString('ar-EG') + " ورقة";
+  if (outScore) outScore.innerText = totalReadiness + "%";
+  if (outHours) outHours.innerText = Number(totalHours).toLocaleString('ar-EG') + " ساعة";
+  if (outCount) outCount.innerText = selectedCount + " خدمات مختارة";
+}
+
+function toggleServiceCheck(srvKey) {
+  const chk = document.getElementById(`chk_${srvKey}`);
+  if (chk) {
+    chk.checked = !chk.checked;
+    calculateServicesImpact();
+  }
+}
+
+function requestSelectedServices() {
+  const selectedNames = [];
+  Object.keys(NGOHUB_SERVICES_IMPACT_DATA).forEach(srvKey => {
+    const chk = document.getElementById(`chk_${srvKey}`);
+    if (chk && chk.checked) {
+      selectedNames.push(NGOHUB_SERVICES_IMPACT_DATA[srvKey].name);
+    }
+  });
+
+  const notes = selectedNames.length > 0
+    ? "الخدمات المختارة من حاسبة الأثر:\n- " + selectedNames.join("\n- ")
+    : "طلب استشارة لخدمات NGOHUB";
+
+  openServiceModal('web_dev');
+  setTimeout(() => {
+    const notesInput = document.getElementById('modalUserNotes');
+    if (notesInput) notesInput.value = notes;
+  }, 200);
+}
+
+// Scroll Helper Functions for Eco & Economic Hubs
+function scrollToEcoCalculator() {
+  switchTab('home');
+  const section = document.getElementById('ecoCalculatorSection');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function scrollToWaterHub() {
+  switchTab('home');
+  const section = document.getElementById('waterHubSection');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function scrollToEcoDashboard() {
+  switchTab('home');
+  const section = document.getElementById('ecoDashboardSection');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 // --- 9. Enhanced Specialized NGO Readiness Assessment & Diagnostic Tool ---

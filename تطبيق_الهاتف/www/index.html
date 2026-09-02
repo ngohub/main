@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>NGOHUB Mobile App | منصة التحول الرقمي للجمعيات الأهلية</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1b5e20">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="assets/images/لوجو ngohub clean.png">
+
+  <!-- Google Fonts (Cairo) & Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+
+  <!-- ==================== 1. APP HEADER ==================== -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <img src="assets/images/لوجو ngohub clean.png" alt="NGOHUB Logo">
+      <div class="brand-title">
+        <h1>NGOHUB</h1>
+        <span>تطبيق التحول الرقمي والأخضر</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="themeToggleBtn" onclick="toggleAppTheme()" aria-label="تبديل المظهر">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+      <a href="https://wa.me/201026847508" target="_blank" class="btn-icon" style="color: #25d366;" aria-label="تواصل واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <button class="btn-icon" onclick="openActionSheet()" aria-label="القائمة الشاملة">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== 2. MAIN CONTAINER ==================== -->
+  <main class="app-container">
+
+    <!-- ==========================================
+         TAB 1: HOME (الرئيسية)
+    =========================================== -->
+    <section id="tab-home" class="tab-content active">
+      
+      <!-- Hero Banner -->
+      <div class="hero-card">
+        <span class="hero-tag"><i class="fa-solid fa-seedling"></i> التحالف البيئي والرقمي 2026</span>
+        <h2>منظومة تمكين الجمعيات الأهلية</h2>
+        <p>المنصة السحابية المتكاملة للتحول اللاورقي، صون المياه، والتأهيل المباشر للمنح الدولية والمحلية.</p>
+        <div class="hero-actions">
+          <button class="btn-hero-primary" onclick="switchTab('forms')">
+            <i class="fa-solid fa-paper-plane"></i> طلب دعم للجمعية
+          </button>
+          <button class="btn-hero-secondary" onclick="switchTab('calculators')">
+            <i class="fa-solid fa-calculator"></i> حاسبة الأثر
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick 4 Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon water"><i class="fa-solid fa-droplet"></i></div>
+            <span class="grant-tag">سنوياً</span>
+          </div>
+          <div class="metric-value">3.5M لتر</div>
+          <div class="metric-label">مياه عذبة موفرة</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon ngo"><i class="fa-solid fa-building-ngo"></i></div>
+            <span class="grant-tag">مصر & السعودية</span>
+          </div>
+          <div class="metric-value">65+ جمعية</div>
+          <div class="metric-label">مؤتمتة سحابياً</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon money"><i class="fa-solid fa-coins"></i></div>
+            <span class="grant-tag">وفر مباشر</span>
+          </div>
+          <div class="metric-value">850k+ ج.م</div>
+          <div class="metric-label">وفر تكاليف للجمعيات</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon vol"><i class="fa-solid fa-user-graduate"></i></div>
+            <span class="grant-tag">Scholarships</span>
+          </div>
+          <div class="metric-value">500+ شاب</div>
+          <div class="metric-label">متطوع مؤهل للعمل</div>
+        </div>
+      </div>
+
+      <!-- Core Services List -->
+      <div class="section-title-wrap">
+        <h3><i class="fa-solid fa-cubes"></i> أبرز خدمات المنظومة</h3>
+        <button class="btn-service-action" onclick="switchTab('forms')">عرض الاستمارات</button>
+      </div>
+
+      <!-- Service 1 -->
+      <div class="service-card">
+        <div class="service-header">
+          <div class="service-badge-icon"><i class="fa-solid fa-laptop-code"></i></div>
+          <div class="service-info">
+            <h4>تصميم وأتمتة مواقع الجمعيات</h4>
+            <span>بنية سحابية خضراء (Green Cloud SaaS)</span>
+          </div>
+        </div>
+        <p class="service-desc">تطوير موقع رقمي متكامل للجمعية مع لوحة تحكم كاملة، واستمارات تبرع ومساعدات، وربط فوري بالجداول السحابية.</p>
+        <div class="service-footer">
+          <span class="service-price">اشتراك ميسر يبدأ من 250 ج.م/شهر</span>
+          <button class="btn-service-action" onclick="sendServiceRequestWhatsApp('تصميم موقع وأتمتة سحابية')">
+            طلب الخدمة <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="service-card">
+        <div class="service-header">
+          <div class="service-badge-icon"><i class="fa-solid fa-globe"></i></div>
+          <div class="service-info">
+            <h4>بوابة المنح والفرص الدولية</h4>
+            <span>دليل موثق يضم 66 فرصة تمويل</span>
+          </div>
+        </div>
+        <p class="service-desc">محرك بحث وتوصيات ذكي يربط الجمعيات ببرامج التمويل المناخي والأهلي مع نماذج مقترحات جاهزة.</p>
+        <div class="service-footer">
+          <span class="service-price">خدمة مجانية مفتوحة</span>
+          <button class="btn-service-action" onclick="switchTab('grants')">
+            تصفح المنح <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Service 3: Privacy & Protection Policy Card -->
+      <div class="service-card" style="border-right: 4px solid var(--primary);">
+        <div class="service-header">
+          <div class="service-badge-icon" style="background: #e8f5e9; color: #1b5e20;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="service-info">
+            <h4>سياسة الخصوصية والحماية (Privacy Policy)</h4>
+            <span>وثيقة الحوكمة والأمن المعتمدة 2026</span>
+          </div>
+        </div>
+        <p class="service-desc">المعايير الحاكمة لخصوصية البيانات، تكافؤ الفرص، تمثيل المرأة 55%، وقنوات البلاغات والشكاوى السرية.</p>
+        <div class="service-footer">
+          <span class="service-price">وثيقة حوكمة نافذة</span>
+          <button class="btn-service-action" onclick="openAppModal('policyModal')">
+            قراءة السياسة <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         TAB 2: IMPACT & SDGS (الأثر المستدام)
+    =========================================== -->
+    <!-- ==========================================
+         TAB 2: IMPACT & SDGS (الأثر المستدام وصون المياه)
+    =========================================== -->
+    <section id="tab-impact" class="tab-content">
+      <div class="section-title-wrap">
+        <h3><i class="fa-solid fa-droplet" style="color: #0284c7;"></i> مصفوفة الأثر وصون الموارد المائية</h3>
+      </div>
+
+      <!-- 6 Metrics Grid (Synced with Web) -->
+      <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 15px;">
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon water"><i class="fa-solid fa-droplet"></i></div>
+            <span class="grant-tag">سنوياً</span>
+          </div>
+          <div class="metric-value" style="color: #0284c7;">3.5M+ لتر</div>
+          <div class="metric-label">مياه عذبة نقية موفرة</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon ngo"><i class="fa-solid fa-building-ngo"></i></div>
+            <span class="grant-tag">مصر & السعودية</span>
+          </div>
+          <div class="metric-value">65+ جمعية</div>
+          <div class="metric-label">مؤتمتة وشريكة</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon money"><i class="fa-solid fa-coins"></i></div>
+            <span class="grant-tag">وفر مباشر</span>
+          </div>
+          <div class="metric-value" style="color: #10b981;">850K+ ج.م</div>
+          <div class="metric-label">وفر تشغيلي سنوي</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon vol"><i class="fa-solid fa-scale-balanced"></i></div>
+            <span class="grant-tag">SROI</span>
+          </div>
+          <div class="metric-value" style="color: #7a4ba3;">1 : 8.5</div>
+          <div class="metric-label">العائد الاجتماعي</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon"><i class="fa-solid fa-tree text-emerald"></i></div>
+            <span class="grant-tag">CO2e</span>
+          </div>
+          <div class="metric-value">4.2 T</div>
+          <div class="metric-label">طن كربون متجنب</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <div class="metric-icon"><i class="fa-solid fa-globe text-emerald"></i></div>
+            <span class="grant-tag">تمويلات</span>
+          </div>
+          <div class="metric-value" style="color: #7a4ba3;">66+ منحة</div>
+          <div class="metric-label">فرصة دولية موثقة</div>
+        </div>
+      </div>
+
+      <!-- Water Pillars Cards (From Strategic Plan) -->
+      <div class="service-card">
+        <div class="service-header">
+          <div class="service-badge-icon" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;"><i class="fa-solid fa-hand-holding-droplet"></i></div>
+          <div class="service-info">
+            <h4 style="color: #0284c7;">الوفر المائي الرقمي المباشر</h4>
+            <span>+3,500,000 لتر مياه موفرة سنوياً</span>
+          </div>
+        </div>
+        <p class="service-desc">إلغاء 350 ألف معاملة ورقية عبر 65+ جمعية، حيث تستهلك كل ورقة A4 مصنعة 10 لترات مياه نقية.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header">
+          <div class="service-badge-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;"><i class="fa-solid fa-seedling"></i></div>
+          <div class="service-info">
+            <h4 style="color: #10b981;">ترشيد مياه الري والحلول الخضراء (GCT)</h4>
+            <span>Green Cap Team الذراع الميداني</span>
+          </div>
+        </div>
+        <p class="service-desc">قيادة ورش وحقول ترشيد مياه الري للمزارعين والجمعيات الريفية ونشر أساليب الري الحديث والتسميد بالأزولا (أزولا مصر).</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header">
+          <div class="service-badge-icon" style="background: rgba(122, 75, 163, 0.15); color: #7a4ba3;"><i class="fa-solid fa-faucet-drip"></i></div>
+          <div class="service-info">
+            <h4 style="color: #7a4ba3;">بوابة منح واستثمارات المياه</h4>
+            <span>NWFE & Climate Finance</span>
+          </div>
+        </div>
+        <p class="service-desc">تأهيل الجمعيات لمنح مرفق البيئة العالمي GEF وصندوق التكيف المناخي ومشروعات الزراعة الذكية.</p>
+      </div>
+
+      <!-- SDGs Box -->
+      <div class="calc-card" style="padding: 12px; text-align: center; margin-top: 14px;">
+        <h4 style="font-size: 0.92rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">
+          التوافق مع 10 أهداف للتنمية المستدامة (UN SDGs)
+        </h4>
+        <img src="assets/images/ngohub_sdgs_10_goals.png" alt="NGOHUB SDGs" style="width: 100%; border-radius: 8px; box-shadow: var(--shadow-sm); margin-bottom: 8px;" onerror="this.src='../../ngohub_sdgs_10_goals.png'">
+        <p style="font-size: 0.75rem; color: var(--text-secondary);">
+          محاذاة مباشرة لأهداف الأمم المتحدة 1، 2، 4، 5، 6، 8، 10، 12، 13، 17 واستراتيجية مصر 2030.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 3: CALCULATORS (الحاسبات التفاعلية)
+    =========================================== -->
+    <section id="tab-calculators" class="tab-content">
+      <div class="section-title-wrap">
+        <h3><i class="fa-solid fa-calculator" style="color: #7a4ba3;"></i> المحركات الحسابية الذكية للجمعيات</h3>
+      </div>
+
+      <div class="calc-card">
+        <!-- Sub-tabs Navigation (3 Engines) -->
+        <div class="calc-tabs-nav" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px;">
+          <button class="calc-tab-btn active" id="btnSubTabWater" onclick="toggleCalcTab('water')">
+            <i class="fa-solid fa-droplet"></i> حاسبة المياه
+          </button>
+          <button class="calc-tab-btn" id="btnSubTabServices" onclick="toggleCalcTab('services')">
+            <i class="fa-solid fa-cubes"></i> حاسبة الخدمات
+          </button>
+          <button class="calc-tab-btn" id="btnSubTabGrants" onclick="toggleCalcTab('grants')">
+            <i class="fa-solid fa-award"></i> الجاهزية
+          </button>
+        </div>
+
+        <!-- 1. NGOHUB Water Calculator View (Direct GCT & Indirect Paperless) -->
+        <div id="viewCalcWater">
+          <!-- Indirect Branch -->
+          <div style="background: rgba(2, 132, 199, 0.05); border: 1px solid rgba(2, 132, 199, 0.2); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px;">
+            <span style="font-size: 0.8rem; font-weight: 800; color: #0284c7; display: block; margin-bottom: 6px;">
+              <i class="fa-solid fa-file-lines"></i> 1. الترشيد غير المباشر (إلغاء الورق)
+            </span>
+            <div class="form-group">
+              <label style="font-size: 0.78rem;">المعاملات والسجلات الورقية شهرياً:</label>
+              <div class="input-slider-wrap">
+                <input type="range" id="ecoPaperInput" min="100" max="10000" step="100" value="1000" oninput="calculateNgohubWater()">
+                <span class="slider-val-badge" id="ecoPaperVal">1,000 معاملة</span>
+              </div>
+              <small style="font-size: 0.7rem; color: var(--text-secondary);">10 لتر ماء نقي + 2.5 ج.م موفرة لكل معاملة ملغاة</small>
+            </div>
+          </div>
+
+          <!-- Direct Branch -->
+          <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px;">
+            <span style="font-size: 0.8rem; font-weight: 800; color: #10b981; display: block; margin-bottom: 6px;">
+              <i class="fa-solid fa-seedling"></i> 2. الترشيد المباشر (Green Cap Team)
+            </span>
+            <div class="form-group">
+              <label style="font-size: 0.75rem;">عدد ورش وحقول ترشيد مياه الري للمزارعين سنوياً:</label>
+              <input type="number" id="gctWorkshopsInput" min="0" max="100" value="8" class="grants-search-box" style="width: 100%; padding: 6px 8px; font-size: 0.8rem;" oninput="calculateNgohubWater()">
+              <small style="font-size: 0.65rem; color: var(--text-secondary);">50,000 لتر مياه موفرة لكل ورشة عبر ممارسات الري الحديث والتسميد بالأزولا</small>
+            </div>
+          </div>
+
+          <!-- Dynamic Results -->
+          <div class="calc-results-box" style="background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);">
+            <h4 style="font-size: 0.85rem; font-weight: 800; margin-bottom: 10px; text-align: center; border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 6px;">
+              إجمالي الوفر المائي السنوي المحقق
+            </h4>
+            <div style="text-align: center; margin-bottom: 10px;">
+              <div style="font-size: 1.8rem; font-weight: 900;" id="resWaterSaved">520,000 لتر</div>
+              <span style="font-size: 0.82rem; opacity: 0.9;" id="resWaterM3">520.0 م³</span>
+            </div>
+            <div class="calc-res-grid">
+              <div class="res-item">
+                <span>وفر مائي مباشر (GCT):</span>
+                <strong id="resWaterDirect">400,000 لتر</strong>
+              </div>
+              <div class="res-item">
+                <span>وفر مائي غير مباشر:</span>
+                <strong id="resWaterIndirect">120,000 لتر</strong>
+              </div>
+              <div class="res-item">
+                <span>وفر مالي سنوي:</span>
+                <strong id="resMoneySaved">30,000 ج.م</strong>
+              </div>
+              <div class="res-item">
+                <span>أشجار محمية:</span>
+                <strong id="resTreesSaved">1.4 شجرة</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Services Impact Calculator View -->
+        <div id="viewCalcServices" style="display: none;">
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 10px;">
+            حددي الخدمات لمعرفة الوفر المائي والمالي وجاهزية المنح المحققة لجمعيتكم:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_web" checked onchange="calculateServicesImpact()">
+              <div>
+                <strong>تصميم موقع رسمي للجمعية (.org)</strong>
+                <small style="display: block; color: var(--text-secondary);">+150K لتر مياه | +37,500 ج.م | +15% جاهزية</small>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_portal" checked onchange="calculateServicesImpact()">
+              <div>
+                <strong>منظومة أتمتة سجلات المستفيدين</strong>
+                <small style="display: block; color: var(--text-secondary);">+250K لتر مياه | +62,500 ج.م | +25% جاهزية</small>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_volunteers" onchange="calculateServicesImpact()">
+              <div>
+                <strong>نظام حوكمة وإدارة المتطوعين</strong>
+                <small style="display: block; color: var(--text-secondary);">+80K لتر مياه | +20,000 ج.م | +15% جاهزية</small>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_grants" onchange="calculateServicesImpact()">
+              <div>
+                <strong>التأهيل وصياغة مقترحات المنح</strong>
+                <small style="display: block; color: var(--text-secondary);">+120K لتر مياه | +45,000 ج.م | +25% جاهزية</small>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_water_gct" onchange="calculateServicesImpact()">
+              <div>
+                <strong>ورش ترشيد مياه الري والحلول الخضراء (GCT)</strong>
+                <small style="display: block; color: var(--text-secondary);">+300K لتر مياه مباشر | +50,000 ج.م | +15% جاهزية</small>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 10px; border-radius: var(--radius-sm);">
+              <input type="checkbox" id="m_chk_srv_smart_comp" onchange="calculateServicesImpact()">
+              <div>
+                <strong>المكون الذكي للمشروعات الخضراء (سنة مجانية)</strong>
+                <small style="display: block; color: var(--text-secondary);">+100K لتر مياه | +25,000 ج.م | +20% جاهزية</small>
+              </div>
+            </label>
+          </div>
+
+          <!-- Services Impact Result Box -->
+          <div class="calc-results-box" style="background: linear-gradient(135deg, #4c1d95 0%, #7a4ba3 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 4px;">
+              <span style="font-size: 0.8rem; font-weight: 800;">الأثر التراكمي للخدمات</span>
+              <span id="mSrvCount" style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 12px; font-size: 0.72rem;">2 خدمات مختارة</span>
+            </div>
+            <div class="calc-res-grid">
+              <div class="res-item">
+                <span>وفر المياه:</span>
+                <strong id="mSrvWater">400,000 لتر</strong>
+              </div>
+              <div class="res-item">
+                <span>الوفر المالي:</span>
+                <strong id="mSrvMoney">100,000 ج.م</strong>
+              </div>
+              <div class="res-item">
+                <span>أوراق ملغاة:</span>
+                <strong id="mSrvPaper">40,000 ورقة</strong>
+              </div>
+              <div class="res-item">
+                <span>نسبة الجاهزية:</span>
+                <strong id="mSrvScore">50%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Grant Readiness View -->
+        <div id="viewCalcGrants" style="display: none;">
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 12px;">
+            أجب عن الأسئلة التالية لتقييم مدى جاهزية جمعيتكم للتأهل واقتناص المنح الدولية الخضراء:
+          </p>
+
+          <div class="form-group">
+            <label>1. هل لدى الجمعية لائحة معتمدة وهيكل إداري واضح؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_gov" value="20" checked onchange="calculateGrantReadiness()"> نعم، معتمد وموثق (20 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_gov" value="5" onchange="calculateGrantReadiness()"> قيد الإعداد أو غير مكتمل (5 درجات)</label>
+          </div>
+
+          <div class="form-group">
+            <label>2. هل يتوفر حساب بنكي مستقل ومراجع مالي معتمد؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_fin" value="20" checked onchange="calculateGrantReadiness()"> نعم، قوائم مالية سنوية مراجعة (20 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_fin" value="5" onchange="calculateGrantReadiness()"> حساب بنكي فقط دون ميزانيات مدققة (5 درجات)</label>
+          </div>
+
+          <div class="form-group">
+            <label>3. هل تطبق الجمعية ممارسات خضراء وصون للمياه والورق؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_green" value="15" checked onchange="calculateGrantReadiness()"> نعم، أتمتة لاورقية ومؤشرات بيئية (15 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_green" value="0" onchange="calculateGrantReadiness()"> لا، ما زلنا نعتمد الورق التقليدي (0 درجة)</label>
+          </div>
+
+          <div class="form-group">
+            <label>4. هل تتوفر منصة رقمية أو موقع إلكتروني للجمعية؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_tech" value="15" checked onchange="calculateGrantReadiness()"> نعم، موقع رسمي ونظام بيانات سحابي (15 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_tech" value="0" onchange="calculateGrantReadiness()"> صفحة تواصل فقط دون منصة (0 درجة)</label>
+          </div>
+
+          <div class="form-group">
+            <label>5. هل توجد حوكمة وتدقيق لمنع ازدواجية المساعدات؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_track" value="15" checked onchange="calculateGrantReadiness()"> نعم، قاعدة بيانات مستفيدين موحدة (15 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_track" value="0" onchange="calculateGrantReadiness()"> سجلات يدوية منفصلة (0 درجة)</label>
+          </div>
+
+          <div class="form-group">
+            <label>6. هل تلتزم الجمعية بسياسة معتمدة للحماية وتلقي الشكاوى؟</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_rep" value="15" checked onchange="calculateGrantReadiness()"> نعم، سياسة حماية معتمدة ومطبقة (15 درجة)</label>
+            <label style="font-size: 0.78rem; font-weight: normal;"><input type="radio" name="gr_rep" value="0" onchange="calculateGrantReadiness()"> لا تتوفر وثيقة معتمدة (0 درجة)</label>
+          </div>
+
+          <!-- Readiness Result Card -->
+          <div class="calc-results-box" style="background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);">
+            <div style="text-align: center;">
+              <span style="font-size: 0.8rem; opacity: 0.9;">مؤشر الجاهزية الكلي:</span>
+              <div style="font-size: 2.2rem; font-weight: 900;" id="readinessScoreVal">100%</div>
+              <div id="readinessBadge" style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 800; margin-bottom: 8px;">
+                جاهزية متقدمة للمنح الدولية والمناخية
+              </div>
+              <p id="readinessAdvice" style="font-size: 0.78rem; line-height: 1.4; opacity: 0.95;"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 4: FORMS & SERVICES (الاستمارات)
+    =========================================== -->
+    <section id="tab-forms" class="tab-content">
+      <div class="section-title-wrap">
+        <h3><i class="fa-solid fa-file-signature"></i> الاستمارات وطلبات الدعم</h3>
+      </div>
+
+      <!-- Service Request Form -->
+      <div class="service-card">
+        <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 8px;">
+          <i class="fa-solid fa-paper-plane"></i> استمارة طلب دعم أو استشارة للجمعية
+        </h4>
+        <div class="form-group">
+          <label>اسم الجمعية / المؤسسة:</label>
+          <input type="text" id="reqOrgName" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="مثال: جمعية الأمل لتنمية المجتمع">
+        </div>
+        <div class="form-group">
+          <label>المحافظة:</label>
+          <input type="text" id="reqGov" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="مثال: البحيرة / القاهرة / سوهاج">
+        </div>
+        <div class="form-group">
+          <label>رقم هاتف المسؤول (واتساب):</label>
+          <input type="tel" id="reqPhone" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="010XXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label>نوع الخدمة أو الاستشارة المطلوبة:</label>
+          <select id="reqServiceType" class="grants-search-box" style="width:100%; padding:8px 12px; font-family: inherit;">
+            <option value="تصميم موقع وأتمتة سحابية">تصميم موقع وأتمتة سحابية كاملة</option>
+            <option value="التأهيل والتقديم على المنح الدولية">التأهيل والتقديم على المنح الدولية والمناخية</option>
+            <option value="تطبيق سياسة الحماية والحوكمة">تطبيق سياسة الحماية والحوكمة بالجمعية</option>
+            <option value="تدريب المتطوعين والكوادر">تدريب المتطوعين والكوادر الأهلية</option>
+          </select>
+        </div>
+        <button class="sheet-wa-btn" onclick="sendServiceRequestWhatsApp(document.getElementById('reqServiceType').value)">
+          <i class="fa-brands fa-whatsapp"></i> إرسال الطلب فوراً للإدارة
+        </button>
+      </div>
+
+      <!-- Volunteer Registration Form -->
+      <div class="service-card">
+        <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 8px;">
+          <i class="fa-solid fa-user-plus"></i> انضمام كمتطوع / منحة Scholarships
+        </h4>
+        <form onsubmit="submitVolRegistration(event)">
+          <div class="form-group">
+            <label>الاسم بالكامل:</label>
+            <input type="text" id="volName" class="grants-search-box" style="width:100%; padding:8px 12px;" required placeholder="اسمك الثلاثي">
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف / واتساب:</label>
+            <input type="tel" id="volPhone" class="grants-search-box" style="width:100%; padding:8px 12px;" required placeholder="01XXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>المحافظة:</label>
+            <input type="text" id="volGov" class="grants-search-box" style="width:100%; padding:8px 12px;" required placeholder="محافظتك">
+          </div>
+          <div class="form-group">
+            <label>المجال والمهارات (برمجة، تصميم، تنظيم، كتابة محتوى):</label>
+            <input type="text" id="volSkills" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="مهاراتك واهتماماتك">
+          </div>
+          <button type="submit" class="btn-download-pdf" style="margin-top:0;">
+            <i class="fa-solid fa-graduation-cap"></i> التقديم على المنحة التدريبية
+          </button>
+        </form>
+      </div>
+
+      <!-- Digital Certificate Verification -->
+      <div class="service-card">
+        <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 8px;">
+          <i class="fa-solid fa-certificate"></i> التحقق من الشهادات الرقمية للمتطوعين
+        </h4>
+        <div class="form-group">
+          <label>أدخل كود الشهادة الرقمية:</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="certCodeInput" class="grants-search-box" style="flex:1; padding:8px 12px;" placeholder="مثال: GCT-2026-8842">
+            <button class="btn-service-action" onclick="verifyCertificateDemo()" style="padding:0 16px;">تحقق</button>
+          </div>
+        </div>
+        <div id="certResultBox" style="display:none; margin-top:8px;"></div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         TAB 5: GRANTS DIRECTORY (بوابة 66 منحة)
+    =========================================== -->
+    <section id="tab-grants" class="tab-content">
+      <div class="section-title-wrap">
+        <h3><i class="fa-solid fa-globe"></i> بوابة المنح والفرص (66 منحة)</h3>
+      </div>
+
+      <div class="grants-search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="grantSearchInput" placeholder="ابحث باسم المنحة، الجهة المانحة، أو المجال..." oninput="searchGrants(this.value)">
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="grants-filter-pills">
+        <button class="pill-btn active" onclick="filterGrants('all', this)">الكل</button>
+        <button class="pill-btn" onclick="filterGrants('البيئة والمناخ', this)">البيئة والمناخ</button>
+        <button class="pill-btn" onclick="filterGrants('تمكين المرأة', this)">تمكين المرأة</button>
+        <button class="pill-btn" onclick="filterGrants('التحول الرقمي', this)">التحول الرقمي</button>
+        <button class="pill-btn" onclick="filterGrants('التعليم والتدريب', this)">التعليم والتدريب</button>
+      </div>
+
+      <!-- Dynamic Container -->
+      <div id="grantsListContainer"></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 3. FIXED BOTTOM NAVIGATION BAR ==================== -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </button>
+
+    <button class="nav-item" id="nav-impact" onclick="switchTab('impact')">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>الأثر</span>
+    </button>
+
+    <!-- Elevated Center FAB (Calculators) -->
+    <button class="nav-item center-fab" id="nav-calculators" onclick="switchTab('calculators')">
+      <div class="fab-circle">
+        <i class="fa-solid fa-calculator"></i>
+      </div>
+      <span>الحاسبات</span>
+    </button>
+
+    <button class="nav-item" id="nav-forms" onclick="switchTab('forms')">
+      <i class="fa-solid fa-file-lines"></i>
+      <span>الاستمارات</span>
+    </button>
+
+    <button class="nav-item" id="nav-more" onclick="openActionSheet()">
+      <i class="fa-solid fa-grid-2"></i>
+      <span>المزيد</span>
+    </button>
+  </nav>
+
+  <!-- ==================== 4. ACTION SHEET MODAL (MORE MENU) ==================== -->
+  <div class="action-sheet-overlay" id="actionSheetOverlay" onclick="closeActionSheet()">
+    <div class="action-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>أقسام وخدمات منصة NGOHUB</h3>
+        <button class="btn-close-modal" onclick="closeActionSheet()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="sheet-grid">
+        <div class="sheet-card-btn" onclick="switchTab('grants')">
+          <div class="sheet-icon-wrap"><i class="fa-solid fa-globe"></i></div>
+          <strong>دليل 66 منحة</strong>
+          <span>تمويلات دولية ومحلية</span>
+        </div>
+
+        <div class="sheet-card-btn" onclick="openAppModal('policyModal'); closeActionSheet();">
+          <div class="sheet-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+          <strong>سياسة الخصوصية</strong>
+          <span>الحوكمة والحماية</span>
+        </div>
+
+        <div class="sheet-card-btn" onclick="switchTab('impact')">
+          <div class="sheet-icon-wrap"><i class="fa-solid fa-leaf"></i></div>
+          <strong>أهداف SDGs</strong>
+          <span>10 أهداف أممية معتمدة</span>
+        </div>
+
+        <div class="sheet-card-btn" onclick="openAppModal('complaintModal'); closeActionSheet();">
+          <div class="sheet-icon-wrap"><i class="fa-solid fa-lock"></i></div>
+          <strong>تقديم بلاغ سري</strong>
+          <span>حماية وسرية مطلقة</span>
+        </div>
+      </div>
+
+      <a href="https://wa.me/201026847508" target="_blank" class="sheet-wa-btn">
+        <i class="fa-brands fa-whatsapp"></i> تواصل مباشر مع إدارة المنصة (واتساب)
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== 5. FULL PRIVACY & PROTECTION POLICY MODAL ==================== -->
+  <div class="app-modal" id="policyModal" onclick="closeAppModal('policyModal')">
+    <div class="modal-content" onclick="event.stopPropagation()" style="max-height: 90vh;">
+      <div class="modal-header">
+        <div>
+          <h3 style="margin-bottom:2px;">سياسة الخصوصية والحماية وعدم التمييز</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">وثيقة الحوكمة الرقمية المعتمدة - إصدار 2026</span>
+        </div>
+        <button class="btn-close-modal" onclick="closeAppModal('policyModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="policy-badge-banner">
+        <h4>منصة NGOHUB - المنظومة السحابية للجمعيات الأهلية</h4>
+        <p>الجهة المنفذة والمستضيفة: جمعية رحمة لتنمية المجتمع والطفولة بدمنهور | الشريك التكنولوجي: شركة PROTIC الشرق الأوسط</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>1. الغرض من السياسة (Purpose & Scope)</h5>
+        <p>ضمان بيئة رقمية وميدانية آمنة وعادلة وخالية من التمييز، وحماية بيانات الجمعيات والمستفيدين والمتطوعين وتوفير مسار سري لتلقي الشكاوى.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>2. نطاق التطبيق والمنظومة (Scope of Application)</h5>
+        <p>تسري السياسة على موقع المنصة وتطبيق الهاتف الذكي ولوحات التحكم وقواعد البيانات وورش التدريب للمشاركين والجمعيات الشريكة.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>3. التمكين وتكافؤ الفرص وتمثيل المرأة (55%)</h5>
+        <p>تكافؤ الفرص في المنح والخدمات، مع دعم رائدات الأعمال والكوادر النسائية بتمثيل قيادي 55% وحظر أي تمييز جغرافي أو نوعي.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>4. بيئة العمل الآمنة والمرنة (Safe Environment)</h5>
+        <p>نظام سحابي مرن يتيح العمل عن بعد، مع حظر الإساءة والتحرش واستغلال السلطة وصون الكرامة الشخصية.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>5. الحماية من التحرش والاستغلال (Anti-Harassment)</h5>
+        <p>الحظر الفوري والمساءلة لأي محاولة ابتزاز أو استغلال للسلطة أو المساعدات لأغراض شخصية.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>6. سياسة عدم الانتقام (Non-Retaliation)</h5>
+        <p>حماية مطلقة للمبلغين والشهود من أي إجراء سلبي أو تضييق إداري أو تقني.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>7. خصوصية البيانات والأمن السيبراني (Data Privacy)</h5>
+        <p>تشفير كامل HTTPS/TLS وعزل قواعد بيانات كل جمعية والامتثال لقوانين حماية البيانات الشخصية وحظر بيعها لأي طرف ثالث.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>8. التدريب وبناء القدرات (Scholarships)</h5>
+        <p>تأهيل 500+ متطوع في الحوسبة السحابية والاقتصاد الأخضر والمنح وإصدار شهادات رقمية مؤمنة بنظام تحقق موثق.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>9. قنوات الشكاوى والمعالجة (Grievance Mechanism)</h5>
+        <p>فحص وتصنيف الشكاوى خلال 48 ساعة عبر النموذج السري والبريد المخصص youssefkhedr92@gmail.com بحيادية وسرية تامة.</p>
+      </div>
+
+      <div class="policy-article-item">
+        <h5>10. السريان والنفاذ والاعتماد (Enforcement)</h5>
+        <p>وثيقة نافذة وملزمة لعام 2026 معتمدة بالشراكة بين جمعية رحمة لتنمية المجتمع والطفولة وشركة PROTIC الشرق الأوسط.</p>
+      </div>
+
+      <a href="assets/docs/سياسة_الحماية_وعدم_التمييز_وتلقي_الشكاوى_NGOHUB.pdf" target="_blank" download class="btn-download-pdf">
+        <i class="fa-solid fa-file-pdf"></i> تحميل وثيقة السياسة الرسمية (PDF A4)
+      </a>
+
+      <button class="btn-service-action" style="width:100%; margin-top:8px; justify-content:center; padding:10px;" onclick="closeAppModal('policyModal'); openAppModal('complaintModal');">
+        <i class="fa-solid fa-lock"></i> تقديم بلاغ أو شكوى سرية الآن
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 6. COMPLAINTS MODAL ==================== -->
+  <div class="app-modal" id="complaintModal" onclick="closeAppModal('complaintModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>تقديم بلاغ أو شكوى سرية</h3>
+        <button class="btn-close-modal" onclick="closeAppModal('complaintModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 12px;">
+        يتم التعامل مع كافة البيانات بسرية مطلقة وفق بنود سياسة الحماية والخصوصية المعتمدة 2026 دون أي إجراءات انتقامية.
+      </p>
+
+      <form onsubmit="submitConfidentialComplaint(event)">
+        <div class="form-group">
+          <label>نوع البلاغ:</label>
+          <select id="cmpType" class="grants-search-box" style="width:100%; padding:8px 12px; font-family: inherit;">
+            <option value="شكوى بخصوص بيئة العمل أو التدريب">شكوى بخصوص بيئة العمل أو التدريب</option>
+            <option value="إبلاغ عن تمييز أو عدم تكافؤ فرص">إبلاغ عن تمييز أو عدم تكافؤ فرص</option>
+            <option value="إبلاغ عن إساءة أو استغلال">إبلاغ عن إساءة أو استغلال</option>
+            <option value="شكوى تقنية أو خصوصية بيانات">شكوى تقنية أو خصوصية بيانات</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>الاسم (اختياري - يمكن تركه فارغاً للبلاغ المجهول):</label>
+          <input type="text" id="cmpName" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="اختياري">
+        </div>
+
+        <div class="form-group">
+          <label>رقم الهاتف أو البريد للتواصل ومتابعة النتيجة:</label>
+          <input type="text" id="cmpPhone" class="grants-search-box" style="width:100%; padding:8px 12px;" placeholder="رقمك أو بريدك السري">
+        </div>
+
+        <div class="form-group">
+          <label>تفاصيل الواقعة أو الشكوى:</label>
+          <textarea id="cmpDetails" class="grants-search-box" style="width:100%; height:80px; padding:8px 12px; font-family: inherit;" required placeholder="اشرح تفاصيل الواقعة بوضوح..."></textarea>
+        </div>
+
+        <button type="submit" class="sheet-wa-btn" style="background:#dc2626;">
+          <i class="fa-solid fa-lock"></i> إرسال البلاغ السري المشفر
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/grants_data.js"></script>
+  <script src="js/calculators.js"></script>
+  <script src="js/forms-whatsapp.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof calculateNgohubWater === 'function') calculateNgohubWater();
+      if (typeof calculateServicesImpact === 'function') calculateServicesImpact();
+      if (typeof calculateGrantReadiness === 'function') calculateGrantReadiness();
+    });
+  </script>
+
+</body>
+</html>

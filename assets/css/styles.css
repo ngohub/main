@@ -430,10 +430,9 @@ body {
   position: relative;
 }
 .hero-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 40px;
-  align-items: center;
+  display: block;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 .hero-title {
   font-size: 2.35rem;
@@ -2175,6 +2174,670 @@ body {
   flex-wrap: wrap;
   gap: 15px;
   font-size: 0.85rem;
+}
+
+/* ==========================================
+   16.1 Green, Water & Economic Impact Hub & Calculator
+   ========================================== */
+.eco-calculator-section {
+  padding: 50px 0 20px;
+}
+.eco-calc-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 35px 30px;
+  position: relative;
+  overflow: hidden;
+}
+.eco-calc-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, #10b981, #0284c7);
+}
+.eco-badge-wrap {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.eco-calc-header h3 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+.eco-calc-header p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 850px;
+  line-height: 1.6;
+}
+.eco-calc-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+.eco-calc-inputs {
+  background: var(--bg-card-alt);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.eco-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.eco-input-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-dark);
+}
+.eco-val-badge {
+  background: var(--primary-green);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.eco-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: #cbd5e1;
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--primary-green);
+}
+.input-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.eco-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.eco-metric-card {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: var(--transition);
+}
+.eco-metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.eco-metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.water-card .eco-metric-icon { background: rgba(2, 132, 199, 0.15); color: #0284c7; }
+.tree-card .eco-metric-icon { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.co2-card .eco-metric-icon { background: rgba(122, 75, 163, 0.15); color: #7a4ba3; }
+.money-card .eco-metric-icon { background: rgba(217, 119, 6, 0.15); color: #d97706; }
+
+.eco-metric-data {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.eco-metric-num {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+.water-card .eco-metric-num { color: #0284c7; }
+.tree-card .eco-metric-num { color: #10b981; }
+.money-card .eco-metric-num { color: #d97706; }
+
+.eco-metric-unit {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.eco-metric-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.eco-summary-bar {
+  margin-top: 20px;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sroi-badge-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+}
+.sroi-val {
+  background: linear-gradient(135deg, #10b981, #0284c7);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+
+/* Water Hub Section */
+.water-hub-section {
+  padding: 40px 0;
+}
+.water-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 25px;
+}
+.water-pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: var(--transition);
+}
+.water-pillar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.water-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.water-pillar-card h4 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.pillar-stat {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #0284c7;
+}
+.water-pillar-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex-grow: 1;
+}
+.pillar-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pillar-tags span {
+  font-size: 0.75rem;
+  background: var(--bg-card-alt);
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+/* Economic Dashboard Section */
+.eco-dashboard-section {
+  padding: 20px 0 50px;
+}
+.eco-dash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 35px 30px;
+  box-shadow: var(--shadow-md);
+}
+.feasibility-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.feasibility-card {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--transition);
+}
+.feasibility-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+.feasibility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.f-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(122, 75, 163, 0.12);
+  color: var(--primary-purple);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+.f-main-val {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-top: 4px;
+}
+.feasibility-card h5 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.feasibility-card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+/* ==========================================
+   16.1 Home Page Teasers (Impact & Calculators)
+   ========================================== */
+.home-teasers-section {
+  padding: 30px 0 50px;
+}
+.home-teasers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.home-teaser-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.home-teaser-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+.home-teaser-card.teaser-impact:hover {
+  border-color: #0284c7;
+}
+.home-teaser-card.teaser-calc:hover {
+  border-color: var(--primary-purple);
+}
+.teaser-icon-wrap {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+.teaser-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.teaser-tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.home-teaser-card.teaser-impact .teaser-tag { color: #0284c7; }
+.home-teaser-card.teaser-calc .teaser-tag { color: var(--primary-purple); }
+.teaser-body h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.teaser-body p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.teaser-action-btn {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.home-teaser-card:hover .teaser-action-btn {
+  text-decoration: underline;
+  gap: 12px;
+}
+
+/* ==========================================
+   16.2 Calculators Hub Navigation & Panels
+   ========================================== */
+.calc-subtabs-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+.calc-tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
+.calc-tab-btn:hover {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+.calc-tab-btn.active {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-purple) 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(47, 110, 58, 0.25);
+}
+.calc-panel {
+  display: none;
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+.calc-panel.active-panel {
+  display: block;
+}
+
+/* ==========================================
+   16.3 NGOHUB Water Calculator Specific Styles
+   ========================================== */
+.water-calc-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 30px;
+}
+.water-branches-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.water-branch-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+}
+.water-branch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+.water-branch-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.water-branch-badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.badge-direct-water {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+.badge-indirect-water {
+  background: rgba(2, 132, 199, 0.15);
+  color: #0284c7;
+}
+.water-summary-card {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+  border: 1px solid rgba(2, 132, 199, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 100px;
+}
+.water-summary-total {
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 22px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.water-big-num {
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: #0284c7;
+  line-height: 1.1;
+  margin: 6px 0;
+}
+.water-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.water-breakdown-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.water-breakdown-item strong {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+/* ==========================================
+   16.4 Services Impact Calculator
+   ========================================== */
+.services-calc-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 30px;
+}
+.services-checklist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.service-check-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.service-check-item:hover {
+  border-color: var(--primary-purple);
+  box-shadow: var(--shadow-sm);
+}
+.service-check-item.selected {
+  border-color: var(--primary-green);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(47, 110, 58, 0.04) 100%);
+  box-shadow: 0 4px 12px rgba(47, 110, 58, 0.08);
+}
+.service-check-box {
+  margin-top: 4px;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--primary-green);
+  cursor: pointer;
+}
+.service-check-info {
+  flex-grow: 1;
+}
+.service-check-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.service-check-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.service-check-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.service-calc-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+.badge-water-save {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284c7;
+}
+.badge-money-save {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+.badge-readiness-boost {
+  background: rgba(122, 75, 163, 0.12);
+  color: var(--primary-purple);
+}
+
+.services-impact-summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.summary-header-badge {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  background: var(--primary-green-light);
+  padding: 4px 12px;
+  border-radius: 20px;
+  align-self: flex-start;
+}
+.summary-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.summary-stat-box {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+  text-align: center;
+}
+.summary-stat-num {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+.summary-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .home-teasers-grid { grid-template-columns: 1fr; }
+  .water-calc-grid { grid-template-columns: 1fr; }
+  .services-calc-grid { grid-template-columns: 1fr; }
+  .water-summary-card, .services-impact-summary-card { position: static; }
+}
+
+@media (max-width: 1024px) {
+  .eco-calc-body { grid-template-columns: 1fr; }
+  .water-pillars-grid { grid-template-columns: 1fr; }
+  .feasibility-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .eco-metrics-grid { grid-template-columns: 1fr; }
+  .feasibility-grid { grid-template-columns: 1fr; }
 }
 
 /* ==========================================
