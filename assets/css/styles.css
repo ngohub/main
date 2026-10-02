@@ -60,12 +60,18 @@
 /* ==========================================
    1. Base & Reset
    ========================================== */
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
   -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box;
 }
 
 body {
@@ -74,7 +80,11 @@ body {
   direction: rtl;
   text-align: right;
   line-height: 1.65;
-  overflow-x: hidden;
+  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  position: relative;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -135,8 +145,9 @@ body {
 .brand-logo-frame img,
 .brand-logo-img,
 #headerLogoImg {
-  height: 48px !important;
-  width: 48px !important;
+  height: 44px !important;
+  width: 44px !important;
+  aspect-ratio: 1 / 1 !important;
   object-fit: contain !important;
   display: block;
   flex-shrink: 0;
@@ -343,11 +354,15 @@ body {
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 20px;
-  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s ease;
   overflow-y: auto;
+  visibility: hidden;
+  pointer-events: none;
 }
 .mobile-drawer.active {
   right: 0;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .mobile-drawer-header {
@@ -366,7 +381,10 @@ body {
   color: var(--primary-green);
 }
 .drawer-brand img {
-  height: 36px;
+  width: 36px !important;
+  height: 36px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
 }
 .btn-close-drawer {
   width: 36px;
@@ -2944,12 +2962,18 @@ body {
 
 @media (max-width: 1024px) {
   .main-nav, .nav-links { display: none !important; }
-  .btn-mobile-toggle { display: inline-flex !important; }
+  .btn-mobile-toggle { display: inline-flex !important; width: 36px !important; height: 36px !important; }
+  .btn-header-vol-apply { display: none !important; }
   .btn-wa-text, .btn-vol-text { display: none !important; }
-  .header-wrapper, .header-container { height: 64px !important; }
-  .brand-logo img, .brand-logo-frame img, .brand-logo-img, #headerLogoImg { height: 42px !important; width: 42px !important; }
+  .header-wrapper, .header-container { height: 60px !important; padding: 0 12px !important; gap: 8px !important; }
+  .brand-logo, .header-brand { min-width: 0 !important; gap: 8px !important; }
+  .brand-logo img, .brand-logo-frame img, .brand-logo-img, #headerLogoImg { height: 40px !important; width: 40px !important; aspect-ratio: 1 / 1 !important; object-fit: contain !important; }
+  .brand-text { max-width: calc(100vw - 160px); overflow: hidden; }
   .brand-text h1, .brand-text .brand-title { font-size: 1.15rem !important; }
-  .brand-text span, .brand-text .brand-subtitle { font-size: 0.68rem !important; }
+  .brand-text span, .brand-text .brand-subtitle { font-size: 0.68rem !important; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap !important; }
+  .header-action-group { gap: 6px !important; }
+  .btn-theme-toggle { width: 36px !important; height: 36px !important; }
+  .btn-header-wa { padding: 6px 10px !important; height: 36px !important; }
   .hero-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .roadmap-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2968,14 +2992,54 @@ body {
   .diag-score-summary-bar { flex-direction: column; text-align: center; }
 }
 
+@media (max-width: 768px) {
+  .site-compliance-dock {
+    padding: 12px 16px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .compliance-dock-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .compliance-dock-text {
+    min-width: 0 !important;
+    font-size: 0.84rem !important;
+    gap: 10px !important;
+  }
+  .compliance-dock-actions {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+  .btn-compliance-accept,
+  .btn-compliance-minimal {
+    padding: 8px 14px !important;
+    font-size: 0.82rem !important;
+  }
+}
+
 @media (max-width: 480px) {
-  .container { padding: 0 14px; }
-  .hero-title { font-size: 1.6rem; }
+  .container { padding: 0 12px !important; }
+  .brand-text span, .brand-text .brand-subtitle { display: none !important; }
+  .brand-text h1, .brand-text .brand-title { font-size: 1.05rem !important; }
+  .hero-title { font-size: 1.55rem; line-height: 1.35; }
+  .hero-description { font-size: 0.92rem; }
+  .hero-search-box-card { padding: 12px 14px !important; width: 100% !important; box-sizing: border-box !important; }
+  .hero-search-inner { gap: 8px !important; }
+  .hero-search-inner input { font-size: 0.85rem !important; min-width: 0 !important; }
+  .btn-hero-search-action { padding: 8px 12px !important; font-size: 0.82rem !important; white-space: nowrap !important; }
+  .hero-quick-tags { font-size: 0.76rem !important; gap: 6px !important; }
   .stats-grid { grid-template-columns: 1fr; }
   .hero-buttons button, .hero-buttons a { width: 100%; justify-content: center; }
   .grant-title { padding-left: 0; margin-top: 24px; }
   .floating-wa-container { bottom: 15px; left: 15px; }
-  .floating-wa-btn { width: 52px; height: 52px; font-size: 1.7rem; }
+  .floating-wa-btn { width: 50px; height: 50px; font-size: 1.6rem; }
   .admin-dash-header { flex-direction: column; align-items: stretch; }
   .admin-dash-actions { justify-content: stretch; }
   .admin-dash-actions button { width: 100%; }

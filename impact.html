@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J01ZPTQ4BX"></script>
+  <!-- Google tag (gtag.js) - Non-blocking high performance loader -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-J01ZPTQ4BX');
+    (function() {
+      var loadGtag = function() {
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-J01ZPTQ4BX';
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      if (document.readyState === 'complete') {
+        setTimeout(loadGtag, 100);
+      } else {
+        window.addEventListener('load', loadGtag);
+      }
+    })();
   </script>
 
   <meta charset="UTF-8">
@@ -51,14 +62,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"></noscript>
+  
+  
+  
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261003">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261003">
+  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261003b">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261003b">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -82,7 +93,7 @@
     <div class="container header-wrapper header-container">
       <a href="index.html" class="brand-logo header-brand" title="الرئيسية - NGOHUB">
         <div class="brand-logo-frame">
-          <img src="assets/images/logo_header.png?v=20261003" alt="شعار منصة NGOHUB" id="headerLogoImg" class="brand-logo-img" width="48" height="48" fetchpriority="high">
+          <img src="assets/images/logo_header.png?v=20261003b" alt="شعار منصة NGOHUB" id="headerLogoImg" class="brand-logo-img" width="44" height="44" fetchpriority="high">
         </div>
         <div class="brand-text">
           <span class="brand-title">NGOHUB</span>
@@ -144,7 +155,7 @@
   <aside class="mobile-drawer" id="mobileNavDrawer">
     <div class="mobile-drawer-header">
       <div class="drawer-brand">
-        <img src="assets/images/logo_header.png?v=20261003" alt="NGOHUB" width="48" height="48" fetchpriority="high">
+        <img src="assets/images/logo_header.png?v=20261003b" alt="NGOHUB" width="36" height="36" fetchpriority="high">
         <strong>NGOHUB</strong>
       </div>
       <button class="btn-close-drawer" onclick="closeMobileDrawer()" aria-label="إغلاق القائمة">
@@ -461,7 +472,7 @@
       <div class="footer-grid">
         <div class="footer-col">
           <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-            <img src="assets/images/logo_header.png?v=20261003" alt="NGOHUB Logo" width="38" height="38" loading="lazy">
+            <img src="assets/images/logo_header.png?v=20261003b" alt="NGOHUB Logo" width="38" height="38" loading="lazy">
             <h4 style="margin:0;">NGOHUB</h4>
           </div>
           <p>
