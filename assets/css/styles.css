@@ -2995,3 +2995,241 @@ body {
   color: var(--primary-green-light);
   text-decoration: underline;
 }
+
+/* ==================== MULTI-PAGE & ANTI-ADBLOCK UPGRADE ==================== */
+a.nav-btn, a.mobile-nav-item {
+  text-decoration: none !important;
+}
+
+/* Anti-Adblock Site Compliance Dock */
+.site-compliance-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-top: 3px solid var(--primary-green);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.2);
+  padding: 16px 24px;
+  z-index: 999999;
+  animation: complianceSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes complianceSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.compliance-dock-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.compliance-dock-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.compliance-icon {
+  font-size: 1.8rem;
+  color: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.compliance-dock-text p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+.compliance-dock-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-compliance-accept {
+  background: var(--primary-green);
+  color: #ffffff !important;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(47, 110, 58, 0.25);
+}
+
+.btn-compliance-accept:hover {
+  background: var(--primary-green-dark);
+}
+
+.btn-compliance-minimal {
+  background: var(--bg-card-alt);
+  color: var(--text-dark) !important;
+  border: 1px solid var(--border-color);
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-compliance-minimal:hover {
+  background: var(--border-color);
+}
+
+.compliance-legal-link {
+  color: var(--primary-purple) !important;
+  text-decoration: underline !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.compliance-sep {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Footer Legal Bar & Buttons */
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-legal-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.legal-bar-link {
+  color: #CBD5E1 !important;
+  text-decoration: none !important;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.legal-bar-link:hover {
+  color: #4ADE80 !important;
+  text-decoration: underline !important;
+}
+
+.legal-bar-sep {
+  color: #64748B;
+  font-size: 0.8rem;
+}
+
+.legal-bar-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #4ADE80 !important;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.legal-bar-btn:hover {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: #4ADE80;
+}
+
+/* Modal Legal Note */
+.modal-legal-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.modal-legal-note a {
+  color: var(--primary-green) !important;
+  font-weight: 700;
+  text-decoration: underline !important;
+}
+
+/* Standalone Page Hero Banner */
+.page-hero-banner {
+  background: linear-gradient(135deg, rgba(47, 110, 58, 0.15) 0%, rgba(122, 75, 163, 0.12) 100%);
+  border-bottom: 1px solid var(--border-color);
+  padding: 50px 0 40px;
+  text-align: center;
+}
+
+.page-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-green-light);
+  color: var(--primary-green);
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.page-hero-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.page-hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Accessibility & Touch Targets for Lighthouse 100 */
+.footer-col p a {
+  display: inline-block;
+  padding: 6px 2px;
+  min-height: 36px;
+  line-height: 1.5;
+}
+
+.footer-legal-bar a, .footer-legal-bar button {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Ensure strong contrast for stat numbers & tags */
+.stat-highlight-amber { color: #b45309 !important; }
+.stat-highlight-cyan { color: #0e7490 !important; }
+[data-theme="dark"] .stat-highlight-amber { color: #f59e0b !important; }
+[data-theme="dark"] .stat-highlight-cyan { color: #22d3ee !important; }

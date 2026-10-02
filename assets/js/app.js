@@ -156,14 +156,30 @@ document.addEventListener("DOMContentLoaded", () => {
   calculateNgohubWater();
   calculateServicesImpact();
   loadSubmissionsInboxCount();
-  checkCookieConsent();
+  checkComplianceNotice();
 
-  // Read hash from URL and navigate to deep link
+  // Multi-Page & Deep-Link Detection
+  const currentPath = window.location.pathname.toLowerCase();
+  let activeTabKey = 'home';
+  if (currentPath.includes('services')) activeTabKey = 'services';
+  else if (currentPath.includes('grants')) activeTabKey = 'grants';
+  else if (currentPath.includes('calculators')) activeTabKey = 'calculators';
+  else if (currentPath.includes('impact')) activeTabKey = 'impact';
+  else if (currentPath.includes('partners')) activeTabKey = 'partners';
+  else if (currentPath.includes('about')) activeTabKey = 'about';
+  else if (currentPath.includes('contact')) activeTabKey = 'contact';
+  else if (currentPath.includes('admin')) activeTabKey = 'admin';
+  else if (window.location.hash) {
+    const initialHash = window.location.hash.replace('#', '');
+    if (initialHash && PAGE_SEO_MAP[initialHash]) activeTabKey = initialHash;
+  }
+
+  updateNavActiveState(activeTabKey);
+
+  // If in SPA index with deep link
   const initialHash = window.location.hash.replace('#', '');
   if (initialHash && PAGE_SEO_MAP[initialHash]) {
     switchTab(initialHash, false);
-  } else {
-    updatePageSeoMetadata('home');
   }
 });
 
@@ -1543,25 +1559,53 @@ function showToast(text) {
   }
 }
 
-// --- 17. Cookie Consent Management (GDPR & Law 151/2020) ---
-function checkCookieConsent() {
-  const consent = localStorage.getItem('ngohub_cookie_consent');
-  const banner = document.getElementById('cookieConsentBanner');
-  if (!consent && banner) {
-    banner.style.display = 'block';
+// --- 17. Site Compliance & Privacy Notice Management (Anti-Adblock & Law 151/2020) ---
+function checkComplianceNotice() {
+  const consent = localStorage.getItem('ngohub_compliance_consent') || localStorage.getItem('ngohub_cookie_consent');
+  const dock = document.getElementById('siteComplianceDock') || document.getElementById('cookieConsentBanner');
+  if (!consent && dock) {
+    dock.style.display = 'block';
   }
 }
 
-function acceptAllCookies() {
+function acceptAllCompliance() {
+  localStorage.setItem('ngohub_compliance_consent', 'all');
   localStorage.setItem('ngohub_cookie_consent', 'all');
-  const banner = document.getElementById('cookieConsentBanner');
-  if (banner) banner.style.display = 'none';
-  showToast("شكراً لتفضيلكم، تم حفظ خيارات الخصوصية.");
+  const dock = document.getElementById('siteComplianceDock') || document.getElementById('cookieConsentBanner');
+  if (dock) dock.style.display = 'none';
+  showToast("شكراً لتفضيلكم، تم حفظ خيارات الخصوصية بنجاح.");
 }
 
-function acceptNecessaryCookies() {
+function acceptNecessaryCompliance() {
+  localStorage.setItem('ngohub_compliance_consent', 'necessary');
   localStorage.setItem('ngohub_cookie_consent', 'necessary');
-  const banner = document.getElementById('cookieConsentBanner');
-  if (banner) banner.style.display = 'none';
+  const dock = document.getElementById('siteComplianceDock') || document.getElementById('cookieConsentBanner');
+  if (dock) dock.style.display = 'none';
   showToast("تم تفعيل ملفات تعريف الارتباط الضرورية فقط.");
 }
+
+// User-facing interactive functions to open and reset settings anytime
+window.openPrivacySettings = function() {
+  const dock = document.getElementById('siteComplianceDock') || document.getElementById('cookieConsentBanner');
+  if (dock) {
+    dock.style.display = 'block';
+    dock.scrollIntoView({ behavior: 'smooth' });
+    showToast("تفضيلات الخصوصية معروضة الآن في أسفل الشاشة.");
+  } else {
+    window.location.href = 'privacy.html';
+  }
+};
+
+window.resetPrivacySettings = function() {
+  localStorage.removeItem('ngohub_compliance_consent');
+  localStorage.removeItem('ngohub_cookie_consent');
+  const dock = document.getElementById('siteComplianceDock') || document.getElementById('cookieConsentBanner');
+  if (dock) dock.style.display = 'block';
+  showToast("تمت إعادة تعيين تفضيلات الخصوصية والكوكيز.");
+};
+
+// Backwards compatibility aliases
+window.acceptAllCookies = acceptAllCompliance;
+window.acceptNecessaryCookies = acceptNecessaryCompliance;
+window.checkCookieConsent = checkComplianceNotice;
+

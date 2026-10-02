@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J01ZPTQ4BX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-J01ZPTQ4BX');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NGOHUB | منصة التمكين المؤسسي للجمعيات الأهلية والتقديم على المنح وإدارة المشاريع</title>
@@ -20,7 +30,7 @@
   <meta property="og:url" content="https://ngo-hub.com/">
   <meta property="og:title" content="NGOHUB | منصة التمكين المؤسسي للجمعيات الأهلية والتقديم على المنح وإدارة المشاريع">
   <meta property="og:description" content="نقدم للجمعيات الأهلية والمنظمات غير الربحية في مصر استشارات التقديم على المنح، إدارة وتنسيق المشاريع، والتحول الرقمي وتصميم المواقع الرسمية لتأهيل المؤسسة للشراكات الدولية.">
-  <meta property="og:image" content="https://ngo-hub.com/assets/images/og-image.png">
+  <meta property="og:image" content="https://ngo-hub.com/assets/images/og-image.png?v=2">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="NGOHUB - منصة التمكين المؤسسي والتحول الرقمي للجمعيات الأهلية">
@@ -29,7 +39,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="NGOHUB | منصة التمكين المؤسسي للجمعيات الأهلية والتقديم على المنح">
   <meta name="twitter:description" content="خدمات التقديم على المنح وإدارة المشاريع والتحول الرقمي للجمعيات الأهلية والمؤسسات غير الربحية في مصر.">
-  <meta name="twitter:image" content="https://ngo-hub.com/assets/images/og-image.png">
+  <meta name="twitter:image" content="https://ngo-hub.com/assets/images/og-image.png?v=2">
 
   <!-- Official Social Verification -->
   <link rel="me" href="https://www.facebook.com/ngohubar">
@@ -42,9 +52,14 @@
   <!-- Google Fonts (Cairo) & Font Awesome 6 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  <link rel="stylesheet" href="assets/css/styles.css?v=2">
 
   <!-- Schema.org JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -62,7 +77,7 @@
           "url": "https://ngo-hub.com/assets/images/لوجو%20ngohub%20clean.png",
           "caption": "NGOHUB Logo"
         },
-        "image": "https://ngo-hub.com/assets/images/og-image.png",
+        "image": "https://ngo-hub.com/assets/images/og-image.png?v=2",
         "description": "منصة متخصصة في مصر لدعم وتمكين الجمعيات الأهلية والمؤسسات غير الربحية من خلال المساعدة في التقديم على المنح التنموية، إدارة المشاريع غير الربحية، وتطوير البنية الرقمية والمواقع الرسمية.",
         "address": {
           "@type": "PostalAddress",
@@ -175,62 +190,60 @@
 <body>
 
   <!-- ==================== 1. SITE HEADER & NAVIGATION ==================== -->
-  <header class="site-header" id="siteHeader">
-    <div class="container header-wrapper">
-      <!-- Brand Logo -->
-      <a href="#" class="brand-logo" onclick="switchTab('home')">
-        <img src="assets/images/لوجو ngohub clean.png" alt="NGOHUB Logo" id="headerLogoImg">
+  <header class="main-header" id="siteHeader">
+    <div class="header-container">
+      <a href="index.html" class="header-brand" title="الرئيسية - NGOHUB">
+        <div class="brand-logo-frame">
+          <img src="assets/images/logo_header.png" alt="شعار منصة NGOHUB" class="brand-logo-img" width="42" height="42" fetchpriority="high">
+        </div>
         <div class="brand-text">
-          <h1>NGOHUB</h1>
-          <span>منصة تمكين وتطوير الجمعيات الأهلية</span>
+          <span class="brand-title">NGOHUB</span>
+          <span class="brand-subtitle">منصة تمكين وتطوير الجمعيات الأهلية</span>
         </div>
       </a>
 
-      <!-- Main Navigation Menu (Desktop) -->
-      <nav class="main-nav" id="mainNav">
-        <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+      <nav class="nav-links" id="mainNav">
+        <a href="index.html" class="nav-btn active" id="nav-home">
           <i class="fa-solid fa-house"></i> الرئيسية
-        </button>
-        <button class="nav-btn" id="nav-about" onclick="switchTab('about')">
+        </a>
+        <a href="about.html" class="nav-btn" id="nav-about">
           <i class="fa-solid fa-circle-info"></i> عن المنصة
-        </button>
-        <button class="nav-btn" id="nav-services" onclick="switchTab('services')">
+        </a>
+        <a href="services.html" class="nav-btn" id="nav-services">
           <i class="fa-solid fa-cubes"></i> دليل الخدمات
-        </button>
-        <button class="nav-btn" id="nav-impact" onclick="switchTab('impact')">
+        </a>
+        <a href="impact.html" class="nav-btn" id="nav-impact">
           <i class="fa-solid fa-droplet text-emerald"></i> الأثر وصون المياه
-        </button>
-        <button class="nav-btn" id="nav-calculators" onclick="switchTab('calculators')">
+        </a>
+        <a href="calculators.html" class="nav-btn" id="nav-calculators">
           <i class="fa-solid fa-calculator text-purple"></i> الحاسبات التفاعلية
-        </button>
-        <button class="nav-btn" id="nav-grants" onclick="switchTab('grants')">
-          <i class="fa-solid fa-globe"></i> بوابة المنح
-        </button>
-        <button class="nav-btn" id="nav-partners" onclick="switchTab('partners')">
+        </a>
+        <a href="grants.html" class="nav-btn" id="nav-grants">
+          <i class="fa-solid fa-globe"></i> بوابة المنح (66)
+        </a>
+        <a href="partners.html" class="nav-btn" id="nav-partners">
           <i class="fa-solid fa-handshake"></i> الشركاء
-        </button>
+        </a>
+        <a href="contact.html" class="nav-btn" id="nav-contact">
+          <i class="fa-solid fa-envelope"></i> تواصل معنا
+        </a>
       </nav>
 
-      <!-- Header Action Group (CTA, Theme Toggle, WhatsApp, Mobile Hamburger) -->
       <div class="header-action-group">
-        <!-- Quick CTA for NGOs -->
         <button class="btn-header-vol-apply" onclick="openServiceModal('web_dev')" title="طلب دعم أو استشارة للجمعية">
           <i class="fa-solid fa-paper-plane"></i>
           <span class="btn-vol-text">طلب دعم للجمعية</span>
         </button>
 
-        <!-- Theme Switcher Button -->
         <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (داكن / فاتح)">
           <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
 
-        <!-- Quick WhatsApp Button -->
         <a href="https://wa.me/201026847508" target="_blank" class="btn-header-wa" title="تواصل عبر واتساب">
           <i class="fa-brands fa-whatsapp"></i>
           <span class="btn-wa-text">واتساب</span>
         </a>
 
-        <!-- Mobile Hamburger Toggle Button -->
         <button class="btn-mobile-toggle" id="btnMobileMenuToggle" onclick="toggleMobileDrawer()" aria-label="فتح القائمة">
           <i class="fa-solid fa-bars"></i>
         </button>
@@ -238,12 +251,12 @@
     </div>
   </header>
 
-  <!-- ==================== 2. MOBILE NAVIGATION DRAWER (OFF-CANVAS) ==================== -->
+  <!-- ==================== 2. MOBILE NAVIGATION DRAWER ==================== -->
   <div class="mobile-drawer-overlay" id="mobileNavOverlay" onclick="closeMobileDrawer()"></div>
   <aside class="mobile-drawer" id="mobileNavDrawer">
     <div class="mobile-drawer-header">
       <div class="drawer-brand">
-        <img src="assets/images/لوجو ngohub clean.png" alt="NGOHUB">
+        <img src="assets/images/logo_header.png" alt="NGOHUB" width="42" height="42" fetchpriority="high">
         <strong>NGOHUB</strong>
       </div>
       <button class="btn-close-drawer" onclick="closeMobileDrawer()" aria-label="إغلاق القائمة">
@@ -251,39 +264,49 @@
       </button>
     </div>
 
-    <!-- Mobile Nav Links -->
     <nav class="mobile-nav-list">
-      <button class="mobile-nav-item active" id="mNav-home" onclick="switchTab('home'); closeMobileDrawer();">
+      <a href="index.html" class="mobile-nav-item active" id="mNav-home">
         <i class="fa-solid fa-house"></i>
         <span>الرئيسية</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-about" onclick="switchTab('about'); closeMobileDrawer();">
+      </a>
+      <a href="about.html" class="mobile-nav-item" id="mNav-about">
         <i class="fa-solid fa-circle-info"></i>
-        <span>عن المنصة والرسالة</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-services" onclick="switchTab('services'); closeMobileDrawer();">
+        <span>عن المنصة</span>
+      </a>
+      <a href="services.html" class="mobile-nav-item" id="mNav-services">
         <i class="fa-solid fa-cubes"></i>
-        <span>دليل خدمات الجمعيات</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-impact" onclick="switchTab('impact'); closeMobileDrawer();">
+        <span>دليل الخدمات</span>
+      </a>
+      <a href="impact.html" class="mobile-nav-item" id="mNav-impact">
         <i class="fa-solid fa-droplet text-emerald"></i>
-        <span>الأثر وصون المياه والاستدامة</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-calculators" onclick="switchTab('calculators'); closeMobileDrawer();">
+        <span>الأثر وصون المياه</span>
+      </a>
+      <a href="calculators.html" class="mobile-nav-item" id="mNav-calculators">
         <i class="fa-solid fa-calculator text-purple"></i>
-        <span>الحاسبات التفاعلية (المياه، الخدمات، الجاهزية)</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-grants" onclick="switchTab('grants'); closeMobileDrawer();">
+        <span>الحاسبات التفاعلية</span>
+      </a>
+      <a href="grants.html" class="mobile-nav-item" id="mNav-grants">
         <i class="fa-solid fa-globe"></i>
-        <span>بوابة المنح والفرص العالمية</span>
-      </button>
-      <button class="mobile-nav-item" id="mNav-partners" onclick="switchTab('partners'); closeMobileDrawer();">
+        <span>بوابة المنح (66)</span>
+      </a>
+      <a href="partners.html" class="mobile-nav-item" id="mNav-partners">
         <i class="fa-solid fa-handshake"></i>
-        <span>الشركاء وسابقة التعاون</span>
-      </button>
+        <span>الشركاء</span>
+      </a>
+      <a href="contact.html" class="mobile-nav-item" id="mNav-contact">
+        <i class="fa-solid fa-envelope"></i>
+        <span>تواصل معنا</span>
+      </a>
+      <a href="privacy.html" class="mobile-nav-item" id="mNav-privacy">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>سياسة الخصوصية وحماية البيانات</span>
+      </a>
+      <a href="terms.html" class="mobile-nav-item" id="mNav-terms">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <span>شروط الخدمة والاتفاقية</span>
+      </a>
     </nav>
 
-    <!-- Mobile Drawer Footer Actions -->
     <div class="mobile-drawer-footer">
       <button class="btn-primary full-width" onclick="openServiceModal('web_dev'); closeMobileDrawer();">
         <i class="fa-solid fa-paper-plane"></i> طلب دعم أو استشارة للجمعية
@@ -296,6 +319,9 @@
       </a>
     </div>
   </aside>
+
+  <main id="main-content">
+
 
   <!-- ==================== 3. HOME SECTION (FOCUS ON NGO ENABLEMENT) ==================== -->
   <section id="section-home" class="page-section active-section">
@@ -353,11 +379,11 @@
               <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">منحة دولية موثقة</div>
             </div>
             <div class="stat-box" style="background: var(--bg-card); padding: 14px 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; box-shadow: var(--shadow-sm);">
-              <div style="font-size: 1.7rem; font-weight: 900; color: #eab308;">850K+ ج.م</div>
+              <div style="font-size: 1.7rem; font-weight: 900; color: #b45309;">850K+ ج.م</div>
               <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">وفر مالي سنوي للجمعيات</div>
             </div>
             <div class="stat-box" style="background: var(--bg-card); padding: 14px 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; box-shadow: var(--shadow-sm);">
-              <div style="font-size: 1.7rem; font-weight: 900; color: #06b6d4;">3.5M+ لتر</div>
+              <div style="font-size: 1.7rem; font-weight: 900; color: #0e7490;">3.5M+ لتر</div>
               <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">مياه نقية تم صونها</div>
             </div>
           </div>
@@ -727,7 +753,7 @@
               </div>
 
               <div class="feasibility-card">
-                <div class="feasibility-icon" style="color: #eab308;"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="feasibility-icon" style="color: #b45309;"><i class="fa-solid fa-shield-halved"></i></div>
                 <span class="feasibility-label">نسبة خفض ازدواجية المساعدات</span>
                 <h4 class="feasibility-val">100%</h4>
                 <p>منع تكرار صرف المساعدات للأسر نفسها عبر الربط السحابي والتحقق بالرقم القومي والموقع الجغرافي.</p>
@@ -750,7 +776,7 @@
             تُحقق منصة NGOHUB محاذاة مباشرة لأهداف الأمم المتحدة العشرة (1، 2، 4، 5، 6، 8، 10، 12، 13، 17)، مع تركيز محوري على <strong>الهدف السادس (المياه النظيفة والنظافة الصحية)</strong> عبر توفير 3.5 مليون لتر مياه نقية وورش ترشيد الري، و<strong>الهدف الثالث عشر (العمل المناخي)</strong> بتجنب 4.2 طن كربون، و<strong>الهدف السابع عشر (عقد الشراكات لتحقيق الأهداف)</strong> بالربط بين 65+ جمعية أهلية وشركاء التنمية.
           </p>
           <div style="max-width: 920px; margin: 0 auto; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
-            <img src="assets/images/ngohub_sdgs_10_goals.png" alt="NGOHUB UN SDGs 10 Goals" style="width: 100%; height: auto; display: block;" onerror="this.src='ngohub_sdgs_10_goals.png'">
+            <img src="assets/images/ngohub_sdgs_10_goals.png" alt="NGOHUB UN SDGs 10 Goals" style="width: 100%; height: auto; display: block;" onerror="this.src='ngohub_sdgs_10_goals.png'" loading="lazy" decoding="async">
           </div>
         </div>
       </div>
@@ -957,7 +983,7 @@
                 <div class="service-check-info">
                   <div class="service-check-title">
                     <span>التأهيل وصياغة مقترحات المنح الدولية والمناخية</span>
-                    <span style="color: #eab308; font-size: 0.85rem;">تمويل مباشر</span>
+                    <span style="color: #b45309; font-size: 0.85rem;">تمويل مباشر</span>
                   </div>
                   <div class="service-check-desc">إعداد الملف المؤسسي ومراجعة معايير الجهات المانحة وصياغة المشروعات للمنافسة على تمويلات GEF, UNDP والجهات الكبرى.</div>
                   <div class="service-check-badges">
@@ -1022,7 +1048,7 @@
                   <div class="summary-stat-label">معاملات وأوراق ملغاة</div>
                 </div>
                 <div class="summary-stat-box">
-                  <div class="summary-stat-num" style="color: #eab308;" id="srvOutScore">50%</div>
+                  <div class="summary-stat-num" style="color: #b45309;" id="srvOutScore">50%</div>
                   <div class="summary-stat-label">نسبة الجاهزية للمنح</div>
                 </div>
               </div>
@@ -1148,7 +1174,7 @@
         <div class="pastwork-grid">
           <!-- 1. جمعية رحمة لتنمية المجتمع والطفولة -->
           <div class="work-card">
-            <img src="assets/images/لوجو جمعية الرحمة.jpg" alt="جمعية رحمة لتنمية المجتمع والطفولة">
+            <img src="assets/images/لوجو جمعية الرحمة.jpg" alt="جمعية رحمة لتنمية المجتمع والطفولة" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>جمعية رحمة لتنمية المجتمع والطفولة</h4>
               <span class="badge-partner-tag">الشريك المجتمعي الرئيسي للمبادرة</span>
@@ -1158,7 +1184,7 @@
 
           <!-- 2. بنيان للتدخل المبكر -->
           <div class="work-card">
-            <img src="assets/images/بنيان للتدخل المبكر.jpg" alt="بنيان للتدخل المبكر">
+            <img src="assets/images/بنيان للتدخل المبكر.jpg" alt="بنيان للتدخل المبكر" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>جمعية بنيان للتدخل المبكر</h4>
               <span class="badge-partner-tag">شريك تأهيل ذوي الهمم</span>
@@ -1168,7 +1194,7 @@
 
           <!-- 3. وزارة البحيرة / المحافظة -->
           <div class="work-card">
-            <img src="assets/images/لوجو وزارة البحيرة.png" alt="وزارة البحيرة">
+            <img src="assets/images/لوجو وزارة البحيرة.png" alt="وزارة البحيرة" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>محافظة / وزارة البحيرة</h4>
               <span class="badge-partner-tag">شريك التنسيق المؤسسي المحلي</span>
@@ -1178,7 +1204,7 @@
 
           <!-- 4. مركز التدريب البيئي -->
           <div class="work-card">
-            <img src="assets/images/لوجو مركز التدريب البيئى.png" alt="مركز التدريب البيئي">
+            <img src="assets/images/لوجو مركز التدريب البيئى.png" alt="مركز التدريب البيئي" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>مركز التدريب البيئي</h4>
               <span class="badge-partner-tag">شريك التدريب وبناء القدرات</span>
@@ -1188,7 +1214,7 @@
 
           <!-- 5. حاضنة الاعمال البيئية للمراة المصرية -->
           <div class="work-card">
-            <img src="assets/images/لوجو حاضنة الاعمال البيئية للمراة المصرية.png" alt="حاضنة الأعمال البيئية للمرأة المصرية">
+            <img src="assets/images/لوجو حاضنة الاعمال البيئية للمراة المصرية.png" alt="حاضنة الأعمال البيئية للمرأة المصرية" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>حاضنة الأعمال البيئية للمرأة المصرية</h4>
               <span class="badge-partner-tag">شريك تمكين المرأة الخضراء</span>
@@ -1198,7 +1224,7 @@
 
           <!-- 6. PR CUBE الشريك السعودي -->
           <div class="work-card">
-            <img src="assets/images/لوجو pr cube.png" alt="PR CUBE">
+            <img src="assets/images/لوجو pr cube.png" alt="PR CUBE" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>PR CUBE</h4>
               <span class="badge-partner-tag">الشريك السعودي للمبادرة</span>
@@ -1208,7 +1234,7 @@
 
           <!-- 7. Green Cap Team -->
           <div class="work-card">
-            <img src="assets/images/لوجو  gct.png" alt="GCT">
+            <img src="assets/images/لوجو  gct.png" alt="GCT" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>Green Cap Team (GCT)</h4>
               <span class="badge-partner-tag">المبادرة الأم والشريك الشبابي</span>
@@ -1218,7 +1244,7 @@
 
           <!-- 8. ازولا مصر -->
           <div class="work-card">
-            <img src="assets/images/ازولا مصر.png" alt="أزولا مصر">
+            <img src="assets/images/ازولا مصر.png" alt="أزولا مصر" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>مشروع أزولا مصر (Azolla Egypt)</h4>
               <span class="badge-partner-tag">مشروع بيئي وزراعي رائد</span>
@@ -1228,7 +1254,7 @@
 
           <!-- 9. بروتيك -->
           <div class="work-card">
-            <img src="assets/images/بروتيك.png" alt="PROTIC">
+            <img src="assets/images/بروتيك.png" alt="PROTIC" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>PROTIC Solutions</h4>
               <span class="badge-partner-tag">الشريك الاستشاري والتقني</span>
@@ -1238,7 +1264,7 @@
 
           <!-- 10. جمعية الاسراء -->
           <div class="work-card">
-            <img src="assets/images/لوجو جمعية الاسراء.jpg" alt="جمعية الإسراء الخيرية">
+            <img src="assets/images/لوجو جمعية الاسراء.jpg" alt="جمعية الإسراء الخيرية" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>جمعية الإسراء الخيرية</h4>
               <span class="badge-partner-tag">جمعية أهلية شريكة</span>
@@ -1248,7 +1274,7 @@
 
           <!-- 11. نقابة المهندسين بالبحيرة -->
           <div class="work-card">
-            <img src="assets/images/لوجو نقابة المهندسين بالبحيرة.png" alt="نقابة المهندسين">
+            <img src="assets/images/لوجو نقابة المهندسين بالبحيرة.png" alt="نقابة المهندسين" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>نقابة المهندسين بالبحيرة</h4>
               <span class="badge-partner-tag">شريك الابتكار والهندسة</span>
@@ -1258,7 +1284,7 @@
 
           <!-- 12. وزارة التضامن الاجتماعي -->
           <div class="work-card">
-            <img src="assets/images/وزارة التضامن.jpg" alt="وزارة التضامن الاجتماعي">
+            <img src="assets/images/وزارة التضامن.jpg" alt="وزارة التضامن الاجتماعي" loading="lazy" decoding="async">
             <div class="work-info">
               <h4>وزارة التضامن الاجتماعي</h4>
               <span class="badge-partner-tag">المظلة التنظيمية والوطنية</span>
@@ -1272,22 +1298,22 @@
           كافة العلامات والجهات الرسمية الداعمة والشريكة
         </div>
         <div class="partners-grid">
-          <div class="partner-item"><img src="assets/images/لوجو جمعية الرحمة.jpg" alt="جمعية رحمة لتنمية المجتمع والطفولة" title="جمعية رحمة لتنمية المجتمع والطفولة - الشريك المجتمعي الرئيسي"></div>
-          <div class="partner-item"><img src="assets/images/بنيان للتدخل المبكر.jpg" alt="بنيان للتدخل المبكر" title="بنيان للتدخل المبكر"></div>
-          <div class="partner-item"><img src="assets/images/لوجو وزارة البحيرة.png" alt="وزارة البحيرة" title="محافظة / وزارة البحيرة"></div>
-          <div class="partner-item"><img src="assets/images/لوجو مركز التدريب البيئى.png" alt="مركز التدريب البيئي" title="مركز التدريب البيئي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو حاضنة الاعمال البيئية للمراة المصرية.png" alt="حاضنة الأعمال البيئية للمرأة المصرية" title="حاضنة الأعمال البيئية للمرأة المصرية"></div>
-          <div class="partner-item"><img src="assets/images/لوجو pr cube.png" alt="PR CUBE" title="PR CUBE - الشريك السعودي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو  gct.png" alt="Green Cap Team" title="Green Cap Team"></div>
-          <div class="partner-item"><img src="assets/images/ازولا مصر.png" alt="أزولا مصر" title="مشروع أزولا مصر"></div>
-          <div class="partner-item"><img src="assets/images/بروتيك.png" alt="PROTIC" title="PROTIC Solutions"></div>
-          <div class="partner-item"><img src="assets/images/وزارة التضامن.jpg" alt="وزارة التضامن الاجتماعي" title="وزارة التضامن الاجتماعي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو نقابة المهندسين بالبحيرة.png" alt="نقابة المهندسين بالبحيرة" title="نقابة المهندسين بالبحيرة"></div>
-          <div class="partner-item"><img src="assets/images/لوجو جمعية الاسراء.jpg" alt="جمعية الإسراء الخيرية" title="جمعية الإسراء الخيرية - شريك تنموي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو UNDP.jpg" alt="UNDP" title="برنامج الأمم المتحدة الإنمائي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو GEF.jpg" alt="GEF" title="مرفق البيئة العالمي"></div>
-          <div class="partner-item"><img src="assets/images/لوجو  SGP.jpg" alt="SGP" title="برنامج المنح الصغيرة"></div>
-          <div class="partner-item"><img src="assets/images/المكتب العربي للشباب و البيئة.png" alt="المكتب العربي للشباب والبيئة" title="المكتب العربي للشباب والبيئة"></div>
+          <div class="partner-item"><img src="assets/images/لوجو جمعية الرحمة.jpg" alt="جمعية رحمة لتنمية المجتمع والطفولة" title="جمعية رحمة لتنمية المجتمع والطفولة - الشريك المجتمعي الرئيسي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/بنيان للتدخل المبكر.jpg" alt="بنيان للتدخل المبكر" title="بنيان للتدخل المبكر" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو وزارة البحيرة.png" alt="وزارة البحيرة" title="محافظة / وزارة البحيرة" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو مركز التدريب البيئى.png" alt="مركز التدريب البيئي" title="مركز التدريب البيئي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو حاضنة الاعمال البيئية للمراة المصرية.png" alt="حاضنة الأعمال البيئية للمرأة المصرية" title="حاضنة الأعمال البيئية للمرأة المصرية" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو pr cube.png" alt="PR CUBE" title="PR CUBE - الشريك السعودي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو  gct.png" alt="Green Cap Team" title="Green Cap Team" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/ازولا مصر.png" alt="أزولا مصر" title="مشروع أزولا مصر" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/بروتيك.png" alt="PROTIC" title="PROTIC Solutions" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/وزارة التضامن.jpg" alt="وزارة التضامن الاجتماعي" title="وزارة التضامن الاجتماعي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو نقابة المهندسين بالبحيرة.png" alt="نقابة المهندسين بالبحيرة" title="نقابة المهندسين بالبحيرة" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو جمعية الاسراء.jpg" alt="جمعية الإسراء الخيرية" title="جمعية الإسراء الخيرية - شريك تنموي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو UNDP.jpg" alt="UNDP" title="برنامج الأمم المتحدة الإنمائي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو GEF.jpg" alt="GEF" title="مرفق البيئة العالمي" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/لوجو  SGP.jpg" alt="SGP" title="برنامج المنح الصغيرة" loading="lazy" decoding="async"></div>
+          <div class="partner-item"><img src="assets/images/المكتب العربي للشباب و البيئة.png" alt="المكتب العربي للشباب والبيئة" title="المكتب العربي للشباب والبيئة" loading="lazy" decoding="async"></div>
         </div>
       </div>
     </div>
@@ -1691,13 +1717,16 @@
     </div>
   </section>
 
-  <!-- ==================== 9. SITE FOOTER WITH ADMIN CMS ACCESS ==================== -->
+  
+  </main>
+
+<!-- ==================== 9. SITE FOOTER WITH ADMIN CMS ACCESS ==================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
           <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-            <img src="assets/images/لوجو ngohub clean.png" alt="NGOHUB Logo" style="height: 38px;">
+            <img src="assets/images/logo_header.png" alt="NGOHUB Logo" width="38" height="38" loading="lazy">
             <h4 style="margin:0;">NGOHUB</h4>
           </div>
           <p>
@@ -1707,9 +1736,13 @@
 
         <div class="footer-col">
           <h4>أقسام ومستندات المنصة</h4>
-          <p><a href="#" onclick="switchTab('home')" style="color: inherit; text-decoration:none;">الرئيسية</a></p>
-          <p><a href="#" onclick="switchTab('services')" style="color: inherit; text-decoration:none;">دليل خدمات الجمعيات</a></p>
-          <p><a href="#" onclick="switchTab('grants')" style="color: inherit; text-decoration:none;">بوابة المنح العالمية (66 منحة)</a></p>
+          <p><a href="index.html" style="color: inherit; text-decoration:none;">الرئيسية</a></p>
+          <p><a href="services.html" style="color: inherit; text-decoration:none;">دليل خدمات الجمعيات</a></p>
+          <p><a href="grants.html" style="color: inherit; text-decoration:none;">بوابة المنح العالمية (66 منحة)</a></p>
+          <p><a href="calculators.html" style="color: inherit; text-decoration:none;">الحاسبات الرقمية التفاعلية</a></p>
+          <p><a href="impact.html" style="color: inherit; text-decoration:none;">الأثر وصون المياه</a></p>
+          <p><a href="about.html" style="color: inherit; text-decoration:none;">عن المنصة والرسالة</a></p>
+          <p><a href="contact.html" style="color: inherit; text-decoration:none;">تواصل معنا</a></p>
           <p><a href="simulator.html" target="_blank" style="color: #4ade80; text-decoration:none; font-weight:700;"><i class="fa-solid fa-mobile-screen"></i> تطبيق الهاتف الذكي (المحاكي & APK) <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem; margin-right: 4px;"></i></a></p>
           <p><a href="docs/سياسة_الحماية_وعدم_التمييز_وتلقي_الشكاوى_NGOHUB.pdf" target="_blank" download style="color: #60a5fa; text-decoration:none; font-weight:700;"><i class="fa-solid fa-file-pdf"></i> وثيقة سياسة الحماية والشكاوى</a></p>
           <p><a href="privacy.html" style="color: inherit; text-decoration:underline;">سياسة الخصوصية</a> | <a href="terms.html" style="color: inherit; text-decoration:underline;">شروط الخدمة</a></p>
@@ -1732,8 +1765,17 @@
       </div>
 
       <div class="footer-bottom">
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+        <div class="footer-bottom-content">
           <div>&copy; 2026 NGOHUB. جميع الحقوق محفوظة للجمعيات والمجتمع المدني</div>
+          <div class="footer-legal-bar">
+            <a href="privacy.html" class="legal-bar-link">سياسة الخصوصية</a>
+            <span class="legal-bar-sep">•</span>
+            <a href="terms.html" class="legal-bar-link">شروط الخدمة</a>
+            <span class="legal-bar-sep">•</span>
+            <button type="button" onclick="openPrivacySettings()" class="legal-bar-btn" title="تعديل تفضيلات الكوكيز والخصوصية">
+              <i class="fa-solid fa-cookie-bite"></i> إعدادات الخصوصية والكوكيز
+            </button>
+          </div>
           <div style="color: var(--primary-green); font-weight:700;">معًا نحو مجتمع مدني أقوى وأثر مستدام</div>
         </div>
       </div>
@@ -1933,6 +1975,9 @@
           <i class="fa-solid fa-circle-check text-emerald"></i>
           <span>سيتم تسجيل طلبكم مباشرة وإشعار فريق العمل للتواصل الفوري عبر الواتساب واستكمال المتطلبات.</span>
         </div>
+        <div class="modal-legal-note">
+          <i class="fa-solid fa-shield-halved"></i> بإرسال هذا النموذج، فإنك تؤكد موافقتك على <a href="terms.html" target="_blank">شروط الخدمة</a> و<a href="privacy.html" target="_blank">سياسة الخصوصية</a> وحماية البيانات الشخصية وفقاً للقانون المصري 151/2020.
+        </div>
 
         <div class="modal-actions-bar">
           <button type="button" class="btn-secondary" onclick="closeServiceModal()">إلغاء</button>
@@ -1986,23 +2031,27 @@
     <i class="fa-solid fa-circle-check"></i> <span id="toastText">تمت العملية بنجاح</span>
   </div>
 
-  <!-- ==================== 15. COOKIE CONSENT BANNER (GDPR & LAW 151/2020) ==================== -->
-  <div id="cookieConsentBanner" class="cookie-consent-banner" style="display: none;">
-    <div class="cookie-consent-container">
-      <div class="cookie-consent-text">
-        <i class="fa-solid fa-cookie-bite cookie-icon"></i>
-        <p>نستخدم ملفات تعريف الارتباط الأساسية لضمان عمل المنصة وحفظ تفضيلاتكم بما يتوافق مع قانون حماية البيانات الشخصية المصري 151/2020. لا نستخدم أي ملفات تتبع تجارية أو طرف ثالث.</p>
+  <!-- ==================== 15. SITE COMPLIANCE & PRIVACY DOCK (ANTI-ADBLOCK & LAW 151/2020) ==================== -->
+  <div id="siteComplianceDock" class="site-compliance-dock" style="display: none;">
+    <div class="compliance-dock-container">
+      <div class="compliance-dock-text">
+        <i class="fa-solid fa-shield-halved compliance-icon"></i>
+        <p>
+          <strong>إشعار الخصوصية والشفافية الرقمية:</strong> نستخدم ملفات تعريف الارتباط الأساسية لضمان عمل المنصة وحفظ التفضيلات المؤسسية وفقاً لأحكام قانون حماية البيانات الشخصية المصري رقم 151 لسنة 2020. لا نشارك أي بيانات مع أطراف ثالثة.
+        </p>
       </div>
-      <div class="cookie-consent-actions">
-        <button type="button" class="btn-cookie-accept" onclick="acceptAllCookies()">قبول الكل</button>
-        <button type="button" class="btn-cookie-necessary" onclick="acceptNecessaryCookies()">الضرورية فقط</button>
-        <a href="privacy.html" class="cookie-privacy-link">سياسة الخصوصية</a>
+      <div class="compliance-dock-actions">
+        <button type="button" class="btn-compliance-accept" onclick="acceptAllCompliance()">قبول ومتابعة</button>
+        <button type="button" class="btn-compliance-minimal" onclick="acceptNecessaryCompliance()">الضرورية فقط</button>
+        <a href="privacy.html" class="compliance-legal-link">سياسة الخصوصية</a>
+        <span class="compliance-sep">|</span>
+        <a href="terms.html" class="compliance-legal-link">شروط الخدمة</a>
       </div>
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/grants_data.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/grants_data.js?v=2" defer></script>
+  <script src="assets/js/app.js?v=2" defer></script>
 </body>
 </html>
