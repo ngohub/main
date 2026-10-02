@@ -112,11 +112,12 @@ body {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
-  height: 76px;
+  min-height: 74px;
+  height: auto;
   gap: 16px;
-  max-width: 1380px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 8px 20px;
   box-sizing: border-box;
 }
 .brand-logo,
@@ -2920,23 +2921,23 @@ body {
   }
 }
 
-@media (min-width: 1025px) and (max-width: 1320px) {
+@media (min-width: 1025px) and (max-width: 1366px) {
   .nav-btn {
     padding: 5px 6px !important;
     font-size: 0.78rem !important;
     gap: 3px !important;
   }
   .header-wrapper, .header-container {
-    padding: 0 12px !important;
+    padding: 6px 12px !important;
     gap: 10px !important;
+  }
+  .brand-text span, .brand-text .brand-subtitle {
+    display: none !important;
   }
 }
 
-@media (min-width: 1025px) and (max-width: 1180px) {
+@media (min-width: 1025px) and (max-width: 1200px) {
   .btn-wa-text, .btn-vol-text {
-    display: none !important;
-  }
-  .brand-text span, .brand-text .brand-subtitle {
     display: none !important;
   }
 }
