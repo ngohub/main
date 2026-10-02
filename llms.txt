@@ -5,30 +5,33 @@
 NGOHUB bridges the technological and institutional gap for Egyptian NGOs and civil society organizations (CSOs). The platform combines digital tools with environmental and economic impact metrics, specifically water conservation tracking (10 Liters of fresh water saved per paper sheet eliminated; 50,000 Liters saved per agricultural demo field with GCT), interactive project readiness diagnostics, and a verified catalog of 66+ international and regional funding opportunities.
 
 ## Core Services & Institutional Enablement
-- [Web & Portal Development](https://ngo-hub.com/#services): Turnkey bilingual responsive websites on official .org domains, with project documentation and donor portals.
-- [Cloud Project & Database Automation](https://ngo-hub.com/#services): Encrypted cloud database infrastructure migrating NGOs from paper records to structured digital management.
-- [Volunteer Program Management](https://ngo-hub.com/#services): Digital volunteer onboarding, skill classification, automated hour logging, and certified credential issuance.
-- [Grants Application & Proposal Writing](https://ngo-hub.com/#services): Institutional donor readiness, smart green project component design, and proposal writing for national and global calls.
-- [Project Management & Monitoring (M&E)](https://ngo-hub.com/#services): Real-time project tracking, monitoring and evaluation dashboards, and stakeholder KPI reporting.
-- [Brand Identity & Reporting](https://ngo-hub.com/#services): Visual branding, annual impact report design, and transparency profiles tailored for donor compliance.
-- [Institutional Capacity Building](https://ngo-hub.com/#services): Specialized leadership, operational, and AI-for-NGOs workshops delivered in strategic partnership with ProTic.
-- [AI & Data Summarization Solutions](https://ngo-hub.com/#services): Custom NLP workflows for research synthesis and grant criteria alignment.
+- [Web & Portal Development](https://ngo-hub.com/services.html): Turnkey bilingual responsive websites on official .org domains, with project documentation and donor portals.
+- [Cloud Project & Database Automation](https://ngo-hub.com/services.html): Encrypted cloud database infrastructure migrating NGOs from paper records to structured digital management.
+- [Volunteer Program Management](https://ngo-hub.com/services.html): Digital volunteer onboarding, skill classification, automated hour logging, and certified credential issuance.
+- [Grants Application & Proposal Writing](https://ngo-hub.com/services.html): Institutional donor readiness, smart green project component design, and proposal writing for national and global calls.
+- [Project Management & Monitoring (M&E)](https://ngo-hub.com/services.html): Real-time project tracking, monitoring and evaluation dashboards, and stakeholder KPI reporting.
+- [Brand Identity & Reporting](https://ngo-hub.com/services.html): Visual branding, annual impact report design, and transparency profiles tailored for donor compliance.
+- [Institutional Capacity Building](https://ngo-hub.com/services.html): Specialized leadership, operational, and AI-for-NGOs workshops delivered in strategic partnership with ProTic.
+- [AI & Data Summarization Solutions](https://ngo-hub.com/services.html): Custom NLP workflows for research synthesis and grant criteria alignment.
 
 ## Environmental & Sustainability Impact
-- [Water Conservation Hub](https://ngo-hub.com/#impact): Detailed environmental accounting of +3.5M Liters of fresh water conserved across 65+ enabled NGOs.
-- [Paperless Transformation Calculator](https://ngo-hub.com/#calculators): Direct calculation of indirect water savings (10L/sheet) and administrative overhead savings (2.5 EGP/transaction).
-- [Sustainable Agriculture & Irrigation Partnerships](https://ngo-hub.com/#impact): Joint initiatives with Green Climate Technology (GCT) for water recycling and Azolla cultivation.
+- [Water Conservation Hub](https://ngo-hub.com/impact.html): Detailed environmental accounting of +3.5M Liters of fresh water conserved across 65+ enabled NGOs.
+- [Paperless Transformation Calculator](https://ngo-hub.com/calculators.html): Direct calculation of indirect water savings (10L/sheet) and administrative overhead savings (2.5 EGP/transaction).
+- [Sustainable Agriculture & Irrigation Partnerships](https://ngo-hub.com/impact.html): Joint initiatives with Green Climate Technology (GCT) for water recycling and Azolla cultivation.
 
 ## Grants & Institutional Funding Portal
-- [Active Grants Directory](https://ngo-hub.com/#grants): Searchable database of 66+ active grants, climate finance funds, and local donor programs with direct application URLs.
-- [Grant Readiness Assessment](https://ngo-hub.com/#calculators): Multi-pillar diagnostic evaluating financial audits, website presence, and smart components.
+- [Active Grants Directory](https://ngo-hub.com/grants.html): Searchable database of 66+ active grants, climate finance funds, and local donor programs with direct application URLs.
+- [Grant Readiness Assessment](https://ngo-hub.com/calculators.html): Multi-pillar diagnostic evaluating financial audits, website presence, and smart components.
 
 ## Strategic Partners
-- [ProTic Training & Solutions](https://ngo-hub.com/#partners): Co-developer of institutional capacity building and IT infrastructure programs.
-- [Green Climate Technology (GCT)](https://ngo-hub.com/#partners): Environmental technical partner for water conservation and climate adaptation projects.
+- [ProTic Training & Solutions](https://ngo-hub.com/partners.html): Co-developer of institutional capacity building and IT infrastructure programs.
+- [Green Climate Technology (GCT)](https://ngo-hub.com/partners.html): Environmental technical partner for water conservation and climate adaptation projects.
 
-## Optional
-- [Service Request Workflow](https://ngo-hub.com/#serviceRequestModal): Direct online intake form for Egyptian NGOs requesting institutional consulting.
+## Institutional Documentation & Compliance
+- [About NGOHUB Platform](https://ngo-hub.com/about.html): Mission, vision, and legal alignment with Egyptian Civil Society Law 149/2019.
+- [Contact & Consultation](https://ngo-hub.com/contact.html): Direct consultation intake and project advisory services.
+- [Privacy Policy](https://ngo-hub.com/privacy.html): Personal data protection standards compliant with Egyptian Law 151/2020.
+- [Terms of Service](https://ngo-hub.com/terms.html): Institutional terms of use and service agreements.
 - [WhatsApp Direct Hotline](https://wa.me/201026847508): Immediate consultation line with NGOHUB institutional advisors (+20 102 684 7508).
 - [Official Facebook Page](https://www.facebook.com/ngohubar): NGOHUB official Facebook community updates.
 - [Full Documentation Corpus](https://ngo-hub.com/llms-full.txt): Comprehensive plain-text knowledge base for LLM search indexing.
