@@ -1,0 +1,30 @@
+# robots.txt for NGOHUB (https://ngo-hub.com)
+# Egyptian NGO Digital Transformation & Enablement Platform
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /assets/docs/internal/
+Disallow: /tests/
+
+# AI & Generative Search Engines (AnswerDotAI / GEO Standard)
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Google-Extended
+Allow: /
+
+# Canonical Sitemaps
+Sitemap: https://ngo-hub.com/sitemap.xml

@@ -1,0 +1,7 @@
+Contact: mailto:youssefkhedr92@gmail.com
+Contact: https://wa.me/201026847508
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ar, en
+Canonical: https://ngo-hub.com/.well-known/security.txt
+Policy: https://ngo-hub.com/privacy.html
+Acknowledgment: https://ngo-hub.com/#partners

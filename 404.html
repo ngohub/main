@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - الصفحة غير موجودة | NGOHUB</title>
+  
+  <!-- Critical SEO instruction: Never index 404 pages -->
+  <meta name="robots" content="noindex, follow">
+  
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-green: #2F6E3A;
+      --primary-green-dark: #1E4E27;
+      --primary-green-light: #EBF6ED;
+      --primary-purple: #7A4BA3;
+      --bg-main: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-dark: #0F172A;
+      --text-muted: #475569;
+      --border-color: #E2E8F0;
+      --radius-lg: 20px;
+    }
+    [data-theme="dark"] {
+      --bg-main: #0B0F19;
+      --bg-card: #151C2C;
+      --text-dark: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-color: #26334A;
+      --primary-green-light: rgba(47, 110, 58, 0.22);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      direction: rtl;
+    }
+    .error-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      max-width: 620px;
+      width: 100%;
+      padding: 48px 36px;
+      text-align: center;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.07);
+    }
+    .error-code {
+      font-size: 6rem;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--primary-green), var(--primary-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .error-icon {
+      font-size: 3rem;
+      color: var(--primary-purple);
+      margin-bottom: 16px;
+    }
+    .error-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .error-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .redirect-countdown {
+      display: inline-block;
+      background: var(--primary-green-light);
+      color: var(--primary-green-dark);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: var(--primary-green);
+      color: #FFFFFF;
+    }
+    .btn-primary:hover { background: var(--primary-green-dark); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+    }
+    .btn-outline:hover { background: var(--border-color); }
+    .btn-wa {
+      background: #25D366;
+      color: #FFFFFF;
+    }
+    .btn-fb {
+      background: #1877F2;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="error-card">
+    <div class="error-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+    <div class="error-code">404</div>
+    <h1 class="error-title">عفواً، هذه الصفحة غير موجودة</h1>
+    <p class="error-desc">
+      يبدو أن الرابط الذي حاولت الوصول إليه تم نقله أو حذفه، أو أنك أدخلت عنواناً غير صحيح. يمكنك العودة للصفحة الرئيسية وتصفح خدمات الجمعيات الأهلية والمنح التنموية.
+    </p>
+
+    <div class="redirect-countdown" id="countdownBox">
+      سيتم تحويلك تلقائياً للرئيسية خلال <span id="countdownNum">8</span> ثوانٍ...
+    </div>
+
+    <div class="btn-group">
+      <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> العودة للرئيسية</a>
+      <a href="/#services" class="btn btn-outline"><i class="fa-solid fa-cubes"></i> دليل الخدمات</a>
+      <a href="/#grants" class="btn btn-outline"><i class="fa-solid fa-globe"></i> بوابة المنح</a>
+      <a href="https://wa.me/201026847508" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> الدعم الفني</a>
+      <a href="https://www.facebook.com/ngohubar" target="_blank" class="btn btn-fb"><i class="fa-brands fa-facebook"></i> فيسبوك</a>
+    </div>
+  </main>
+
+  <script>
+    // Theme sync with user preference
+    if (localStorage.getItem('ngohub_theme') === 'dark' || (!localStorage.getItem('ngohub_theme') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    
+    // Auto-redirect timer
+    let secondsLeft = 8;
+    const numEl = document.getElementById('countdownNum');
+    const timer = setInterval(() => {
+      secondsLeft--;
+      if (numEl) numEl.textContent = secondsLeft;
+      if (secondsLeft <= 0) {
+        clearInterval(timer);
+        window.location.href = '/';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

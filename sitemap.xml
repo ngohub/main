@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- 1. Homepage & Core Enablement Platform -->
+  <url>
+    <loc>https://ngo-hub.com/</loc>
+    <lastmod>2026-10-02T20:30:00+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ngo-hub.com/assets/images/%D9%84%D9%88%D8%AC%D9%88%20ngohub%20clean.png</image:loc>
+      <image:title>شعار منصة NGOHUB لتمكين الجمعيات الأهلية</image:title>
+      <image:caption>المنظومة التنموية لدعم وتمكين الجمعيات والمؤسسات الأهلية في التقديم على المنح وإدارة المشاريع والتحول الرقمي</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ngo-hub.com/assets/images/og-image.png</image:loc>
+      <image:title>NGOHUB Platform Preview</image:title>
+      <image:caption>منصة NGOHUB - تمكين الجمعيات الأهلية والتقديم على المنح</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 2. Mobile App Simulator & Download Hub -->
+  <url>
+    <loc>https://ngo-hub.com/simulator.html</loc>
+    <lastmod>2026-10-02T20:30:00+02:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 3. Privacy Policy (Law 151/2020 & GDPR) -->
+  <url>
+    <loc>https://ngo-hub.com/privacy.html</loc>
+    <lastmod>2026-10-02T20:30:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 4. Institutional Terms of Service -->
+  <url>
+    <loc>https://ngo-hub.com/terms.html</loc>
+    <lastmod>2026-10-02T20:30:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

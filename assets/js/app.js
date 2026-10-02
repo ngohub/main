@@ -1,7 +1,17 @@
 /* ==========================================================================
-   NGOHUB - MASTER APPLICATION ENGINE v8.5
-   توجيه الصفحات المحدث (صفحة الشركاء وسابقة التعاون المخصصة + إدارة الفوتر)
+   NGOHUB - MASTER APPLICATION ENGINE v9.0 (SEO, Security & History Routing)
    ========================================================================== */
+
+// --- 0. Global Client-Side Error Boundary & Resilience Shield ---
+(function initGlobalErrorBoundary() {
+  window.addEventListener('error', function (event) {
+    console.error('[NGOHUB Client Error Guard]:', event.error || event.message);
+  });
+
+  window.addEventListener('unhandledrejection', function (event) {
+    console.warn('[NGOHUB Unhandled Promise]:', event.reason);
+  });
+})();
 
 // --- 1. Master Services Dataset (8 Services) ---
 let SERVICES_DATA = [
@@ -12,7 +22,7 @@ let SERVICES_DATA = [
     is_paid: true,
     price_label: "مدفوع (استضافة ونطاق ودعم)",
     icon: "fa-laptop-code",
-    desc: "تصميم وتطوير مواقع ويب متجاوبة 100% مع الهواتف للجمعيات والمشروعات، مع ربط بوابات التبرع وتوثيق المشروعات وقصص الأثر المجتمعي.",
+    desc: "تصميم وتطوير مواقع ويب متجاوبة 100% مع الهواتف للجمعيات والمشروعات، مع ربط بوابات التبرع وتوثيق المشروعات وقصص الأثر التنموي.",
     features: [
       "نطاق رسمي (.org / .com) واستضافة سحابية خاصة سريعة",
       "تصميم عصري متجاوب مع كافة أحجام الهواتف والشاشات",
@@ -22,15 +32,15 @@ let SERVICES_DATA = [
   },
   {
     id: "digital_transformation",
-    title: "2. التحول الرقمي وأتمتة العمليات السحابية",
+    title: "2. التحول الرقمي وأتمتة المشروعات السحابية",
     category: "digital",
     is_paid: true,
     price_label: "مدفوع (حجز سيرفر سحابي واستضافة)",
     icon: "fa-network-wired",
-    desc: "نقل الجمعية من السجلات الورقية إلى منظومة سحابية متكاملة وقواعد بيانات آمنة لإدارة المستفيدين والأنشطة والتقارير.",
+    desc: "نقل الجمعية من السجلات الورقية إلى منظومة سحابية متكاملة وقواعد بيانات آمنة لإدارة المشروعات والأنشطة والتقارير.",
     features: [
-      "تجهيز قواعد بيانات سحابية وتشفير بيانات المستفيدين",
-      "أتمتة استمارات التقديم وطلبات المساعدات والفرز",
+      "تجهيز قواعد بيانات سحابية وتشفير سجلات المشروعات",
+      "أتمتة استمارات التقديم وسجلات العمليات والفرز",
       "تدريب كوادر الجمعية على الأدوات الرقمية الحديثة",
       "ربط الإدارات واستخراج تقارير إحصائية دورية"
     ]
@@ -52,7 +62,7 @@ let SERVICES_DATA = [
   },
   {
     id: "grants_proposals",
-    title: "4. كتابة المقترحات وصياغة المكون الذكي للمنح",
+    title: "4. التقديم على المنح وصياغة مقترحات المشروعات",
     category: "grants",
     is_paid: false,
     price_label: "مبادرة واستشارة مجانية",
@@ -60,7 +70,7 @@ let SERVICES_DATA = [
     desc: "إعداد الملف المؤسسي للجمعية، مراجعة معايير الجهات المانحة الدولية والمحلية، وصياغة مقترحات المشروعات والمكون الذكي للمسابقات.",
     features: [
       "تجهيز الملف التعريفي المؤسسي أمام الجهات المانحة",
-      "صياغة وتطوير المكون الذكي للمشروعات الخضراء",
+      "صياغة وتطوير المكون الذكي للمشروعات التنموية والبيئية",
       "مراجعة معايير القبول في المنح القومية والدولية",
       "إرشاد الجمعيات لاستيفاء متطلبات التمويل والشراكات"
     ]
@@ -82,15 +92,15 @@ let SERVICES_DATA = [
   },
   {
     id: "impact_dashboard",
-    title: "6. بناء لوحات متابعة وتقييم الأثر المجتمعي (M&E)",
+    title: "6. إدارة المشروعات ولوحات متابعة وتقييم الأثر (M&E)",
     category: "digital",
     is_paid: true,
     price_label: "مدفوع (تجهيز وبرمجة)",
     icon: "fa-chart-pie",
-    desc: "لوحات تحكم ذكية (Dashboards) ترصد مؤشرات الأداء، وتوزيع المساعدات جغرافياً، وحجم الإنجاز لتسهيل عرضها أمام مجالس الإدارة والمانحين.",
+    desc: "لوحات تحكم ذكية (Dashboards) ترصد مؤشرات الأداء، وتوزيع المشروعات جغرافياً، وحجم الإنجاز لتسهيل عرضها أمام المانحين.",
     features: [
-      "رصد لحظي للمستفيدين والمشروعات المنفذة",
-      "خرائط جغرافية لمناطق التدخل والاحتياج",
+      "رصد لحظي للمشروعات المنفذة ومؤشرات الأداء",
+      "خرائط جغرافية لمناطق التدخل والاحتياج التنموي",
       "تصدير تقارير بيانية تفاعلية بصيغ PDF و Excel",
       "تحليل مؤشرات خفض الانبعاثات للمشروعات البيئية"
     ]
@@ -102,10 +112,10 @@ let SERVICES_DATA = [
     is_paid: false,
     price_label: "مبادرة واستشارة مجانية",
     icon: "fa-chalkboard-user",
-    desc: "ورش عمل تدريبية متخصصة بالتعاون مع PROTIC لتأهيل العاملين بالجمعيات في مجالات الحوكمة، القيادة، والتحول الرقمي والبيئي.",
+    desc: "ورش عمل تدريبية متخصصة بالتعاون مع PROTIC لتأهيل العاملين بالجمعيات في مجالات الإدارة التنموية الفعالة والتحول الرقمي والبيئي.",
     features: [
       "ورش عمل تفاعلية حول إدارة الجمعيات الأهلية",
-      "تدريب على استخدام أدوات الذكاء الاصطناعي في العمل الأهلي",
+      "تدريب على استخدام أدوات الذكاء الاصطناعي في العمل التنموي",
       "جلسات توجيه فردية لمسؤولي المشروعات التنموية",
       "حقائب تدريبية موثقة ودليل عمل مؤسسي"
     ]
@@ -117,9 +127,9 @@ let SERVICES_DATA = [
     is_paid: true,
     price_label: "مدفوع (استهلاك أدوات AI)",
     icon: "fa-robot",
-    desc: "تطويع أدوات ونماذج الذكاء الاصطناعي للرد الآلي على استفسارات المستفيدين وتلخيص أبحاث المشروعات وتصنيف المقترحات.",
+    desc: "تطويع أدوات ونماذج الذكاء الاصطناعي للرد الآلي وتلخيص أبحاث المشروعات وتصنيف المقترحات التنموية بكفاءة عالية.",
     features: [
-      "مساعد ذكي للرد الآلي لخدمة المستفيدين والمتطوعين",
+      "مساعد ذكي للرد الآلي لخدمة فرق العمل والمتطوعين",
       "تلخيص سريع للتقارير وأوراق السياسات التنموية",
       "أدوات ذكية لصياغة وتدقيق المحتوى والمراسلات",
       "تكامل مع الواتساب والمنصات الرسمية"
@@ -146,6 +156,15 @@ document.addEventListener("DOMContentLoaded", () => {
   calculateNgohubWater();
   calculateServicesImpact();
   loadSubmissionsInboxCount();
+  checkCookieConsent();
+
+  // Read hash from URL and navigate to deep link
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash && PAGE_SEO_MAP[initialHash]) {
+    switchTab(initialHash, false);
+  } else {
+    updatePageSeoMetadata('home');
+  }
 });
 
 // --- 4. Dark / Light Theme Engine ---
@@ -193,30 +212,118 @@ function closeMobileDrawer() {
   if (overlay) overlay.classList.remove('active');
 }
 
-// --- 6. SPA Router & Tab Switcher (Updated for Impact, Calculators, Partners, Services, Grants, About, Admin) ---
-function switchTab(tabId) {
+// --- 6. Master SPA History Router & SEO Metadata Engine ---
+const PAGE_SEO_MAP = {
+  home: {
+    title: "NGOHUB | منصة التمكين المؤسسي للجمعيات الأهلية والتقديم على المنح وإدارة المشاريع",
+    desc: "منصة NGOHUB هي المنصة الرائدة في مصر لدعم وتمكين الجمعيات والمؤسسات الأهلية والمنظمات غير الربحية؛ نقدم خدمات متكاملة في التقديم على المنح التنموية، إدارة المشاريع غير الربحية، تصميم المواقع الرسمية، وأتمتة العمليات والأنظمة المؤسسية.",
+    hash: ""
+  },
+  services: {
+    title: "دليل خدمات الجمعيات الأهلية والتحول الرقمي | NGOHUB",
+    desc: "دليل خدمات متكامل للمنظمات غير الحكومية: تطوير المواقع الرسمية، أتمتة المشروعات السحابية، تنظيم برامج المتطوعين، ودعم التقديم على المنح.",
+    hash: "services"
+  },
+  grants: {
+    title: "بوابة المنح والفرص التمويلية للجمعيات الأهلية (66+ منحة) | NGOHUB",
+    desc: "دليل المنح التنموية والدولية الموثقة: فرص تمويلية للمشروعات الخضراء والذكية، منح الجمعيات الناشئة، وبناء القدرات المؤسسية.",
+    hash: "grants"
+  },
+  impact: {
+    title: "محور الأثر وصون وترشيد المياه للجمعيات | NGOHUB",
+    desc: "توثيق وفر أكثر من 3.5 مليون لتر مياه نقية و850 ألف جنيه سنوياً عبر التحول الرقمي والحلول الزراعية بالتعاون مع GCT.",
+    hash: "impact"
+  },
+  calculators: {
+    title: "الحاسبات التفاعلية ومقياس الجاهزية للمنح | NGOHUB",
+    desc: "أدوات رقمية فورية لحساب الوفر المائي والمالي للجمعية وقياس مؤشر الجاهزية المؤسسية للقبول في المنح الدولية.",
+    hash: "calculators"
+  },
+  partners: {
+    title: "شركاء النجاح وسابقة التعاون التنموي | NGOHUB",
+    desc: "سجل الشراكات الاستراتيجية مع ProTic للتدريب، Green Climate Technology (GCT)، والجمعيات الأهلية الشريكة.",
+    hash: "partners"
+  },
+  about: {
+    title: "عن منصة NGOHUB | الرؤية ومنهجية التمكين المؤسسي",
+    desc: "تعرف على منصة NGOHUB: من نحن، ماذا نقدم، شركاؤنا، وتوافقنا الكامل مع أحكام قانون الجمعيات الأهلية المصري 149/2019.",
+    hash: "about"
+  },
+  contact: {
+    title: "تواصل مع NGOHUB | طلب استشارة ودعم الجمعية",
+    desc: "قنوات التواصل المباشر مع مستشاري المنصة عبر الواتساب والفيسبوك والبريد لطلب الاستشارات وتطوير المشروعات.",
+    hash: "contact"
+  },
+  admin: {
+    title: "لوحة تحكم الإدارة (CMS) | NGOHUB",
+    desc: "إدارة محتوى المنصة، تحديث المنح، ومتابعة طلبات الخدمات.",
+    hash: "admin"
+  }
+};
+
+function updatePageSeoMetadata(tabId) {
+  const meta = PAGE_SEO_MAP[tabId] || PAGE_SEO_MAP.home;
+  document.title = meta.title;
+
+  const descMeta = document.querySelector('meta[name="description"]');
+  if (descMeta) descMeta.setAttribute('content', meta.desc);
+
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', meta.title);
+
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', meta.desc);
+
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) {
+    canonicalLink.setAttribute('href', 'https://ngo-hub.com/');
+  }
+}
+
+function switchTab(tabId, pushHistory = true) {
+  // Normalize tabId
+  if (!tabId || !PAGE_SEO_MAP[tabId]) tabId = 'home';
+
   // Hide all sections
   const sections = document.querySelectorAll('.page-section');
   sections.forEach(sec => sec.classList.remove('active-section'));
 
   // Target mapping
-  let targetSectionId = 'section-home';
-  if (tabId === 'grants') targetSectionId = 'section-grants';
-  else if (tabId === 'services') targetSectionId = 'section-services';
-  else if (tabId === 'impact') targetSectionId = 'section-impact';
-  else if (tabId === 'calculators') targetSectionId = 'section-calculators';
-  else if (tabId === 'partners') targetSectionId = 'section-partners';
-  else if (tabId === 'about') targetSectionId = 'section-about';
-  else if (tabId === 'admin') targetSectionId = 'section-admin';
+  const targetMap = {
+    home: 'section-home',
+    grants: 'section-grants',
+    services: 'section-services',
+    impact: 'section-impact',
+    calculators: 'section-calculators',
+    partners: 'section-partners',
+    about: 'section-about',
+    contact: 'section-contact',
+    admin: 'section-admin'
+  };
 
+  const targetSectionId = targetMap[tabId] || 'section-home';
   const targetSec = document.getElementById(targetSectionId);
   if (targetSec) targetSec.classList.add('active-section');
 
   // Update Nav Links Active States
   updateNavActiveState(tabId);
 
-  // Scroll to top
+  // Update URL in browser bar & history
+  if (pushHistory) {
+    const newUrl = tabId === 'home' ? window.location.pathname : `#${tabId}`;
+    if (window.location.hash !== (tabId === 'home' ? '' : `#${tabId}`)) {
+      history.pushState({ tab: tabId }, '', newUrl);
+    }
+  }
+
+  // Update dynamic SEO titles and canonical tags
+  updatePageSeoMetadata(tabId);
+
+  // Scroll smoothly to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Close mobile drawer if open
+  closeMobileDrawer();
 
   // If Admin Tab selected, render dashboard state
   if (tabId === 'admin') {
@@ -231,6 +338,12 @@ function switchTab(tabId) {
   }
 }
 
+// Listen to browser Back/Forward navigation
+window.addEventListener('popstate', (e) => {
+  const hash = window.location.hash.replace('#', '') || (e.state && e.state.tab) || 'home';
+  switchTab(hash, false);
+});
+
 function updateNavActiveState(tabId) {
   const navItems = {
     home: document.getElementById('nav-home'),
@@ -239,7 +352,8 @@ function updateNavActiveState(tabId) {
     impact: document.getElementById('nav-impact'),
     calculators: document.getElementById('nav-calculators'),
     grants: document.getElementById('nav-grants'),
-    partners: document.getElementById('nav-partners')
+    partners: document.getElementById('nav-partners'),
+    contact: document.getElementById('nav-contact')
   };
 
   Object.keys(navItems).forEach(key => {
@@ -256,7 +370,8 @@ function updateNavActiveState(tabId) {
     impact: document.getElementById('mNav-impact'),
     calculators: document.getElementById('mNav-calculators'),
     grants: document.getElementById('mNav-grants'),
-    partners: document.getElementById('mNav-partners')
+    partners: document.getElementById('mNav-partners'),
+    contact: document.getElementById('mNav-contact')
   };
 
   Object.keys(mNavItems).forEach(key => {
@@ -663,13 +778,13 @@ function calculateReadinessScore() {
 
   if (total <= 35) {
     if (titleElem) titleElem.innerText = "المستوى التأسيسي (تحتاج لتدخل ودعم تقني عاجل)";
-    if (adviceElem) adviceElem.innerText = "الجمعية تفتقر للبنية الرقمية والحوكمة الأساسية المشروطة لدى المانحين الدوليين. انقر على زر (عرض التقرير التشخيصي) لمعرفة الفجوات وخطة التطوير.";
+    if (adviceElem) adviceElem.innerText = "الجمعية تفتقر للبنية الرقمية والتنظيم الإداري الأساسي المشروط لدى المانحين الدوليين. انقر على زر (عرض التقرير التشخيصي) لمعرفة الفجوات وخطة التطوير.";
   } else if (total <= 70) {
     if (titleElem) titleElem.innerText = "المستوى الواعد (جاهزية متوسطة تحتاج استكمال)";
     if (adviceElem) adviceElem.innerText = "تمتلك الجمعية مقومات جيدة، ولكن توجد فجوات في توثيق الأثر أو صياغة المقترحات الذكية. طالع التقرير التشخيصي لتحديد الخطوة التالية.";
   } else {
     if (titleElem) titleElem.innerText = "المستوى المتقدم (مؤهلة ومكتملة المعايير للمنح الكبرى)";
-    if (adviceElem) adviceElem.innerText = "ممتاز! تمتلك الجمعية بنية رقمية وحوكمة متميزة تمكنها من المنافسة والفوز بالمنح التنموية والدولية المتاحة في بوابتنا.";
+    if (adviceElem) adviceElem.innerText = "ممتاز! تمتلك الجمعية بنية رقمية وإدارية متميزة تمكنها من المنافسة والفوز بالمنح التنموية والدولية المتاحة في بوابتنا.";
   }
 }
 
@@ -692,13 +807,13 @@ function openDiagnosticReportModal() {
 
   if (total <= 35) {
     popTitle.innerText = "المستوى المؤسسي: تأسيسي أولي (بحاجة لخطة تأهيل)";
-    popOverview.innerText = "أظهر التحليل وجود فجوات جوهرية في البنية الرقمية وحوكمة البيانات وقنوات التواصل الرسمية، مما يقلل فرص الجمعية في اجتياز الفرز الأولي للمنح.";
+    popOverview.innerText = "أظهر التحليل وجود فجوات جوهرية في البنية الرقمية وإدارة البيانات وقنوات التواصل الرسمية، مما يقلل فرص الجمعية في اجتياز الفرز الأولي للمنح.";
   } else if (total <= 70) {
     popTitle.innerText = "المستوى المؤسسي: واعد ومتوسط الجاهزية";
     popOverview.innerText = "تمتلك الجمعية رصيداً جيداً، إلا أن غياب المكون الذكي المقنن أو أتمتة حصر الساعات قد يعيق حصولها على المنح التنافسية الكبرى.";
   } else {
     popTitle.innerText = "المستوى المؤسسي: متقدم ومؤهل للشراكات الدولية";
-    popOverview.innerText = "الجمعية تلتزم بأعلى معايير الحوكمة والشفافية الرقمية وتعد نموذجاً رائداً ومؤهلاً لاستقطاب التمويلات والمنح متعددة السنوات.";
+    popOverview.innerText = "الجمعية تلتزم بأعلى معايير الإدارة والشفافية الرقمية وتعد نموذجاً رائداً ومؤهلاً لاستقطاب التمويلات والمنح متعددة السنوات.";
   }
 
   // Build Strengths, Weaknesses, and Roadmap dynamically
@@ -714,25 +829,25 @@ function openDiagnosticReportModal() {
     roadmap.push("بناء وتدشين موقع إلكتروني رسمي للجمعية بنطاق .org مع صفحة لتوثيق المشروعات وقصص الأثر.");
   }
 
-  // Criterion 2: Cloud Beneficiaries Database
+  // Criterion 2: Cloud Database
   if (q2 > 10) {
-    strengths.push("وجود قواعد بيانات سحابية مشفرة ومنظمة للمستفيدين تضمن عدم ازدواجية المساعدات وسرعة الفرز.");
+    strengths.push("وجود قواعد بيانات سحابية مشفرة ومنظمة للمشاريع والعمليات تضمن دقة وسرعة إدارة البيانات واستخراج المؤشرات.");
   } else {
-    weaknesses.push("الاعتماد على السجلات الورقية أو ملفات Excel المبعثرة يعرض بيانات المستفيدين للمخاطر ويعيق استخراج المؤشرات.");
-    roadmap.push("أتمتة سجلات المستفيدين وإنشاء قاعدة بيانات سحابية مركزية مشفرة لتصنيف الأسر والمساعدات.");
+    weaknesses.push("الاعتماد على السجلات الورقية أو ملفات Excel المبعثرة يعرض بيانات العمليات للمخاطر ويعيق استخراج المؤشرات.");
+    roadmap.push("أتمتة العمليات الإدارية وإنشاء قاعدة بيانات سحابية مركزية مشفرة لإدارة ومتابعة المشاريع والأنشطة التنموية.");
   }
 
-  // Criterion 3: Volunteer Governance
+  // Criterion 3: Volunteer Management
   if (q3 > 10) {
-    strengths.push("منظومة حوكمة موثقة للمتطوعين تشمل تسجيل الساعات وتصنيف المهارات وإصدار الشهادات.");
+    strengths.push("منظومة منظمة وموثقة للمتطوعين تشمل تسجيل الساعات وتصنيف المهارات وإصدار الشهادات.");
   } else {
     weaknesses.push("افتقار برامج التطوع للتوثيق الرقمي للساعات وحصر مهارات الكوادر الشابة.");
     roadmap.push("تطبيق استمارة تسجيل إلكترونية للمتطوعين ونظام حصر الساعات لتقديمها في تقارير المانحين.");
   }
 
-  // Criterion 4: Financial Governance
+  // Criterion 4: Financial Transparency
   if (q4 > 10) {
-    strengths.push("حوكمة مالية وإدارية شفافة مع وجود قوائم مالية مدققة سنوياً.");
+    strengths.push("إدارة مالية وإدارية شفافة مع وجود قوائم مالية مدققة سنوياً.");
   } else {
     weaknesses.push("عدم نشر أو تدقيق القوائم المالية السنوية وهو شرط إلزامي لدى 90% من الصناديق المانحة.");
     roadmap.push("اعتماد وتدقيق القوائم المالية من محاسب قانوني ونشر ملخص تقرير الشفافية المؤسسية.");
@@ -878,6 +993,7 @@ function renderServices() {
 
 // --- 12. Modals Management ---
 function openServiceModal(serviceId) {
+  serviceFormOpenedTime = Date.now();
   const modal = document.getElementById('serviceRequestModal');
   const typeInput = document.getElementById('serviceReqType');
   const titleElem = document.getElementById('sModalTitle');
@@ -999,16 +1115,50 @@ function handleAddGrantSubmit(e) {
   showToast("✅ تمت إضافة المنحة الجديدة بنجاح وحفظها في قاعدة البيانات!");
 }
 
-// --- 13. Service Request Form Handler ---
+// --- 13. Service Request Form Handler & Security Protections ---
+function sanitizeText(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+let lastServiceSubmitTime = 0;
+let serviceFormOpenedTime = Date.now();
+
 function handleServiceFormSubmit(e) {
   e.preventDefault();
 
-  const serviceId = document.getElementById('serviceReqType').value;
-  const ngoName = document.getElementById('reqNgoName').value.trim();
-  const contactPerson = document.getElementById('reqContactPerson').value.trim();
-  const phone = document.getElementById('reqPhone').value.trim();
-  const gov = document.getElementById('reqGov').value.trim();
-  const details = document.getElementById('reqDetails').value.trim();
+  // 1. Honeypot Anti-Spam Check (hidden field filled only by bots)
+  const honeypot = document.getElementById('hp_org_website')?.value.trim();
+  if (honeypot) {
+    console.warn("[Security] Bot submission blocked via honeypot.");
+    closeServiceModal();
+    return;
+  }
+
+  // 2. Rapid Automated Submission Protection (<1s indicates a bot script)
+  if (Date.now() - serviceFormOpenedTime < 1000) {
+    console.warn("[Security] Rapid automated submission blocked.");
+    return;
+  }
+
+  // 3. Debounce Protection (5 seconds between submissions)
+  if (Date.now() - lastServiceSubmitTime < 5000) {
+    showToast("⚠️ يرجى الانتظار بضع ثوانٍ قبل إرسال طلب جديد.");
+    return;
+  }
+  lastServiceSubmitTime = Date.now();
+
+  const serviceId = sanitizeText(document.getElementById('serviceReqType').value);
+  const ngoName = sanitizeText(document.getElementById('reqNgoName').value.trim());
+  const contactPerson = sanitizeText(document.getElementById('reqContactPerson').value.trim());
+  const phone = sanitizeText(document.getElementById('reqPhone').value.trim());
+  const gov = sanitizeText(document.getElementById('reqGov').value.trim());
+  const details = sanitizeText(document.getElementById('reqDetails').value.trim());
 
   const submission = {
     id: 'req_' + Date.now(),
@@ -1111,12 +1261,27 @@ function renderAdminState() {
   }
 }
 
-function handleAdminLogin(e) {
+// Secure SHA-256 hash helper using browser Web Crypto API
+async function sha256Hash(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Master Admin Auth Hash (Zero Plaintext Secrets in Client Code)
+const ADMIN_CREDENTIALS_HASH = "58e0ed995c18ba76856ed79fccd66d9143a9d1b89a04bc1c66ade05ae222581d";
+
+async function handleAdminLogin(e) {
   e.preventDefault();
   const user = document.getElementById('adminUsername').value.trim();
   const pass = document.getElementById('adminPass').value;
 
-  if (user === 'admin' && pass === 'ngohub2026') {
+  const combined = `${user}:${pass}`;
+  const computedHash = await sha256Hash(combined);
+  const customHash = localStorage.getItem('ngohub_admin_custom_hash');
+
+  if (computedHash === ADMIN_CREDENTIALS_HASH || (customHash && computedHash === customHash)) {
     adminAuthenticated = true;
     showToast("✅ تم تسجيل دخول الإدارة بنجاح");
     renderAdminState();
@@ -1376,4 +1541,27 @@ function showToast(text) {
       toast.classList.remove('show');
     }, 3500);
   }
+}
+
+// --- 17. Cookie Consent Management (GDPR & Law 151/2020) ---
+function checkCookieConsent() {
+  const consent = localStorage.getItem('ngohub_cookie_consent');
+  const banner = document.getElementById('cookieConsentBanner');
+  if (!consent && banner) {
+    banner.style.display = 'block';
+  }
+}
+
+function acceptAllCookies() {
+  localStorage.setItem('ngohub_cookie_consent', 'all');
+  const banner = document.getElementById('cookieConsentBanner');
+  if (banner) banner.style.display = 'none';
+  showToast("شكراً لتفضيلكم، تم حفظ خيارات الخصوصية.");
+}
+
+function acceptNecessaryCookies() {
+  localStorage.setItem('ngohub_cookie_consent', 'necessary');
+  const banner = document.getElementById('cookieConsentBanner');
+  if (banner) banner.style.display = 'none';
+  showToast("تم تفعيل ملفات تعريف الارتباط الضرورية فقط.");
 }

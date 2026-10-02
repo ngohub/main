@@ -2881,3 +2881,117 @@ body {
   .admin-dash-actions { justify-content: stretch; }
   .admin-dash-actions button { width: 100%; }
 }
+
+/* ==================== COOKIE CONSENT BANNER ==================== */
+.cookie-consent-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-top: 2px solid var(--primary-green);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  padding: 16px 20px;
+  z-index: 99999;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.cookie-consent-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cookie-consent-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.cookie-consent-text .cookie-icon {
+  font-size: 1.6rem;
+  color: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.cookie-consent-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+.cookie-consent-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-cookie-accept {
+  background: var(--primary-green);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cookie-accept:hover {
+  background: var(--primary-green-dark);
+}
+
+.btn-cookie-necessary {
+  background: var(--bg-card-alt);
+  color: var(--text-dark);
+  border: 1px solid var(--border-color);
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cookie-necessary:hover {
+  background: var(--border-color);
+}
+
+.cookie-privacy-link {
+  color: var(--primary-purple);
+  text-decoration: underline;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.footer-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-admin-link:hover {
+  color: var(--primary-green-light);
+  text-decoration: underline;
+}

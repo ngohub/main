@@ -21,5 +21,10 @@ __pycache__/
 .system_generated/
 *.log
 .DS_Store
-Thumbs.db
 tests/
+
+# Scratch & Large Archives
+*.zip
+audit_script.py
+generate_audit_pdf.py
+generate_preview_png.py
