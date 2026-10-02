@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- 1. Homepage & Core Enablement Platform -->
   <url>
     <loc>https://ngo-hub.com/</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://ngo-hub.com/assets/images/%D9%84%D9%88%D8%AC%D9%88%20ngohub%20clean.png</image:loc>
-      <image:title>شعار منصة NGOHUB لتمكين الجمعيات الأهلية</image:title>
-      <image:caption>المنظومة التنموية لدعم وتمكين الجمعيات والمؤسسات الأهلية في التقديم على المنح وإدارة المشاريع والتحول الرقمي</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://ngo-hub.com/assets/images/og-image.png?v=2</image:loc>
-      <image:title>NGOHUB Platform Preview</image:title>
-      <image:caption>منصة NGOHUB - تمكين الجمعيات الأهلية والتقديم على المنح</image:caption>
-    </image:image>
   </url>
 
   <!-- 2. Services Directory -->
   <url>
     <loc>https://ngo-hub.com/services.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,7 +20,7 @@
   <!-- 3. Grants & Global Opportunities Portal (66+ Grants) -->
   <url>
     <loc>https://ngo-hub.com/grants.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -39,7 +28,7 @@
   <!-- 4. Interactive Calculators & Readiness Score -->
   <url>
     <loc>https://ngo-hub.com/calculators.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -47,7 +36,7 @@
   <!-- 5. Impact & Water Conservation Showcase -->
   <url>
     <loc>https://ngo-hub.com/impact.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -55,7 +44,7 @@
   <!-- 6. Partners & Strategic Alliances -->
   <url>
     <loc>https://ngo-hub.com/partners.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -63,7 +52,7 @@
   <!-- 7. About NGOHUB Platform & Mission -->
   <url>
     <loc>https://ngo-hub.com/about.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -71,7 +60,7 @@
   <!-- 8. Contact & Consultation Request -->
   <url>
     <loc>https://ngo-hub.com/contact.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -79,7 +68,7 @@
   <!-- 9. Mobile App Simulator & Download Hub -->
   <url>
     <loc>https://ngo-hub.com/simulator.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -87,7 +76,7 @@
   <!-- 10. Privacy Policy (Law 151/2020 & GDPR) -->
   <url>
     <loc>https://ngo-hub.com/privacy.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -95,7 +84,7 @@
   <!-- 11. Institutional Terms of Service -->
   <url>
     <loc>https://ngo-hub.com/terms.html</loc>
-    <lastmod>2026-10-02T22:00:00+02:00</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
