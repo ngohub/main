@@ -300,10 +300,6 @@ function switchTab(tabId, pushHistory = true) {
   // Normalize tabId
   if (!tabId || !PAGE_SEO_MAP[tabId]) tabId = 'home';
 
-  // Hide all sections
-  const sections = document.querySelectorAll('.page-section');
-  sections.forEach(sec => sec.classList.remove('active-section'));
-
   // Target mapping
   const targetMap = {
     home: 'section-home',
@@ -319,7 +315,18 @@ function switchTab(tabId, pushHistory = true) {
 
   const targetSectionId = targetMap[tabId] || 'section-home';
   const targetSec = document.getElementById(targetSectionId);
-  if (targetSec) targetSec.classList.add('active-section');
+
+  // If target section does not exist on current page, redirect cleanly to index.html with hash
+  if (!targetSec) {
+    window.location.href = `index.html#${tabId}`;
+    return;
+  }
+
+  // Hide all sections
+  const sections = document.querySelectorAll('.page-section');
+  sections.forEach(sec => sec.classList.remove('active-section'));
+
+  targetSec.classList.add('active-section');
 
   // Update Nav Links Active States
   updateNavActiveState(tabId);
