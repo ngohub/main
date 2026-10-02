@@ -156,6 +156,7 @@ body {
 }
 .brand-text h1,
 .brand-text .brand-title {
+  display: block;
   font-size: 1.35rem;
   font-weight: 900;
   color: var(--primary-green);
@@ -165,7 +166,6 @@ body {
   padding: 0;
   white-space: nowrap !important;
 }
-.brand-text span,
 .brand-text .brand-subtitle {
   font-size: 0.76rem;
   color: var(--primary-purple);
