@@ -190,19 +190,19 @@
 <body>
 
   <!-- ==================== 1. SITE HEADER & NAVIGATION ==================== -->
-  <header class="main-header" id="siteHeader">
-    <div class="header-container">
-      <a href="index.html" class="header-brand" title="الرئيسية - NGOHUB">
+  <header class="site-header main-header" id="siteHeader">
+    <div class="container header-wrapper header-container">
+      <a href="index.html" class="brand-logo header-brand" title="الرئيسية - NGOHUB">
         <div class="brand-logo-frame">
-          <img src="assets/images/logo_header.png" alt="شعار منصة NGOHUB" class="brand-logo-img" width="42" height="42" fetchpriority="high">
+          <img src="assets/images/logo_header.png" alt="شعار منصة NGOHUB" id="headerLogoImg" class="brand-logo-img" width="42" height="42" fetchpriority="high">
         </div>
         <div class="brand-text">
-          <span class="brand-title">NGOHUB</span>
+          <h1 class="brand-title">NGOHUB</h1>
           <span class="brand-subtitle">منصة تمكين وتطوير الجمعيات الأهلية</span>
         </div>
       </a>
 
-      <nav class="nav-links" id="mainNav">
+      <nav class="main-nav nav-links" id="mainNav" aria-label="التنقل الرئيسي">
         <a href="index.html" class="nav-btn active" id="nav-home">
           <i class="fa-solid fa-house"></i> الرئيسية
         </a>
@@ -235,7 +235,7 @@
           <span class="btn-vol-text">طلب دعم للجمعية</span>
         </button>
 
-        <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (داكن / فاتح)">
+        <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (داكن / فاتح)" aria-label="تبديل المظهر">
           <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
 
