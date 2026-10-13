@@ -10,7 +10,6 @@
 *.idsig
 
 # Allow public web assets, simulator, and APK
-!تطبيق_الهاتف/www/
 !assets/apk/NGOHUB.apk
 !NGOHUB.apk
 
@@ -23,10 +22,26 @@ __pycache__/
 .DS_Store
 tests/
 
+# Internal Developer Documentation & Audit Reports
+UPDATE.md
+AUDIT_REPORT.md
+docs/audit_reports/
+docs/specs/
+docs/guides/
+docs/ngohub_digital_access_portal.html
+docs/ngohub_digital_access_portal.pdf
+ngohub_digital_access_portal.html
+ngohub_digital_access_portal.pdf
+ngohub_digital_access_portal.png
+
+# Duplicate mobile source
+تطبيق_الهاتف/
+
 # Scratch & Large Archives
 *.zip
 audit_script.py
 generate_audit_pdf.py
 generate_preview_png.py
 بوستات فيس مع الشراكة بروتك/
+
 
