@@ -107,7 +107,7 @@
         </div>
         <div class="brand-text">
           <span class="brand-title">NGOHUB</span>
-          <span class="brand-subtitle">منصة تمكين وتطوير الجمعيات الأهلية</span>
+          <span class="brand-subtitle">تحالف ومنصة تمكين الجمعيات الأهلية</span>
         </div>
       </a>
 
@@ -139,9 +139,9 @@
       </nav>
 
       <div class="header-action-group">
-        <button class="btn-header-vol-apply" onclick="openServiceModal('web_dev')" title="طلب دعم أو استشارة للجمعية">
-          <i class="fa-solid fa-paper-plane"></i>
-          <span class="btn-vol-text">طلب دعم للجمعية</span>
+        <button class="btn-header-vol-apply" onclick="openNgoRegisterModal()" title="سجّل جمعيتك الآن وانضم للتحالف">
+          <i class="fa-solid fa-building-circle-check"></i>
+          <span class="btn-vol-text">سجّل جمعيتك الآن</span>
         </button>
 
         <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (داكن / فاتح)" aria-label="تبديل المظهر">
@@ -217,8 +217,8 @@
     </nav>
 
     <div class="mobile-drawer-footer">
-      <button class="btn-primary full-width" onclick="openServiceModal('web_dev'); closeMobileDrawer();">
-        <i class="fa-solid fa-paper-plane"></i> طلب دعم أو استشارة للجمعية
+      <button class="btn-primary full-width" onclick="openNgoRegisterModal(); closeMobileDrawer();">
+        <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن وانضم للتحالف
       </button>
       <button class="btn-drawer-theme" onclick="toggleTheme()">
         <i class="fa-solid fa-moon" id="mThemeIcon"></i> تبديل المظهر
@@ -234,81 +234,107 @@
   <!-- Page Hero Banner -->
   <div class="page-hero-banner">
     <div class="container">
-      <div class="page-hero-badge"><i class="fa-solid fa-certificate"></i> أدوات الذكاء التنموي</div>
-      <h1 class="page-hero-title">الحاسبات التفاعلية ومؤشرات الكفاءة</h1>
-      <p class="page-hero-subtitle">احسب مؤشر الجاهزية المؤسسية لجمعيتك وتعرف على خطة التحسين الموصى بها للقبول في المنح الدولية وصون الموارد</p>
+      <div class="hero-nisgp-badge"><i class="fa-solid fa-trophy text-gold"></i> الحائز على المركز الأول في المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</div>
+      <h1 class="page-hero-title">مركز المحاكاة والتحليل المؤسسي التفاعلي | اتخذ قرارات جمعيتك بالأرقام والجدوى</h1>
+      <p class="page-hero-subtitle">أدوات قياس استراتيجية فورية لمجالس إدارات وقيادات الجمعيات الأهلية؛ لتشخيص الهدر التشغيلي، فحص الجاهزية والامتثال للمنح الدولية، واكتشاف فرص التمويل المناسبة بالأرقام الموثقة لا بالتخمين.</p>
     </div>
   </div>
+
+  <!-- Page Clarity & Purpose Box -->
+  <div class="container">
+    <div class="page-clarity-box">
+      <div class="clarity-item">
+        <span class="clarity-item-title"><i class="fa-solid fa-compass"></i> ما هو هذا المركز؟</span>
+        <p class="clarity-item-text">منصة محاكاة وتشخيص رقمي تقدم 4 حاسبات تخصصية مبنية وفق معايير الجهات المانحة الدولية وممارسات الإدارة الرشيدة للكيانات غير الربحية.</p>
+      </div>
+      <div class="clarity-item">
+        <span class="clarity-item-title"><i class="fa-solid fa-briefcase"></i> كيف يخدم مجلس إدارة الجمعية؟</span>
+        <p class="clarity-item-text">يكتشف مواطن الهدر المالي والإداري، يقيس نسبة استيفاء الجمعية لمعايير المانحين، ويوضح بدقة مدى أهلية مشروعاتكم لاقتناص المنح الكبرى.</p>
+      </div>
+      <div class="clarity-item">
+        <span class="clarity-item-title"><i class="fa-solid fa-circle-check"></i> الخطوة التالية الموصى بها</span>
+        <p class="clarity-item-text">استخدم القائمة المنسدلة أدناه لاختيار التحليل المطلوب، ثم سجّل جمعيتك في التحالف لبدء سد الفجوات واسترداد الهدر المالي فوراً.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 5. DEDICATED CALCULATORS HUB PAGE ==================== -->
   <section id="section-calculators" class="page-section active-section">
     <div class="calculators-page-container">
-      <div class="container" style="padding-top: 30px;">
-        <div class="section-header">
-          <div class="section-subtitle" style="color: var(--primary-purple);">
-            <i class="fa-solid fa-calculator"></i> الأدوات الحسابية الذكية للجمعيات
+      <div class="container">
+        <!-- Interactive Dropdown Selector & Synced Tab Switcher -->
+        <div class="calc-switcher-wrapper">
+          <div class="calc-switcher-header">
+            <div class="calc-switcher-label">
+              <i class="fa-solid fa-layer-group"></i>
+              <span>اختر الحاسبة أو نوع التحليل المؤسسي المطلوب:</span>
+            </div>
+            <button class="btn-hero-register" onclick="openNgoRegisterModal()" style="padding: 8px 18px !important; font-size: 0.92rem !important;">
+              <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لتطبيق النتائج
+            </button>
           </div>
-          <h3 class="section-title">مركز الحاسبات التفاعلية لترشيد المياه والأثر والجاهزية</h3>
-          <p class="section-desc">أدوات رقمية ذكية صُممت خصيصاً لمساعدة الجمعيات الأهلية على قياس وفر المياه، أثر الخدمات، والجاهزية للمنح</p>
+          
+          <select id="calculatorDropdownSelector" class="calc-switcher-select" onchange="onCalculatorSelectChange(this.value)">
+            <option value="feasibility" selected>📊 1. حاسبة الجدوى الاقتصادية والوفر التشغيلي (حساب الهدر المالي والورقي والإداري ومنع ازدواجية الصرف)</option>
+            <option value="readiness">🎯 2. حاسبة التدقيق المؤسسي والجاهزية الشاملة للمنح (تشخيص فجوات الجمعية ومعايير المانحين والقانون 149)</option>
+            <option value="matching">🌐 3. حاسبة مطابقة المنح والفرص التمويلية (محرك اكتشاف ومطابقة المنح المناسبة لجمعيتك)</option>
+            <option value="water">🌿 4. حاسبة الأثر وصون الموارد (قياس وفر المياه والبصمة البيئية والورقية)</option>
+          </select>
+
+          <!-- Synced Subtabs Navigator -->
+          <div class="calc-subtabs-nav" style="margin-top: 10px;">
+            <button class="calc-tab-btn active" data-calc="feasibility" onclick="switchCalcSubTab('feasibility')">
+              <i class="fa-solid fa-chart-pie text-emerald"></i> حاسبة الجدوى والوفر المالي
+            </button>
+            <button class="calc-tab-btn" data-calc="readiness" onclick="switchCalcSubTab('readiness')">
+              <i class="fa-solid fa-stethoscope text-gold"></i> التدقيق والجاهزية للمنح
+            </button>
+            <button class="calc-tab-btn" data-calc="matching" onclick="switchCalcSubTab('matching')">
+              <i class="fa-solid fa-bullseye text-purple"></i> مطابقة قطاعات المنح
+            </button>
+            <button class="calc-tab-btn" data-calc="water" onclick="switchCalcSubTab('water')">
+              <i class="fa-solid fa-droplet text-emerald"></i> الأثر وصون الموارد
+            </button>
+          </div>
         </div>
 
-        <!-- Calculators Subtabs Navigator -->
-        <div class="calc-subtabs-nav">
-          <button class="calc-tab-btn active" data-calc="water" onclick="switchCalcSubTab('water')">
-            <i class="fa-solid fa-droplet text-emerald"></i> حاسبة NGOHUB الشاملة لترشيد وصون المياه
-          </button>
-          <button class="calc-tab-btn" data-calc="services" onclick="switchCalcSubTab('services')">
-            <i class="fa-solid fa-cubes-stacked text-purple"></i> حاسبة خدمات NGOHUB والأثر المتوقع
-          </button>
-          <button class="calc-tab-btn" data-calc="readiness" onclick="switchCalcSubTab('readiness')">
-            <i class="fa-solid fa-stethoscope text-gold"></i> حاسبة الجاهزية والتأهيل للمنح
-          </button>
-        </div>
-
-        <!-- ==================== SUB-PANEL 1: NGOHUB WATER CALCULATOR ==================== -->
-        <div class="calc-panel active-panel" id="calc-panel-water">
+        <!-- ==================== SUB-PANEL 1: ECONOMIC FEASIBILITY & OPERATIONAL SAVINGS ==================== -->
+        <div class="calc-panel active-panel" id="calc-panel-feasibility">
           <div class="water-calc-grid">
             <!-- Inputs Column -->
             <div class="water-branches-container">
-              <!-- Branch 1: Indirect Water (Paperless Transformation) -->
               <div class="water-branch-box">
                 <div class="water-branch-header">
                   <div class="water-branch-title">
-                    <i class="fa-solid fa-file-invoice text-purple"></i>
-                    <span>1. الترشيد غير المباشر (إلغاء المعاملات الورقية بالجمعية)</span>
+                    <i class="fa-solid fa-calculator text-emerald"></i>
+                    <span>معاملات التشغيل والميزانية بالجمعية</span>
                   </div>
-                  <span class="water-branch-badge badge-indirect-water">10 لتر / ورقة</span>
+                  <span class="water-branch-badge badge-direct-water">حساب الهدر المؤسسي</span>
                 </div>
                 
-                <div class="eco-input-group">
-                  <div class="eco-input-label-row">
-                    <label for="waterPaperRange"><i class="fa-solid fa-file-lines text-purple"></i> عدد المعاملات والسجلات الورقية شهرياً:</label>
-                    <span class="eco-val-badge" id="waterPaperValText">1,000 معاملة/شهر</span>
-                  </div>
-                  <input type="range" id="waterPaperRange" min="100" max="10000" step="100" value="1000" class="eco-slider" oninput="calculateNgohubWater()">
-                  <small class="input-hint">استمارات تسجيل، كشوف تسليم، إيصالات، استبيانات ميدانية، وخطابات إدارية</small>
+                <div class="form-group" style="margin-bottom: 20px;">
+                  <label for="feasStaff" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-users text-purple"></i> إجمالي عدد الموظفين والمتطوعين الدائمين:
+                  </label>
+                  <input type="number" id="feasStaff" min="1" max="500" value="20" class="form-input" oninput="calculateFeasibility()">
+                  <small class="input-hint">إجمالي الكادر الإداري والميداني العامل على ملفات المشروعات والمساعدات</small>
                 </div>
-                
-                <div style="background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 15px; font-size: 0.88rem; color: var(--text-muted);">
-                  <i class="fa-solid fa-circle-info text-emerald"></i> كل معاملة ورقية يتم الاستغناء عنها عبر منصة NGOHUB توفر 10 لترات من المياه النقية المستهلكة في صناعة الورق وتوفر 2.5 ج.م تكلفة طباعة وأرشفة.
-                </div>
-              </div>
 
-              <!-- Branch 2: Direct Water (GCT Irrigation Workshops & Agriculture) -->
-              <div class="water-branch-box">
-                <div class="water-branch-header">
-                  <div class="water-branch-title">
-                    <i class="fa-solid fa-seedling text-emerald"></i>
-                    <span>2. الترشيد المباشر (ورش وحقول ترشيد مياه الري والتسميد بالأزولا مع GCT)</span>
+                <div class="eco-input-group" style="margin-bottom: 20px;">
+                  <div class="eco-input-label-row">
+                    <label for="feasPaper"><i class="fa-solid fa-file-invoice text-emerald"></i> عدد المعاملات والاستمارات والسجلات الورقية شهرياً:</label>
+                    <span class="eco-val-badge" id="feasPaperValText">1,500 معاملة/شهرياً</span>
                   </div>
-                  <span class="water-branch-badge badge-direct-water">Green Cap Team</span>
+                  <input type="range" id="feasPaper" min="100" max="10000" step="100" value="1500" class="eco-slider" oninput="calculateFeasibility()">
+                  <small class="input-hint">استمارات حصر الأسر، كشوف المساعدات، محاضر مجلس الإدارة، أذون الصرف، وأوراق الأرشيف</small>
                 </div>
 
                 <div class="form-group">
-                  <label for="waterGctWorkshops" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-seedling text-emerald"></i> عدد ورش وحقول ترشيد مياه الري للمزارعين سنوياً (GCT):
+                  <label for="feasBudget" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-coins text-gold"></i> حجم ميزانية المساعدات والبرامج السنوية التقديرية (ج.م):
                   </label>
-                  <input type="number" id="waterGctWorkshops" min="0" max="100" value="8" class="form-input" oninput="calculateNgohubWater()">
-                  <small class="input-hint">تسهم كل ورشة وحقل إرشادي في توفير ما يقارب 50,000 لتر مياه ري عبر ممارسات الري الحديث والتسميد الحيوي (أزولا مصر)</small>
+                  <input type="number" id="feasBudget" min="10000" max="50000000" step="50000" value="500000" class="form-input" oninput="calculateFeasibility()">
+                  <small class="input-hint">إجمالي أموال المساعدات، الصناديق التنموية، والتبرعات الموجهة للأنشطة الميدانية سنوياً</small>
                 </div>
               </div>
             </div>
@@ -316,193 +342,40 @@
             <!-- Output Dashboard Column -->
             <div class="water-summary-card">
               <div class="water-summary-total">
-                <span class="summary-header-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">
-                  <i class="fa-solid fa-droplet"></i> إجمالي الوفر المائي السنوي المحقق
+                <span class="summary-header-badge" style="background: rgba(47, 110, 58, 0.15); color: var(--primary-green);">
+                  <i class="fa-solid fa-wallet"></i> إجمالي الوفر المالي والتشغيلي المحقق
                 </span>
-                <div class="water-big-num" id="resWaterTotalLiters">520,000 لتر</div>
-                <div style="font-size: 1.1rem; font-weight: 800; color: #10b981;" id="resWaterTotalM3">520.0 م³</div>
-                <small style="color: var(--text-muted);">مياه عذبة نقية تمت حمايتها وصونها من الهدر</small>
+                <div class="water-big-num" id="resFeasTotalSavings" style="color: var(--primary-green);">95,000 ج.م سنوياً</div>
+                <small style="color: var(--text-muted);">أموال وموارد مستردة لصالح الفئات الأكثر احتياجاً بدلاً من الهدر الإداري</small>
               </div>
 
               <div class="water-breakdown-list">
                 <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-file-invoice text-purple"></i> وفر مائي غير مباشر (رقمي):</span>
-                  <strong id="resWaterIndirect" style="color: #0284c7;">120,000 لتر</strong>
+                  <span><i class="fa-solid fa-file-excel text-purple"></i> وفر الطباعة والأوراق والأرشفة:</span>
+                  <strong id="resFeasDirectMoney" style="color: #0284c7;">45,000 ج.م</strong>
                 </div>
                 <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-water text-emerald"></i> وفر مائي مباشر (GCT):</span>
-                  <strong id="resWaterDirect" style="color: #10b981;">400,000 لتر</strong>
+                  <span><i class="fa-solid fa-clock text-emerald"></i> ساعات عمل إداري مهدرة مستعادة:</span>
+                  <strong id="resFeasAdminHours" style="color: #10b981;">4,500 ساعة عمل</strong>
                 </div>
                 <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-coins text-gold"></i> وفر مالي تشغيلي سنوي:</span>
-                  <strong id="resWaterMoneySaved" style="color: #10b981;">30,000 ج.م</strong>
+                  <span><i class="fa-solid fa-shield-halved text-gold"></i> منع ازدواجية صرف المساعدات (10%):</span>
+                  <strong id="resFeasDuplicateAid" style="color: #b45309;">50,000 ج.م</strong>
                 </div>
                 <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-house-chimney-user text-purple"></i> يعادل استهلاك شهري لـ:</span>
-                  <strong id="resWaterFamilies">1,485 أسرة</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-tree text-emerald"></i> حماية من قطع الأشجار:</span>
-                  <strong id="resWaterTrees">1.4 شجرة</strong>
+                  <span><i class="fa-solid fa-chart-line text-purple"></i> مؤشر كفاءة التشغيل الرقمي:</span>
+                  <strong style="color: var(--primary-green);">+68% نمو كفاءة</strong>
                 </div>
               </div>
 
-              <button class="btn-primary full-width" onclick="openServiceModal('digital_transformation')">
-                <i class="fa-solid fa-paper-plane"></i> بدء تنفيذ هذا الوفر لجمعيتك
+              <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center; margin-top: 15px;">
+                <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لحماية مواردك التشغيلية
               </button>
             </div>
           </div>
         </div>
 
-        <!-- ==================== SUB-PANEL 2: SERVICES IMPACT CALCULATOR ==================== -->
-        <div class="calc-panel" id="calc-panel-services">
-          <div class="services-calc-grid">
-            <!-- Checklist Column -->
-            <div class="services-checklist-container">
-              <div style="margin-bottom: 12px; font-weight: 800; font-size: 1.05rem; color: var(--text-dark);">
-                <i class="fa-solid fa-list-check text-emerald"></i> حددي الخدمات التي ترغب جمعيتك في الحصول عليها لمعرفة حجم الأثر التراكمي:
-              </div>
-
-              <!-- Service 1: Website -->
-              <div class="service-check-item selected" id="card_srv_web" onclick="toggleServiceCheck('srv_web')">
-                <input type="checkbox" id="chk_srv_web" class="service-check-box" checked onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>تصميم موقع إلكتروني تعريفي ورسمي للجمعية (.org)</span>
-                    <span style="color: var(--primary-green); font-size: 0.85rem;">مكون أساسي للمنح</span>
-                  </div>
-                  <div class="service-check-desc">بناء واجهة رقمية رسمية توثق مشروعات الجمعية، تقارير مجلس الإدارة، وقصص الأثر لتعزيز ثقة المانحين.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +150K لتر مياه</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +37,500 ج.م وفر</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +15% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Service 2: Digital Transformation & Operations -->
-              <div class="service-check-item selected" id="card_srv_portal" onclick="toggleServiceCheck('srv_portal')">
-                <input type="checkbox" id="chk_srv_portal" class="service-check-box" checked onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>منظومة التحول الرقمي وأتمتة البيانات والعمليات المؤسسية</span>
-                    <span style="color: #0284c7; font-size: 0.85rem;">أعلى وفر مائي ومالي</span>
-                  </div>
-                  <div class="service-check-desc">نقل الدفاتر الورقية إلى قواعد بيانات سحابية مشفرة لإدارة وتنسيق العمليات الميدانية، كشوف التوزيع، ومتابعة المشاريع.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +250K لتر مياه</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +62,500 ج.م وفر</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +25% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Service 3: Volunteers Management -->
-              <div class="service-check-item" id="card_srv_volunteers" onclick="toggleServiceCheck('srv_volunteers')">
-                <input type="checkbox" id="chk_srv_volunteers" class="service-check-box" onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>نظام إدارة وتنظيم المتطوعين وتوثيق الساعات</span>
-                    <span style="color: var(--primary-purple); font-size: 0.85rem;">تنظيم وموثوقية</span>
-                  </div>
-                  <div class="service-check-desc">استمارات تسجيل إلكترونية، تصنيف المهارات، توثيق ساعات التطوع بدقة، وإصدار شهادات معتمدة بدون أي أوراق.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +80K لتر مياه</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +20,000 ج.م وفر</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +15% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Service 4: Grants Proposals & Donor Eligibility -->
-              <div class="service-check-item" id="card_srv_grants" onclick="toggleServiceCheck('srv_grants')">
-                <input type="checkbox" id="chk_srv_grants" class="service-check-box" onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>التأهيل وصياغة مقترحات المنح الدولية والمناخية</span>
-                    <span style="color: #b45309; font-size: 0.85rem;">تمويل مباشر</span>
-                  </div>
-                  <div class="service-check-desc">إعداد الملف المؤسسي ومراجعة معايير الجهات المانحة وصياغة المشروعات للمنافسة على تمويلات GEF, UNDP والجهات الكبرى.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +120K لتر مياه</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +45,000 ج.م عائد</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +25% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Service 5: Field Water Campaigns with GCT -->
-              <div class="service-check-item" id="card_srv_water_gct" onclick="toggleServiceCheck('srv_water_gct')">
-                <input type="checkbox" id="chk_srv_water_gct" class="service-check-box" onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>حملات ترشيد مياه الري والحلول الزراعية الخضراء مع Green Cap Team (GCT)</span>
-                    <span style="color: #10b981; font-size: 0.85rem;">أثر بيئي ومائي مباشر</span>
-                  </div>
-                  <div class="service-check-desc">عقد ورش حقلية إرشادية وتدريب المزارعين والجمعيات الريفية على تقنيات ترشيد مياه الري والتسميد بالأزولا مع GCT.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +300K لتر مياه مباشر</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +50,000 ج.م أثر</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +15% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Service 6: Smart Component for Green Projects -->
-              <div class="service-check-item" id="card_srv_smart_comp" onclick="toggleServiceCheck('srv_smart_comp')">
-                <input type="checkbox" id="chk_srv_smart_comp" class="service-check-box" onchange="calculateServicesImpact()" onclick="event.stopPropagation()">
-                <div class="service-check-info">
-                  <div class="service-check-title">
-                    <span>إعداد المكون التكنولوجي الذكي للمشروعات التنموية (دعم مجاني)</span>
-                    <span style="color: var(--primary-purple); font-size: 0.85rem;">دعم المشروعات غير الربحية</span>
-                  </div>
-                  <div class="service-check-desc">دعم المشروعات المجتمعية والبيئية غير الهادفة للربح بتوفير المكون الذكي، المنصة، والتطبيق مجاناً لمدة عام كامل للتأهل والحصول على المنح والتمويل المستدام.</div>
-                  <div class="service-check-badges">
-                    <span class="service-calc-badge badge-water-save"><i class="fa-solid fa-droplet"></i> +100K لتر مياه</span>
-                    <span class="service-calc-badge badge-money-save"><i class="fa-solid fa-coins"></i> +25,000 ج.م دعم</span>
-                    <span class="service-calc-badge badge-readiness-boost"><i class="fa-solid fa-arrow-trend-up"></i> +20% جاهزية</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Summary Output Column -->
-            <div class="services-impact-summary-card">
-              <span class="summary-header-badge" id="srvOutCountBadge">2 خدمات مختارة</span>
-              <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">الأثر التراكمي للخدمات المختارة</h4>
-
-              <div class="summary-stats-grid">
-                <div class="summary-stat-box">
-                  <div class="summary-stat-num" style="color: #0284c7;" id="srvOutWater">400,000 لتر</div>
-                  <div class="summary-stat-label">إجمالي وفر المياه السنوي</div>
-                </div>
-                <div class="summary-stat-box">
-                  <div class="summary-stat-num" style="color: #10b981;" id="srvOutMoney">100,000 ج.م</div>
-                  <div class="summary-stat-label">إجمالي الوفر المالي السنوي</div>
-                </div>
-                <div class="summary-stat-box">
-                  <div class="summary-stat-num" style="color: var(--primary-purple);" id="srvOutPaper">40,000 ورقة</div>
-                  <div class="summary-stat-label">معاملات وأوراق ملغاة</div>
-                </div>
-                <div class="summary-stat-box">
-                  <div class="summary-stat-num" style="color: #b45309;" id="srvOutScore">50%</div>
-                  <div class="summary-stat-label">نسبة الجاهزية للمنح</div>
-                </div>
-              </div>
-
-              <div class="water-breakdown-item" style="margin-top: 5px;">
-                <span><i class="fa-solid fa-clock-rotate-left text-emerald"></i> ساعات عمل إداري موفرة:</span>
-                <strong id="srvOutHours" style="color: var(--text-dark);">500 ساعة</strong>
-              </div>
-
-              <button class="btn-primary full-width" onclick="requestSelectedServices()">
-                <i class="fa-solid fa-paper-plane"></i> طلب باقة الخدمات المختارة لجمعيتك
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SUB-PANEL 3: READINESS ASSESSMENT TOOL ==================== -->
+        <!-- ==================== SUB-PANEL 2: READINESS & INSTITUTIONAL AUDIT ==================== -->
         <div class="calc-panel" id="calc-panel-readiness">
           <div class="readiness-card" style="box-shadow: none; border: 1px solid var(--border-color); background: var(--bg-card);">
             <div class="readiness-header">
@@ -586,10 +459,204 @@
                   <button class="btn-primary" onclick="openDiagnosticReportModal()">
                     <i class="fa-solid fa-file-invoice"></i> عرض التقرير التشخيصي الشامل وخطة العمل
                   </button>
-                  <button class="btn-secondary" onclick="openServiceModal('web_dev')">
-                    <i class="fa-solid fa-paper-plane"></i> طلب تدخل وتطوير لجمعيتك
+                  <button class="btn-hero-register" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لسد الفجوات وتأهيلها للمنح
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 3: GRANT MATCHING ENGINE ==================== -->
+        <div class="calc-panel" id="calc-panel-matching">
+          <div class="water-calc-grid">
+            <!-- Inputs Column -->
+            <div class="water-branches-container">
+              <div class="water-branch-box">
+                <div class="water-branch-header">
+                  <div class="water-branch-title">
+                    <i class="fa-solid fa-bullseye text-purple"></i>
+                    <span>محددات مطابقة المنح والتمويل الدولي</span>
+                  </div>
+                  <span class="water-branch-badge badge-direct-water">قاعدة بيانات 66 منحة</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                  <label for="matchingSector" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-shapes text-emerald"></i> مجال ونشاط الجمعية الأساسي:
+                  </label>
+                  <select id="matchingSector" class="form-input" onchange="calculateGrantMatching()">
+                    <option value="climate" selected>البيئة، المناخ، الزراعة، والطاقة المتجددة (أعلى تمويل متاح)</option>
+                    <option value="digital">التحول الرقمي، الابتكار، والتكنولوجيا المجتمعية</option>
+                    <option value="economic">التمكين الاقتصادي والمشروعات متناهية الصغر</option>
+                    <option value="education">التعليم، محو الأمية، وبناء القدرات</option>
+                    <option value="health">الرعاية الصحية والإغاثة الاجتماعية</option>
+                  </select>
+                  <small class="input-hint">المجال الرئيسي المسجل في لائحة النظام الأساسي لجمعيتكم</small>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                  <label for="matchingRegion" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-map-location-dot text-purple"></i> النطاق الجغرافي لعمليات الجمعية:
+                  </label>
+                  <select id="matchingRegion" class="form-input" onchange="calculateGrantMatching()">
+                    <option value="all" selected>كافة محافظات الجمهورية (نطاق مركزي أو وطني)</option>
+                    <option value="upper_egypt">محافظات صعيد مصر (أولوية قصوى لدى المانحين)</option>
+                    <option value="delta">محافظات الدلتا والوجه البحري</option>
+                    <option value="border">المحافظات الحدودية والمناطق النائية</option>
+                  </select>
+                  <small class="input-hint">النطاق الجغرافي المحدد في ترخيص إشهار الجمعية</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="matchingAge" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-calendar-check text-gold"></i> العمر الإشهاري والخبرة المؤسسية:
+                  </label>
+                  <select id="matchingAge" class="form-input" onchange="calculateGrantMatching()">
+                    <option value="established" selected>مشهرة منذ 3 سنوات فأكثر ولديها ميزانيات مدققة (أعلى نقاط تأهيل)</option>
+                    <option value="medium">مشهرة منذ سنة إلى 3 سنوات ولديها نشاط ميداني</option>
+                    <option value="new">حديثة الإشهار (أقل من عام - مسار الحاضنات والتمويل التأسيسي)</option>
+                  </select>
+                  <small class="input-hint">المعيار المحدد لقيمة سقف المنح التي يحق للجمعية التقديم عليها</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Output Dashboard Column -->
+            <div class="water-summary-card">
+              <div class="water-summary-total">
+                <span class="summary-header-badge" style="background: rgba(122, 75, 163, 0.15); color: var(--primary-purple);">
+                  <i class="fa-solid fa-magnifying-glass-chart"></i> نتيجة المطابقة اللحظية
+                </span>
+                <div class="water-big-num" id="resMatchScore" style="color: var(--primary-purple);">96%</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: var(--primary-green);" id="resMatchCount">19 منحة مطابقة</div>
+                <small id="resMatchBadge" style="color: var(--primary-green); font-weight: 700; display: block; margin-top: 6px;">
+                  تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري
+                </small>
+              </div>
+
+              <div class="water-breakdown-list">
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-database text-purple"></i> إجمالي الفرص بقاعدتنا:</span>
+                  <strong>66 منحة موثقة</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-check-double text-emerald"></i> نوع الدعم المتاح:</span>
+                  <strong style="color: var(--primary-green);">منح لا تُرد (Non-repayable)</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-globe text-gold"></i> جهات التمويل المطابقة:</span>
+                  <strong style="color: #b45309;">GEF, UNDP, EU, سفارات</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-award text-purple"></i> دور تحالف NGOHUB:</span>
+                  <strong style="color: var(--primary-purple);">صياغة وتأهيل وملف كامل</strong>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center;">
+                  <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك للمنافسة على هذه المنح
+                </button>
+                <a href="grants.html" class="btn-secondary full-width" style="width: 100%; justify-content: center; text-decoration: none; text-align: center;">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض تفاصيل الـ 66 منحة
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 4: NGOHUB WATER & ENVIRONMENTAL CONSERVATION ==================== -->
+        <div class="calc-panel" id="calc-panel-water">
+          <div class="water-calc-grid">
+            <!-- Inputs Column -->
+            <div class="water-branches-container">
+              <!-- Branch 1: Indirect Water (Paperless Transformation) -->
+              <div class="water-branch-box">
+                <div class="water-branch-header">
+                  <div class="water-branch-title">
+                    <i class="fa-solid fa-file-invoice text-purple"></i>
+                    <span>1. الترشيد غير المباشر (إلغاء المعاملات الورقية بالجمعية)</span>
+                  </div>
+                  <span class="water-branch-badge badge-indirect-water">10 لتر / ورقة</span>
+                </div>
+                
+                <div class="eco-input-group">
+                  <div class="eco-input-label-row">
+                    <label for="waterPaperRange"><i class="fa-solid fa-file-lines text-purple"></i> عدد المعاملات والسجلات الورقية شهرياً:</label>
+                    <span class="eco-val-badge" id="waterPaperValText">1,000 معاملة/شهر</span>
+                  </div>
+                  <input type="range" id="waterPaperRange" min="100" max="10000" step="100" value="1000" class="eco-slider" oninput="calculateNgohubWater()">
+                  <small class="input-hint">استمارات حصر الأسر، كشوف التسليم، إيصالات المساعدات، محاضر مجلس الإدارة، وأوراق الأرشيف</small>
+                </div>
+                
+                <div style="background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 15px; font-size: 0.88rem; color: var(--text-muted);">
+                  <i class="fa-solid fa-circle-info text-emerald"></i> كل معاملة ورقية يتم الاستغناء عنها عبر منصة NGOHUB توفر 10 لترات من المياه النقية المستهلكة في صناعة الورق وتوفر 2.5 ج.م تكلفة طباعة وأرشفة.
+                </div>
+              </div>
+
+              <!-- Branch 2: Direct Water (GCT Irrigation Workshops & Agriculture) -->
+              <div class="water-branch-box">
+                <div class="water-branch-header">
+                  <div class="water-branch-title">
+                    <i class="fa-solid fa-seedling text-emerald"></i>
+                    <span>2. الترشيد المباشر (ورش وحقول ترشيد مياه الري والتسميد بالأزولا مع GCT)</span>
+                  </div>
+                  <span class="water-branch-badge badge-direct-water">Green Cap Team</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="waterGctWorkshops" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
+                    <i class="fa-solid fa-seedling text-emerald"></i> عدد ورش وحقول ترشيد مياه الري للمزارعين سنوياً (GCT):
+                  </label>
+                  <input type="number" id="waterGctWorkshops" min="0" max="100" value="8" class="form-input" oninput="calculateNgohubWater()">
+                  <small class="input-hint">تسهم كل ورشة وحقل إرشادي في توفير ما يقارب 50,000 لتر مياه ري عبر ممارسات الري الحديث والتسميد الحيوي (أزولا مصر)</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Output Dashboard Column -->
+            <div class="water-summary-card">
+              <div class="water-summary-total">
+                <span class="summary-header-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">
+                  <i class="fa-solid fa-droplet"></i> إجمالي الوفر المائي السنوي المحقق
+                </span>
+                <div class="water-big-num" id="resWaterTotalLiters">520,000 لتر</div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: #10b981;" id="resWaterTotalM3">520.0 م³</div>
+                <small style="color: var(--text-muted);">مياه عذبة نقية تمت حمايتها وصونها من الهدر</small>
+              </div>
+
+              <div class="water-breakdown-list">
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-file-invoice text-purple"></i> وفر مائي غير مباشر (رقمي):</span>
+                  <strong id="resWaterIndirect" style="color: #0284c7;">120,000 لتر</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-water text-emerald"></i> وفر مائي مباشر (GCT):</span>
+                  <strong id="resWaterDirect" style="color: #10b981;">400,000 لتر</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-coins text-gold"></i> وفر مالي تشغيلي سنوي:</span>
+                  <strong id="resWaterMoneySaved" style="color: #10b981;">30,000 ج.م</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-house-chimney-user text-purple"></i> يعادل استهلاك شهري لـ:</span>
+                  <strong id="resWaterFamilies">1,485 أسرة</strong>
+                </div>
+                <div class="water-breakdown-item">
+                  <span><i class="fa-solid fa-tree text-emerald"></i> حماية من قطع الأشجار:</span>
+                  <strong id="resWaterTrees">1.4 شجرة</strong>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center;">
+                  <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لتطبيق ممارسات صون الموارد
+                </button>
+                <a href="impact.html" class="btn-secondary full-width" style="width: 100%; justify-content: center; text-decoration: none; text-align: center;">
+                  <i class="fa-solid fa-award text-gold"></i> عرض التقرير البيئي والمائي المعتمد (NISGP)
+                </a>
               </div>
             </div>
           </div>
@@ -711,8 +778,8 @@
       <!-- Diagnostic Modal Footer Actions -->
       <div class="modal-actions-bar" style="margin-top: 25px;">
         <button type="button" class="btn-secondary" onclick="closeDiagnosticReportModal()">إغلاق التقرير</button>
-        <button type="button" class="btn-primary" onclick="closeDiagnosticReportModal(); openServiceModal('web_dev');">
-          <i class="fa-solid fa-paper-plane"></i> طلب خطة تدخل وتطوير مؤسسي
+        <button type="button" class="btn-hero-register" onclick="closeDiagnosticReportModal(); openNgoRegisterModal();">
+          <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لتنفيذ خطة التطوير المؤسسي
         </button>
       </div>
     </div>
@@ -911,8 +978,42 @@
     <i class="fa-solid fa-circle-check"></i> <span id="toastText">تمت العملية بنجاح</span>
   </div>
 
+  <!-- ==================== NGO ALLIANCE REGISTRATION MODAL (GOOGLE FORMS EMBED) ==================== -->
+  <div class="modal-overlay" id="ngoRegisterModal">
+    <div class="modal-card modal-register-card">
+      <button class="modal-close-btn" onclick="closeNgoRegisterModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-service-header" style="text-align: center; margin-bottom: 15px;">
+        <div class="hero-nisgp-badge" style="margin-bottom: 10px;">
+          <i class="fa-solid fa-trophy text-gold"></i> تحالف ومنصة تمكين الجمعيات الأهلية | NGOHUB
+        </div>
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--text-dark); margin-bottom: 6px;">
+          استمارة تسجيل الجمعية الأهلية والانضمام للتحالف
+        </h3>
+        <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 620px; margin: 0 auto;">
+          سجّل بيانات جمعيتك لتأهيلها للظهور أمام المانحين، مطابقة المنح الدولية، والاستفادة من خدمات الدعم المؤسسي والتحول الرقمي.
+        </p>
+      </div>
+
+      <!-- Embedded Google Form -->
+      <div class="google-form-embed-wrapper">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeHyKe4kvduC5r8L7-slvQltFID3AF5dJ5fxlgwzxPTUn7yTg/viewform?embedded=true" width="100%" height="860" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" title="نموذج تسجيل جمعية في NGOHUB">جارٍ تحميل استمارة التسجيل الرسمية…</iframe>
+      </div>
+
+      <!-- Direct WhatsApp Support Bar -->
+      <div class="form-wa-fallback-bar">
+        <div class="form-wa-fallback-text">
+          <i class="fa-brands fa-whatsapp text-emerald" style="font-size: 1.25rem;"></i>
+          <span>هل تفضل التسجيل أو الاستفسار المباشر مع أمانة التحالف؟</span>
+        </div>
+        <a href="https://wa.me/201026847508?text=السلام%20عليكم،%20أريد%20تسجيل%20جمعيتنا%20في%20تحالف%20NGOHUB" target="_blank" class="btn-wa-direct-reg">
+          <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب الرسمي
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 15. SITE COMPLIANCE & PRIVACY DOCK (ANTI-ADBLOCK & LAW 151/2020) ==================== -->
-  <div id="siteComplianceDock" class="site-compliance-dock" style="display: none;">
+  <div id="cookieConsentBanner" class="site-compliance-dock cookie-consent-banner" style="display: none;">
     <div class="compliance-dock-container">
       <div class="compliance-dock-text">
         <i class="fa-solid fa-shield-halved compliance-icon"></i>

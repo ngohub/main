@@ -228,11 +228,27 @@
   <div class="sim-wrapper">
     <!-- Left Details -->
     <div class="sim-info">
-      <span class="sim-badge"><i class="fa-solid fa-mobile-screen"></i> الإصدار الأصلي 2026</span>
+      <span class="sim-badge"><i class="fa-solid fa-mobile-screen"></i> الإصدار الأصلي 2026 | الحائز على المركز الأول بالمشروعات الخضراء الذكية</span>
       <h1>تطبيق <span>NGOHUB</span> الذكي</h1>
       <p>
         تطبيق الهاتف المتكامل للجمعيات الأهلية، يقدم كافة أدوات التحول الرقمي، حاسبة الأثر، بوابة 66 منحة، وثيقة سياسة الحماية والشكاوى، مع إمكانية التثبيت المباشر بصيغة APK.
       </p>
+
+      <!-- Simulator Clarity Box -->
+      <div class="page-clarity-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 14px; margin-bottom: 20px; font-size: 0.88rem; line-height: 1.6;">
+        <div class="clarity-item" style="margin-bottom: 10px;">
+          <span class="clarity-item-title" style="font-weight: 800; color: #4caf50; display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-question"></i> ما هو هذا المحاكي؟</span>
+          <p class="clarity-item-text" style="color: #cbd5e1; margin: 0;">محاكي تفاعلي حي لاختبار تطبيق الهاتف الذكي الخاص بمنصة وتحالف NGOHUB قبل تثبيته على أجهزة أعضاء مجلس الإدارة والكوادر الميدانية.</p>
+        </div>
+        <div class="clarity-item" style="margin-bottom: 10px;">
+          <span class="clarity-item-title" style="font-weight: 800; color: #a855f7; display: block; margin-bottom: 4px;"><i class="fa-solid fa-briefcase"></i> كيف يخدم جمعيتك ومجلس إدارتك؟</span>
+          <p class="clarity-item-text" style="color: #cbd5e1; margin: 0;">يمنح كوادركم إمكانية الوصول السريع لمحرك المنح، حاسبات الوفر المالي والأثر البيئي، وإدارة المساعدات من الميدان دون الحاجة لجهاز حاسوب.</p>
+        </div>
+        <div class="clarity-item">
+          <span class="clarity-item-title" style="font-weight: 800; color: #38bdf8; display: block; margin-bottom: 4px;"><i class="fa-solid fa-arrow-trend-up"></i> الخطوة التالية الموصى بها</span>
+          <p class="clarity-item-text" style="color: #cbd5e1; margin: 0;">سجّل جمعيتك في التحالف للحصول على النسخة المهيأة لقواعد بياناتكم المؤسسية ومطابقة المنح.</p>
+        </div>
+      </div>
 
       <ul class="features-list">
         <li><i class="fa-solid fa-circle-check"></i> شريط تنقل سفلي لمسي مع الحاسبات في المنتصف</li>
@@ -243,6 +259,9 @@
       </ul>
 
       <div class="sim-actions">
+        <button type="button" onclick="openNgoRegisterModal()" class="btn-download-apk" style="background: linear-gradient(135deg, #7a4ba3 0%, #582b80 100%); border-color: #a855f7; margin-bottom: 4px; cursor: pointer; border: none; font-family: inherit; font-size: 0.95rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن في تحالف NGOHUB
+        </button>
         <a href="NGOHUB.apk" download="NGOHUB.apk" class="btn-download-apk">
           <i class="fa-brands fa-android"></i> تثبيت وتحميل تطبيق الهاتف (NGOHUB.apk)
         </a>
@@ -263,6 +282,43 @@
       <iframe src="app_mobile/www/index.html" class="phone-screen" title="محاكي تطبيق NGOHUB"></iframe>
     </div>
   </div>
+
+  <!-- NGO Alliance Registration Modal -->
+  <div class="modal-overlay" id="ngoRegisterModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,0.78); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+    <div class="modal-card" style="background:#1e293b; color:#ffffff; max-width:760px; width:95%; max-height:92vh; border-radius:16px; border:1px solid #334155; padding:24px; position:relative; overflow-y:auto; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+      <button onclick="closeNgoRegisterModal()" style="position:absolute; top:16px; left:16px; background:#334155; border:none; color:#ffffff; width:36px; height:36px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
+      <div style="text-align:center; margin-bottom:15px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(217,119,6,0.15); border:1px solid rgba(217,119,6,0.3); border-radius:30px; font-size:0.82rem; font-weight:700; color:#fbbf24; margin-bottom:10px;">
+          <i class="fa-solid fa-trophy text-gold"></i> تحالف ومنصة تمكين الجمعيات الأهلية | NGOHUB
+        </div>
+        <h3 style="font-size:1.35rem; font-weight:800; color:#ffffff; margin-bottom:6px;">استمارة تسجيل الجمعية الأهلية والانضمام للتحالف</h3>
+        <p style="font-size:0.88rem; color:#94a3b8; max-width:580px; margin:0 auto;">سجّل بيانات جمعيتك لتأهيلها للظهور أمام المانحين، مطابقة المنح الدولية، والاستفادة من خدمات الدعم المؤسسي والتحول الرقمي.</p>
+      </div>
+      <div style="position:relative; width:100%; min-height:650px; border-radius:12px; overflow:hidden; background:#ffffff; border:1px solid #334155; margin:16px 0;">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeHyKe4kvduC5r8L7-slvQltFID3AF5dJ5fxlgwzxPTUn7yTg/viewform?embedded=true" width="100%" height="860" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" title="نموذج تسجيل جمعية في NGOHUB">جارٍ تحميل استمارة التسجيل الرسمية…</iframe>
+      </div>
+      <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:#cbd5e1;">
+          <i class="fa-brands fa-whatsapp text-emerald" style="font-size:1.15rem; color:#4ade80;"></i>
+          <span>هل تفضل التسجيل أو الاستفسار المباشر مع أمانة التحالف؟</span>
+        </div>
+        <a href="https://wa.me/201026847508?text=السلام%20عليكم،%20أريد%20تسجيل%20جمعيتنا%20في%20تحالف%20NGOHUB" target="_blank" style="background:#25D366; color:#ffffff; padding:7px 16px; border-radius:30px; font-size:0.84rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب الرسمي
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openNgoRegisterModal() {
+      var m = document.getElementById('ngoRegisterModal');
+      if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
+    function closeNgoRegisterModal() {
+      var m = document.getElementById('ngoRegisterModal');
+      if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+    }
+  </script>
 
 </body>
 </html>

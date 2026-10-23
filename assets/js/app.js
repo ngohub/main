@@ -176,10 +176,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateNavActiveState(activeTabKey);
 
-  // If in SPA index with deep link
+  // Auto-fill grants search from query parameter (e.g. ?q=... or ?search=...)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchVal = urlParams.get('q') || urlParams.get('search');
+    if (searchVal) {
+      const grantsInput = document.getElementById('grantsSearchInput');
+      if (grantsInput) {
+        grantsInput.value = searchVal;
+        filterGrantsMaster();
+      }
+    }
+  } catch (err) {}
+
+  // Calculator subtab direct link (e.g. calculators.html#readiness)
+  if (currentPath.includes('calculators') && window.location.hash) {
+    const calcSub = window.location.hash.replace('#', '');
+    if (['feasibility', 'readiness', 'matching', 'water', 'services'].includes(calcSub)) {
+      switchCalcSubTab(calcSub);
+    }
+  }
+
+  // If on index.html with a deep link to an old tab or admin
+  const isIndex = currentPath.endsWith('index.html') || currentPath.endsWith('/') || currentPath === '';
   const initialHash = window.location.hash.replace('#', '');
-  if (initialHash && PAGE_SEO_MAP[initialHash]) {
-    switchTab(initialHash, false);
+  if (isIndex && initialHash) {
+    if (initialHash === 'admin') {
+      switchTab('admin', false);
+    } else if (PAGE_SEO_MAP[initialHash] && initialHash !== 'home') {
+      window.location.replace(`${initialHash}.html`);
+    }
   }
 });
 
@@ -300,64 +326,84 @@ function switchTab(tabId, pushHistory = true) {
   // Normalize tabId
   if (!tabId || !PAGE_SEO_MAP[tabId]) tabId = 'home';
 
-  // Target mapping
-  const targetMap = {
-    home: 'section-home',
-    grants: 'section-grants',
-    services: 'section-services',
-    impact: 'section-impact',
-    calculators: 'section-calculators',
-    partners: 'section-partners',
-    about: 'section-about',
-    contact: 'section-contact',
-    admin: 'section-admin'
+  const standalonePages = {
+    home: 'index.html',
+    about: 'about.html',
+    services: 'services.html',
+    impact: 'impact.html',
+    calculators: 'calculators.html',
+    grants: 'grants.html',
+    partners: 'partners.html',
+    contact: 'contact.html'
   };
 
-  const targetSectionId = targetMap[tabId] || 'section-home';
-  const targetSec = document.getElementById(targetSectionId);
+  const currentPath = window.location.pathname.toLowerCase();
+  const isIndex = currentPath.endsWith('index.html') || currentPath.endsWith('/') || currentPath === '';
 
-  // If target section does not exist on current page, redirect cleanly to index.html with hash
-  if (!targetSec) {
-    window.location.href = `index.html#${tabId}`;
-    return;
-  }
-
-  // Hide all sections
-  const sections = document.querySelectorAll('.page-section');
-  sections.forEach(sec => sec.classList.remove('active-section'));
-
-  targetSec.classList.add('active-section');
-
-  // Update Nav Links Active States
-  updateNavActiveState(tabId);
-
-  // Update URL in browser bar & history
-  if (pushHistory) {
-    const newUrl = tabId === 'home' ? window.location.pathname : `#${tabId}`;
-    if (window.location.hash !== (tabId === 'home' ? '' : `#${tabId}`)) {
-      history.pushState({ tab: tabId }, '', newUrl);
+  // Admin routing
+  if (tabId === 'admin') {
+    const adminSec = document.getElementById('section-admin');
+    if (isIndex && adminSec) {
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(sec => sec.classList.remove('active-section'));
+      adminSec.classList.add('active-section');
+      updateNavActiveState('admin');
+      if (pushHistory) {
+        history.pushState({ tab: 'admin' }, '', '#admin');
+      }
+      updatePageSeoMetadata('admin');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMobileDrawer();
+      renderAdminState();
+      return;
+    } else {
+      window.location.href = 'index.html#admin';
+      return;
     }
   }
 
-  // Update dynamic SEO titles and canonical tags
-  updatePageSeoMetadata(tabId);
-
-  // Scroll smoothly to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Close mobile drawer if open
-  closeMobileDrawer();
-
-  // If Admin Tab selected, render dashboard state
-  if (tabId === 'admin') {
-    renderAdminState();
+  // Home routing
+  if (tabId === 'home') {
+    const homeSec = document.getElementById('section-home');
+    if (isIndex && homeSec) {
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(sec => sec.classList.remove('active-section'));
+      homeSec.classList.add('active-section');
+      updateNavActiveState('home');
+      if (pushHistory && window.location.hash) {
+        history.pushState({ tab: 'home' }, '', window.location.pathname);
+      }
+      updatePageSeoMetadata('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMobileDrawer();
+      return;
+    } else {
+      window.location.href = 'index.html';
+      return;
+    }
   }
 
-  // Trigger calculators update if opened
-  if (tabId === 'calculators') {
-    if (typeof calculateNgohubWater === 'function') calculateNgohubWater();
-    if (typeof calculateServicesImpact === 'function') calculateServicesImpact();
-    if (typeof calculateReadinessScore === 'function') calculateReadinessScore();
+  // For any standalone page (about, services, impact, calculators, grants, partners, contact)
+  const targetFile = standalonePages[tabId];
+  if (targetFile) {
+    if (!currentPath.endsWith(targetFile.toLowerCase())) {
+      window.location.href = targetFile;
+      return;
+    } else {
+      const sec = document.querySelector('.page-section');
+      if (sec) sec.classList.add('active-section');
+      updateNavActiveState(tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMobileDrawer();
+      if (tabId === 'calculators') {
+        if (typeof calculateFeasibility === 'function') calculateFeasibility();
+        if (typeof calculateGrantMatching === 'function') calculateGrantMatching();
+        if (typeof calculateNgohubWater === 'function') calculateNgohubWater();
+        if (typeof calculateServicesImpact === 'function') calculateServicesImpact();
+        if (typeof calculateReadinessScore === 'function') calculateReadinessScore();
+      }
+      return;
+    }
   }
 }
 
@@ -415,16 +461,22 @@ function handleHeroSearchKey(e) {
 function triggerHeroSearch() {
   const val = document.getElementById('heroQuickSearchInput')?.value || '';
   const grantsInput = document.getElementById('grantsSearchInput');
-  if (grantsInput) grantsInput.value = val;
-  switchTab('grants');
-  filterGrantsMaster();
+  if (grantsInput) {
+    grantsInput.value = val;
+    filterGrantsMaster();
+  } else {
+    window.location.href = `grants.html?q=${encodeURIComponent(val)}`;
+  }
 }
 
 function quickSearchTag(tag) {
   const grantsInput = document.getElementById('grantsSearchInput');
-  if (grantsInput) grantsInput.value = tag;
-  switchTab('grants');
-  filterGrantsMaster();
+  if (grantsInput) {
+    grantsInput.value = tag;
+    filterGrantsMaster();
+  } else {
+    window.location.href = `grants.html?q=${encodeURIComponent(tag)}`;
+  }
 }
 
 function scrollToReadiness() {
@@ -632,8 +684,18 @@ function calculateEcoImpact() {
   if (moneyElem) moneyElem.innerText = Number(financialSavingsEgp).toLocaleString('ar-EG');
 }
 
-// --- 8.2 Subtab Navigator for Calculators Hub ---
+// --- 8.2 Subtab & Dropdown Navigator for Calculators Hub ---
+function onCalculatorSelectChange(calcId) {
+  switchCalcSubTab(calcId);
+}
+
 function switchCalcSubTab(calcId) {
+  // Sync dropdown selector if present
+  const dropdown = document.getElementById('calculatorDropdownSelector');
+  if (dropdown && dropdown.value !== calcId) {
+    dropdown.value = calcId;
+  }
+
   const tabs = document.querySelectorAll('.calc-tab-btn');
   tabs.forEach(tab => {
     if (tab.getAttribute('data-calc') === calcId) tab.classList.add('active');
@@ -646,10 +708,123 @@ function switchCalcSubTab(calcId) {
     else p.classList.remove('active-panel');
   });
 
-  if (calcId === 'water') calculateNgohubWater();
-  else if (calcId === 'services') calculateServicesImpact();
+  if (calcId === 'feasibility') calculateFeasibility();
   else if (calcId === 'readiness') calculateReadinessScore();
+  else if (calcId === 'matching') calculateGrantMatching();
+  else if (calcId === 'water') calculateNgohubWater();
+  else if (calcId === 'services') calculateServicesImpact();
 }
+
+// --- 8.2.1 Economic Feasibility & Cost Savings Calculator ---
+function calculateFeasibility() {
+  const staffInput = document.getElementById('feasStaff');
+  const paperRange = document.getElementById('feasPaper');
+  const budgetInput = document.getElementById('feasBudget');
+
+  const staff = parseFloat(staffInput ? staffInput.value : '20') || 20;
+  const monthlyPaper = parseFloat(paperRange ? paperRange.value : '1500') || 1500;
+  const annualAidBudget = parseFloat(budgetInput ? budgetInput.value : '500000') || 500000;
+
+  const paperLabel = document.getElementById('feasPaperValText');
+  if (paperLabel) {
+    paperLabel.innerText = Number(monthlyPaper).toLocaleString('ar-EG') + " معاملة/شهرياً";
+  }
+
+  // 1. Direct paper, printing, stationery & physical archiving waste (2.5 EGP per document)
+  const annualPaperSheets = monthlyPaper * 12;
+  const directPaperWaste = Math.round(annualPaperSheets * 2.5);
+
+  // 2. Administrative hours lost in manual paperwork (15 minutes = 0.25 hour per transaction)
+  const annualAdminHours = Math.round(annualPaperSheets * 0.25);
+
+  // 3. Duplicate aid & uncoordinated distribution leakage prevented (10% standard saving)
+  const duplicateAidPrevented = Math.round(annualAidBudget * 0.10);
+
+  // 4. Total Operational Value Recovered
+  const totalSavings = directPaperWaste + duplicateAidPrevented;
+
+  // DOM Outputs
+  const elemDirect = document.getElementById('resFeasDirectMoney');
+  const elemHours = document.getElementById('resFeasAdminHours');
+  const elemDuplicate = document.getElementById('resFeasDuplicateAid');
+  const elemTotal = document.getElementById('resFeasTotalSavings');
+
+  if (elemDirect) elemDirect.innerText = Number(directPaperWaste).toLocaleString('ar-EG') + " ج.م";
+  if (elemHours) elemHours.innerText = Number(annualAdminHours).toLocaleString('ar-EG') + " ساعة عمل";
+  if (elemDuplicate) elemDuplicate.innerText = Number(duplicateAidPrevented).toLocaleString('ar-EG') + " ج.م";
+  if (elemTotal) elemTotal.innerText = Number(totalSavings).toLocaleString('ar-EG') + " ج.م سنوياً";
+}
+
+// --- 8.2.2 Grant Matching Engine Calculator ---
+function calculateGrantMatching() {
+  const sectorElem = document.getElementById('matchingSector');
+  const regionElem = document.getElementById('matchingRegion');
+  const ageElem = document.getElementById('matchingAge');
+
+  const sector = sectorElem ? sectorElem.value : 'climate';
+  const region = regionElem ? regionElem.value : 'all';
+  const age = ageElem ? ageElem.value : 'established';
+
+  let matchScore = 84;
+  let matchCount = 14;
+
+  if (sector === 'climate') {
+    matchScore += 8;
+    matchCount = 19;
+  } else if (sector === 'digital' || sector === 'economic') {
+    matchScore += 6;
+    matchCount = 16;
+  } else if (sector === 'education' || sector === 'health') {
+    matchScore += 4;
+    matchCount = 15;
+  }
+
+  if (age === 'established') {
+    matchScore += 4;
+  } else if (age === 'new') {
+    matchScore -= 6;
+    matchCount = Math.max(6, matchCount - 4);
+  }
+
+  if (matchScore > 98) matchScore = 98;
+
+  const scoreElem = document.getElementById('resMatchScore');
+  const countElem = document.getElementById('resMatchCount');
+  const badgeElem = document.getElementById('resMatchBadge');
+
+  if (scoreElem) scoreElem.innerText = matchScore + "%";
+  if (countElem) countElem.innerText = matchCount + " منحة مطابقة";
+  if (badgeElem) {
+    if (matchScore >= 88) {
+      badgeElem.innerText = "تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري";
+      badgeElem.style.color = "var(--primary-green)";
+    } else {
+      badgeElem.innerText = "تطابق جيد يتطلب استكمال بعض وثائق الجاهزية";
+      badgeElem.style.color = "#d97706";
+    }
+  }
+}
+
+// --- 8.2.3 NGO Alliance Registration Modal Handlers ---
+function openNgoRegisterModal() {
+  const modal = document.getElementById('ngoRegisterModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  } else {
+    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeHyKe4kvduC5r8L7-slvQltFID3AF5dJ5fxlgwzxPTUn7yTg/viewform?embedded=true', '_blank');
+  }
+}
+
+function closeNgoRegisterModal() {
+  const modal = document.getElementById('ngoRegisterModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+
 
 // --- 8.3 NGOHUB Water Calculator (Direct via GCT & Indirect via Paperless Transformation) ---
 function calculateNgohubWater() {

@@ -3396,3 +3396,312 @@ a.nav-btn, a.mobile-nav-item {
 .stat-highlight-cyan { color: #0e7490 !important; }
 [data-theme="dark"] .stat-highlight-amber { color: #f59e0b !important; }
 [data-theme="dark"] .stat-highlight-cyan { color: #22d3ee !important; }
+
+/* ==========================================================================
+   16. NGO ALLIANCE REPOSITIONING & INTERACTIVE CALCULATORS SUITE
+   ========================================================================== */
+
+/* Hero NISGP Verified Badge */
+.hero-nisgp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(47, 110, 58, 0.16) 100%);
+  border: 1px solid rgba(217, 119, 6, 0.45);
+  color: #b45309;
+  padding: 8px 22px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12);
+  transition: var(--transition);
+}
+.hero-nisgp-badge i {
+  color: #d97706;
+  font-size: 1.15rem;
+}
+[data-theme="dark"] .hero-nisgp-badge {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.22) 0%, rgba(47, 110, 58, 0.28) 100%);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+}
+
+/* Primary High-Visibility Register Button */
+.btn-hero-register {
+  background: linear-gradient(135deg, #2F6E3A 0%, #1E4E27 100%) !important;
+  color: #ffffff !important;
+  font-size: 1.12rem !important;
+  font-weight: 800 !important;
+  padding: 14px 28px !important;
+  border-radius: var(--radius-md) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 22px rgba(47, 110, 58, 0.35) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+}
+.btn-hero-register:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(47, 110, 58, 0.45) !important;
+  background: linear-gradient(135deg, #378245 0%, #245e30 100%) !important;
+}
+
+/* Hero Stats Achievement Cards */
+.hero-stat-card-gold {
+  background: var(--bg-card);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat-card-gold::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d97706, #f59e0b);
+}
+.hero-stat-card-green {
+  background: var(--bg-card);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(47, 110, 58, 0.3);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat-card-green::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-green), #10b981);
+}
+.hero-stat-card-purple {
+  background: var(--bg-card);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(122, 75, 163, 0.3);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat-card-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-purple), #a855f7);
+}
+
+/* Page Clarity Box (Every Standalone Page Explanation) */
+.page-clarity-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-right: 5px solid var(--primary-green);
+  border-radius: var(--radius-md);
+  padding: 22px 26px;
+  margin: 30px auto 40px;
+  max-width: 1200px;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  text-align: right;
+}
+.clarity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.clarity-item-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.clarity-item-title i {
+  font-size: 1rem;
+}
+.clarity-item-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* Google Form Registration Modal & Embed */
+.modal-register-card {
+  max-width: 780px !important;
+  width: 95% !important;
+  max-height: 92vh !important;
+  padding: 24px !important;
+  overflow-y: auto !important;
+  background: var(--bg-card) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+.google-form-embed-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 750px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  margin: 18px 0;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+}
+.google-form-embed-wrapper iframe {
+  width: 100%;
+  min-height: 820px;
+  border: none;
+  display: block;
+}
+.form-wa-fallback-bar {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.form-wa-fallback-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-wa-direct-reg {
+  background: #25D366;
+  color: #ffffff !important;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+.btn-wa-direct-reg:hover {
+  background: #1eb956;
+}
+
+/* Calculators Dropdown Switcher */
+.calc-switcher-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin: 25px 0 35px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.calc-switcher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.calc-switcher-label {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.calc-switcher-label i {
+  color: var(--primary-purple);
+  font-size: 1.25rem;
+}
+.calc-switcher-select {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--primary-purple);
+  background: var(--bg-card-alt);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: var(--transition);
+  outline: none;
+}
+.calc-switcher-select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 4px rgba(47, 110, 58, 0.18);
+}
+
+/* Compatibility alias for cookie consent */
+.cookie-consent-banner {
+  display: block;
+}
+
+/* Mobile Responsiveness for Modal & Calculators */
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 8px 4px !important;
+  }
+  .modal-register-card {
+    padding: 18px 12px !important;
+    width: 100% !important;
+    max-height: 96vh !important;
+    border-radius: var(--radius-md) !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .google-form-embed-wrapper {
+    min-height: 600px !important;
+    margin: 12px 0 !important;
+  }
+  .google-form-embed-wrapper iframe {
+    min-height: 680px !important;
+  }
+  .form-wa-fallback-bar {
+    padding: 10px 12px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center !important;
+  }
+  .btn-wa-direct-reg {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .calc-switcher-select {
+    font-size: 0.92rem !important;
+    padding: 12px 14px !important;
+  }
+}
+
+
