@@ -346,82 +346,126 @@
   <section id="section-home" class="page-section active-section">
     <!-- Hero Banner with Focus on NGO Alliance & Institutional Registration -->
     <div class="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-text-col">
-          <!-- Verified NISGP National Award Badge -->
-          <div class="hero-nisgp-badge">
-            <i class="fa-solid fa-trophy text-gold"></i>
-            <span>الفائز بالمركز الأول في المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</span>
-          </div>
+      <div class="container">
+        <div class="hero-asym-grid">
+          <!-- Right Column: Strategic Message & Dominant Conversion -->
+          <div class="hero-lead-col">
+            <!-- Verified NISGP National Award Badge -->
+            <div class="hero-nisgp-badge">
+              <i class="fa-solid fa-trophy text-gold"></i>
+              <span>المركز الأول بالمبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</span>
+            </div>
 
-          <h1 class="hero-title">
-            التحالف والمنصة الكبرى لربط وتمكين الجمعيات الأهلية <span class="highlight-green">وتأهيلها للمنح الدولية</span> وإدارة <span class="highlight-purple">المشروعات غير الربحية</span>
-          </h1>
-          
-          <p class="hero-description">
-            منصة NGOHUB هي التحالف والمنصة التنموية المركزية لتمكين الجمعيات الأهلية والمنظمات غير الربحية في مصر والوطن العربي. <strong>تعاملنا مع أكثر من 65 جمعية داخل وخارج مصر</strong>؛ نُمكّن جمعيتك من المنافسة على المنح الكبرى، توثيق سابقة أعمالها، وأتمتة منظومتها المؤسسية والميدانية وفق أعلى المعايير المعتمدة دون وعود زائفة بل بمصداقية موثقة وأثر حقيقي ملموس.
-          </p>
+            <h1 class="hero-title">
+              التحالف والمنصة الكبرى<br>
+              <span class="highlight-green">لتمكين الجمعيات الأهلية</span>
+            </h1>
+            
+            <p class="hero-description">
+              نربط جمعيتكم بالمنح الدولية، الإدارة المؤسسية الرشيدة، وفرص التمويل المباشرة. تعاملنا مع أكثر من <strong>65 جمعية داخل وخارج مصر</strong> لنقل العمل الأهلي من الدفاتر الورقية إلى الجاهزية الرقمية واستيفاء شروط المانحين بمصداقية موثقة.
+            </p>
 
-          <!-- Hero Instant Search Box -->
-          <div class="hero-search-box-card">
-            <div class="hero-search-inner">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="heroQuickSearchInput" placeholder="ابحث في بوابة المنح، حاسبات الجدوى والجاهزية، ومزايا الانضمام للتحالف..." onkeydown="handleHeroSearchKey(event)">
-              <button class="btn-hero-search-action" onclick="triggerHeroSearch()">
-                <i class="fa-solid fa-arrow-left"></i> بحث فوري
+            <!-- Hero Action: Single Dominant Button + Secondary Link -->
+            <div class="hero-cta-group">
+              <button class="btn-hero-register" onclick="openNgoRegisterModal()">
+                <span class="btn-reg-text">سجّل جمعيتك الآن وانضم للتحالف</span>
+                <span class="btn-reg-icon"><i class="fa-solid fa-arrow-left"></i></span>
               </button>
+              <a href="calculators.html" class="hero-secondary-link">
+                <i class="fa-solid fa-calculator"></i>
+                <span>جرّب حاسبة الجدوى والجاهزية</span>
+                <i class="fa-solid fa-chevron-left arrow-micro"></i>
+              </a>
             </div>
-            <div class="hero-quick-tags">
-              <span>روابط سريعة:</span>
-              <a href="#" onclick="openNgoRegisterModal()"><i class="fa-solid fa-building-circle-check text-emerald"></i> تسجيل جمعية</a>
-              <a href="grants.html"><i class="fa-solid fa-globe text-emerald"></i> بوابة المنح (66+)</a>
-              <a href="calculators.html"><i class="fa-solid fa-calculator text-purple"></i> مركز الحاسبات والجاهزية</a>
-              <a href="impact.html"><i class="fa-solid fa-droplet text-emerald"></i> تقرير الأثر المعتمد</a>
-              <a href="partners.html">شبكة الشركاء (+65)</a>
+
+            <!-- Micro-Trust Bullets -->
+            <div class="hero-trust-bullets">
+              <span><i class="fa-solid fa-circle-check text-emerald"></i> تسجيل رسمي معتمد</span>
+              <span class="trust-bullet-dot">•</span>
+              <span><i class="fa-solid fa-circle-check text-emerald"></i> مطابقة فورية للمنح</span>
+              <span class="trust-bullet-dot">•</span>
+              <span><i class="fa-solid fa-circle-check text-emerald"></i> بدون أي رسوم</span>
             </div>
           </div>
 
-          <!-- Hero Action Buttons with High-Visibility Registration CTA -->
-          <div class="hero-buttons">
-            <button class="btn-hero-register" onclick="openNgoRegisterModal()">
-              <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن وانضم للتحالف
-            </button>
-            <a href="calculators.html" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 12px 22px; font-weight: 700; border-radius: var(--radius-md);">
-              <i class="fa-solid fa-calculator text-purple"></i> مركز المحاكاة والتحليل المؤسسي
-            </a>
-            <a href="grants.html" class="btn-outline-wa" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 12px 20px; font-weight: 700; border-radius: var(--radius-md);">
-              <i class="fa-solid fa-globe text-emerald"></i> بوابة المنح الموثقة (66+)
-            </a>
-          </div>
+          <!-- Left Column: Live Platform Showcase Card (Visual Proof Asset) -->
+          <div class="hero-showcase-col">
+            <div class="showcase-card-wrapper">
+              <div class="showcase-glow-backdrop"></div>
+              <div class="showcase-card-body">
+                <div class="showcase-top-row">
+                  <div class="showcase-live-chip">
+                    <span class="pulse-indicator"></span>
+                    <span>منحة نشطة ومطابقة الآن</span>
+                  </div>
+                  <span class="showcase-seal"><i class="fa-solid fa-shield-halved"></i> معتمد 100%</span>
+                </div>
 
-          <!-- Verified Platform Impact & Achievements Grid (The 4 Pillar Credentials) -->
-          <div class="hero-stats-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color);">
-            <div class="hero-stat-card-gold">
-              <div style="font-size: 1.8rem; font-weight: 900; color: #b45309;"><i class="fa-solid fa-trophy text-gold"></i> المركز الأول</div>
-              <div style="font-size: 0.88rem; color: var(--text-dark); font-weight: 800; margin-top: 4px;">المبادرة الوطنية للمشروعات الخضراء الذكية</div>
-              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">(NISGP - رعاية رئاسة الجمهورية)</div>
+                <div class="showcase-grant-card">
+                  <div class="grant-icon-box"><i class="fa-solid fa-earth-americas"></i></div>
+                  <div class="grant-text-box">
+                    <h5>منحة التكيف المناخي والتمكين المؤسسي</h5>
+                    <small>برنامج الأمم المتحدة الإنمائي (UNDP / GEF)</small>
+                  </div>
+                </div>
+
+                <div class="showcase-numbers-row">
+                  <div class="showcase-mini-stat">
+                    <span class="stat-lbl">التمويل المتاح</span>
+                    <strong class="stat-num text-emerald">50,000 $</strong>
+                  </div>
+                  <div class="showcase-mini-stat">
+                    <span class="stat-lbl">حالة التقديم</span>
+                    <strong class="stat-num text-gold">مفتوح للجمعيات</strong>
+                  </div>
+                  <div class="showcase-mini-stat">
+                    <span class="stat-lbl">بوابة المنح</span>
+                    <strong class="stat-num text-purple">66+ فرصة</strong>
+                  </div>
+                </div>
+
+                <!-- Floating Network Proof Bar -->
+                <div class="showcase-network-dock">
+                  <div class="network-avatars-group">
+                    <span class="avatar-dot bg-green"><i class="fa-solid fa-building-ngo"></i></span>
+                    <span class="avatar-dot bg-purple"><i class="fa-solid fa-hand-holding-heart"></i></span>
+                    <span class="avatar-dot bg-blue"><i class="fa-solid fa-leaf"></i></span>
+                    <span class="avatar-badge">+65</span>
+                  </div>
+                  <div class="network-dock-label">
+                    <strong>شبكة الجمعيات الشريكة</strong>
+                    <span>مؤسسات موثقة داخل وخارج مصر</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="hero-stat-card-green">
-              <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary-green);"><i class="fa-solid fa-award"></i> 7 مشاريع</div>
-              <div style="font-size: 0.88rem; color: var(--text-dark); font-weight: 800; margin-top: 4px;">مشاريع فائزة بالمبادرة الوطنية</div>
-              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">المساهمة في تأهيلها ونجاحها الميداني</div>
-            </div>
-            <div class="hero-stat-card-purple">
-              <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary-purple);"><i class="fa-solid fa-handshake"></i> 65+ جمعية</div>
-              <div style="font-size: 0.88rem; color: var(--text-dark); font-weight: 800; margin-top: 4px;">تعاملنا مع أكثر من 65 جمعية</div>
-              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">مؤسسات شريكة داخل وخارج مصر</div>
-            </div>
-            <div class="hero-stat-card-gold">
-              <div style="font-size: 1.8rem; font-weight: 900; color: #0e7490;"><i class="fa-solid fa-globe"></i> 66+ منحة</div>
-              <div style="font-size: 0.88rem; color: var(--text-dark); font-weight: 800; margin-top: 4px;">منحة دولية موثقة</div>
-              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">مطابقة لمعايير التمويل المستدام</div>
-            </div>
+          </div>
+        </div>
+
+        <!-- Full-Width Minimalist Trust Strip (Replaces 4 bulky boxes) -->
+        <div class="hero-trust-ribbon">
+          <div class="trust-ribbon-item">
+            <div class="ribbon-val text-gold"><i class="fa-solid fa-trophy"></i> المركز الأول</div>
+            <div class="ribbon-label">المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</div>
+          </div>
+          <div class="ribbon-divider"></div>
+          <div class="trust-ribbon-item">
+            <div class="ribbon-val text-emerald"><i class="fa-solid fa-award"></i> 7 مشاريع فائزة</div>
+            <div class="ribbon-label">ساهمنا في تأهيلها ونجاحها التنموي</div>
+          </div>
+          <div class="ribbon-divider"></div>
+          <div class="trust-ribbon-item">
+            <div class="ribbon-val text-purple"><i class="fa-solid fa-handshake"></i> 65+ جمعية</div>
+            <div class="ribbon-label">تعاملنا مع أكثر من 65 جمعية داخل وخارج مصر</div>
+          </div>
+          <div class="ribbon-divider"></div>
+          <div class="trust-ribbon-item">
+            <div class="ribbon-val text-cyan"><i class="fa-solid fa-globe"></i> 66+ منحة دولية</div>
+            <div class="ribbon-label">موثقة ومطابقة لمعايير التمويل المستدام</div>
           </div>
         </div>
       </div>
     </div>
-
-
 
     <!-- Page Purpose & Clarity Box -->
     <div class="container" style="margin-top: 15px; margin-bottom: 25px;">
