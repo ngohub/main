@@ -2,7 +2,7 @@
 
 > NGOHUB (https://ngo-hub.com) is the premier Arab civil society enablement platform providing digital transformation, official web portal design (.org), project management, volunteer program management, and international grant application assistance for non-profit organizations operating under Egyptian Law 149/2019.
 
-NGOHUB bridges the technological and institutional gap for Egyptian NGOs and civil society organizations (CSOs). The platform combines digital tools with environmental and economic impact metrics, specifically water conservation tracking (10 Liters of fresh water saved per paper sheet eliminated; 50,000 Liters saved per agricultural demo field with GCT), interactive project readiness diagnostics, and a verified catalog of 66+ international and regional funding opportunities.
+NGOHUB bridges the technological and institutional gap for Egyptian NGOs and civil society organizations (CSOs). The platform combines digital tools with environmental and economic impact metrics, specifically water conservation tracking (10 Liters of fresh water saved per paper sheet eliminated; 50,000 Liters saved per agricultural demo field with GCT), interactive project readiness diagnostics, and a verified catalog of active international and regional funding opportunities.
 
 ## Core Services & Institutional Enablement
 - [Web & Portal Development](https://ngo-hub.com/services.html): Turnkey bilingual responsive websites on official .org domains, with project documentation and donor portals.
@@ -20,7 +20,7 @@ NGOHUB bridges the technological and institutional gap for Egyptian NGOs and civ
 - [Sustainable Agriculture & Irrigation Partnerships](https://ngo-hub.com/impact.html): Joint initiatives with Green Climate Technology (GCT) for water recycling and Azolla cultivation.
 
 ## Grants & Institutional Funding Portal
-- [Active Grants Directory](https://ngo-hub.com/grants.html): Searchable database of 66+ active grants, climate finance funds, and local donor programs with direct application URLs.
+- [Active Grants Directory](https://ngo-hub.com/grants.html): Searchable database of active grants, climate finance funds, and local donor programs with direct application URLs.
 - [Grant Readiness Assessment](https://ngo-hub.com/calculators.html): Multi-pillar diagnostic evaluating financial audits, website presence, and smart components.
 
 ## Strategic Partners

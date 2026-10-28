@@ -13,7 +13,7 @@
 
 ## 2. Quantitative Impact Metrics (Verified 2026 Baseline)
 - **Enabled Entities:** 65+ Egyptian NGOs and charitable foundations.
-- **Verified Grants Cataloged:** 66+ active international, regional, and national funding opportunities.
+- **Verified Grants Cataloged:** active international, regional, and national funding opportunities.
 - **Direct Operational Savings:** +850,000 EGP saved annually by eliminating paper logs, physical archives, and manual administrative overhead.
 - **Fresh Water Conserved:** +3,500,000 Liters of pure water saved through paperless workflows and agricultural optimization pilots.
 

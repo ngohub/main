@@ -69,14 +69,12 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="assets/images/favicon.png?v=20261003">
   
-  <!-- Google Fonts (Cairo) & Font Awesome 6 -->
+  <!-- Google Fonts (IBM Plex Sans Arabic) & Font Awesome 6 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://www.clarity.ms">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261003b">
   <link rel="stylesheet" href="assets/css/styles.min.css?v=20261003b">
 
@@ -238,7 +236,7 @@
           <i class="fa-solid fa-calculator text-purple"></i> الحاسبات التفاعلية
         </a>
         <a href="grants.html" class="nav-btn" id="nav-grants">
-          <i class="fa-solid fa-globe"></i> بوابة المنح (66)
+          <i class="fa-solid fa-globe"></i> بوابة المنح
         </a>
         <a href="partners.html" class="nav-btn" id="nav-partners">
           <i class="fa-solid fa-handshake"></i> الشركاء
@@ -254,8 +252,8 @@
           <span class="btn-vol-text">سجّل جمعيتك الآن</span>
         </button>
 
-        <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (داكن / فاتح)" aria-label="تبديل المظهر">
-          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        <button class="btn-theme-toggle" id="btnThemeToggle" onclick="toggleTheme()" title="تبديل المظهر (المظهر الحالي: الزجاجي الفاخر)" aria-label="تبديل المظهر">
+          <i class="fa-solid fa-wand-magic-sparkles" id="themeIcon"></i>
         </button>
 
         <a href="https://wa.me/201026847508" target="_blank" class="btn-header-wa" title="تواصل عبر واتساب">
@@ -306,7 +304,7 @@
       </a>
       <a href="grants.html" class="mobile-nav-item" id="mNav-grants">
         <i class="fa-solid fa-globe"></i>
-        <span>بوابة المنح (66)</span>
+        <span>بوابة المنح</span>
       </a>
       <a href="partners.html" class="mobile-nav-item" id="mNav-partners">
         <i class="fa-solid fa-handshake"></i>
@@ -331,7 +329,7 @@
         <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن وانضم للتحالف
       </button>
       <button class="btn-drawer-theme" onclick="toggleTheme()">
-        <i class="fa-solid fa-moon" id="mThemeIcon"></i> تبديل المظهر
+        <i class="fa-solid fa-wand-magic-sparkles" id="mThemeIcon"></i> تبديل المظهر
       </button>
       <a href="https://wa.me/201026847508" target="_blank" class="btn-drawer-wa">
         <i class="fa-brands fa-whatsapp"></i> تواصل فوري: +201026847508
@@ -344,384 +342,406 @@
 
   <!-- ==================== 3. HOME SECTION (FOCUS ON NGO ALLIANCE & REGISTRATION) ==================== -->
   <section id="section-home" class="page-section active-section">
-    <!-- Hero Banner with Focus on NGO Alliance & Institutional Registration -->
-    <div class="hero-section">
-      <div class="container">
-        <div class="hero-asym-grid">
-          <!-- Right Column: Strategic Message & Dominant Conversion -->
-          <div class="hero-lead-col">
-            <!-- Verified NISGP National Award Badge -->
-            <div class="hero-nisgp-badge">
-              <i class="fa-solid fa-trophy text-gold"></i>
-              <span>المركز الأول بالمبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</span>
+    <!-- ==================== SCREEN 1: THE FULL-BLEED HERO ==================== -->
+    <div class="hero-fullbleed">
+      <div class="hero-fullbleed-bg">
+        <img src="assets/images/hero_award_ceremony.jpg" alt="التكريم الرسمي بالمركز الأول - المشروعات الخضراء الذكية" class="hero-fullbleed-img" loading="eager" width="1920" height="1080">
+        <div class="hero-fullbleed-overlay"></div>
+      </div>
+
+      <div class="container hero-fullbleed-container">
+<h1 class="hero-fullbleed-title">
+          المشروع الأخضر المؤسسي<br>
+          <span class="highlight-emerald">سجّل جمعيتك مع NGOHUB وابدأ مسار التأهيل للمنح والتمويل الدولي</span>
+        </h1>
+        
+        <p class="hero-fullbleed-desc">
+          بوابتكم لنقل العمل الأهلي من المعاملات الورقية إلى الجاهزية الرقمية المكتملة، وصياغة مقترحات المشروعات وفق أدق معايير المانحين الدوليين لتأمين التمويل التنموي المستدام.
+        </p>
+
+        <!-- The Single Dominant Action for Screen 1 -->
+        <div class="hero-single-action-wrap">
+          <button class="btn-hero-primary-wide" onclick="openNgoRegisterModal()">
+            <span>سجّل جمعيتك وتأهل للمنح الآن</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+
+        <!-- Clickable International Partners Trust Strip (شراكات سابقة مع جهات وهيئات دولية) -->
+        <a href="partners.html" class="hero-partners-trust-strip" title="استعرض شبكة الشركاء والجهات الدولية المعتمدة (انقر لفتح صفحة الشركاء)">
+          <div class="trust-strip-top">
+            <span class="trust-pulse-dot"></span>
+            <strong>شراكات سابقة ومساهمات مع جهات وهيئات دولية</strong>
+            <span class="trust-strip-link-hint">ملف الشركاء والتحالف <i class="fa-solid fa-arrow-left"></i></span>
+          </div>
+          <div class="trust-logos-flex">
+            <div class="trust-logo-pill" title="برنامج الأمم المتحدة الإنمائي - UNDP">
+              <img src="assets/images/partner_undp.png" alt="UNDP" loading="lazy">
             </div>
-
-            <h1 class="hero-title">
-              التحالف والمنصة الكبرى<br>
-              <span class="highlight-green">لتمكين الجمعيات الأهلية</span>
-            </h1>
-            
-            <p class="hero-description">
-              نربط جمعيتكم بالمنح الدولية، الإدارة المؤسسية الرشيدة، وفرص التمويل المباشرة. تعاملنا مع أكثر من <strong>65 جمعية داخل وخارج مصر</strong> لنقل العمل الأهلي من الدفاتر الورقية إلى الجاهزية الرقمية واستيفاء شروط المانحين بمصداقية موثقة.
-            </p>
-
-            <!-- Hero Action: Single Dominant Button + Secondary Link -->
-            <div class="hero-cta-group">
-              <button class="btn-hero-register" onclick="openNgoRegisterModal()">
-                <span class="btn-reg-text">سجّل جمعيتك الآن وانضم للتحالف</span>
-                <span class="btn-reg-icon"><i class="fa-solid fa-arrow-left"></i></span>
-              </button>
-              <a href="calculators.html" class="hero-secondary-link">
-                <i class="fa-solid fa-calculator"></i>
-                <span>جرّب حاسبة الجدوى والجاهزية</span>
-                <i class="fa-solid fa-chevron-left arrow-micro"></i>
-              </a>
+            <div class="trust-logo-pill" title="مرفق البيئة العالمية - GEF">
+              <img src="assets/images/partner_gef.png" alt="GEF" loading="lazy">
             </div>
-
-            <!-- Micro-Trust Bullets -->
-            <div class="hero-trust-bullets">
-              <span><i class="fa-solid fa-circle-check text-emerald"></i> تسجيل رسمي معتمد</span>
-              <span class="trust-bullet-dot">•</span>
-              <span><i class="fa-solid fa-circle-check text-emerald"></i> مطابقة فورية للمنح</span>
-              <span class="trust-bullet-dot">•</span>
-              <span><i class="fa-solid fa-circle-check text-emerald"></i> بدون أي رسوم</span>
+            <div class="trust-logo-pill" title="برنامج المنح الصغيرة - SGP Egypt">
+              <img src="assets/images/partner_sgp.png" alt="SGP Egypt" loading="lazy">
+            </div>
+            <div class="trust-logo-pill" title="نقابة المهندسين">
+              <img src="assets/images/partner_engineers.png" alt="نقابة المهندسين" loading="lazy">
+            </div>
+            <div class="trust-logo-pill" title="بروتيك للتدريب المؤسسي والتقني - PROTIC">
+              <img src="assets/images/partner_protic.png" alt="PROTIC" loading="lazy">
             </div>
           </div>
+        </a>
+      </div>
+    </div>
 
-          <!-- Left Column: Live Platform Showcase Card (Visual Proof Asset) -->
-          <div class="hero-showcase-col">
-            <div class="showcase-card-wrapper">
-              <div class="showcase-glow-backdrop"></div>
-              <div class="showcase-card-body">
-                <div class="showcase-top-row">
-                  <div class="showcase-live-chip">
-                    <span class="pulse-indicator"></span>
-                    <span>منحة نشطة ومطابقة الآن</span>
-                  </div>
-                  <span class="showcase-seal"><i class="fa-solid fa-shield-halved"></i> معتمد 100%</span>
+    <!-- ==================== SCREEN 2: QUESTION 1 - معضلة التمويل والحل الأساسي ==================== -->
+    <div class="manifesto-screen" id="screen-q1-manifesto">
+      <div class="container">
+        <div class="screen-header text-center">
+          <div class="screen-eyebrow"><i class="fa-solid fa-circle-question text-emerald"></i> السؤال الأول • معضلة التمويل والحل الحاسم</div>
+          <h2 class="screen-title">لماذا تخسر معظم الجمعيات الأهلية فرص المنح والتمويل الدولي؟</h2>
+          <p class="screen-subtitle">تشخيص الواقع الميداني الذي يواجه مجالس إدارات الجمعيات والحل العملي لتأمين المنح</p>
+        </div>
+
+        <div class="manifesto-split-grid">
+          <!-- Column A: The Problem (The Pain) -->
+          <div class="manifesto-col pain-col">
+            <div class="col-badge badge-pain"><i class="fa-solid fa-triangle-exclamation"></i> المعضلة الشائعة للجمعيات</div>
+            <h3>الرفض التمويلي وصعوبة الوصول للمانحين</h3>
+            <p class="col-lead">تُستبعد أكثر من 90% من مقترحات المشروعات المقدمة للجهات المانحة نتيجة أسباب يمكن تلافيها:</p>
+            <ul class="manifesto-list pain-list">
+              <li>
+                <i class="fa-solid fa-xmark-circle text-rose"></i>
+                <div>
+                  <strong>الصياغة العشوائية وغير المتوافقة:</strong>
+                  <span>كتابة مقترحات لا تتبع المنهجيات المعيارية (Logical Frameworks) التي تطلبها الصناديق الدولية.</span>
                 </div>
-
-                <div class="showcase-grant-card">
-                  <div class="grant-icon-box"><i class="fa-solid fa-earth-americas"></i></div>
-                  <div class="grant-text-box">
-                    <h5>منحة التكيف المناخي والتمكين المؤسسي</h5>
-                    <small>برنامج الأمم المتحدة الإنمائي (UNDP / GEF)</small>
-                  </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-xmark-circle text-rose"></i>
+                <div>
+                  <strong>غياب دراسات الجدوى وقياس الأثر:</strong>
+                  <span>الافتقار للأرقام الدقيقة وحساب العائد التنموي وصون الموارد الطبيعية والمائية.</span>
                 </div>
-
-                <div class="showcase-numbers-row">
-                  <div class="showcase-mini-stat">
-                    <span class="stat-lbl">التمويل المتاح</span>
-                    <strong class="stat-num text-emerald">50,000 $</strong>
-                  </div>
-                  <div class="showcase-mini-stat">
-                    <span class="stat-lbl">حالة التقديم</span>
-                    <strong class="stat-num text-gold">مفتوح للجمعيات</strong>
-                  </div>
-                  <div class="showcase-mini-stat">
-                    <span class="stat-lbl">بوابة المنح</span>
-                    <strong class="stat-num text-purple">66+ فرصة</strong>
-                  </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-xmark-circle text-rose"></i>
+                <div>
+                  <strong>نقص الجاهزية والامتثال الرقمي:</strong>
+                  <span>عدم وجود بوابات رسمية وسجلات معتمدة تثبت قدرة الجمعية على إدارة المنحة بنزاهة وشفافية.</span>
                 </div>
+              </li>
+            </ul>
+          </div>
 
-                <!-- Floating Network Proof Bar -->
-                <div class="showcase-network-dock">
-                  <div class="network-avatars-group">
-                    <span class="avatar-dot bg-green"><i class="fa-solid fa-building-ngo"></i></span>
-                    <span class="avatar-dot bg-purple"><i class="fa-solid fa-hand-holding-heart"></i></span>
-                    <span class="avatar-dot bg-blue"><i class="fa-solid fa-leaf"></i></span>
-                    <span class="avatar-badge">+65</span>
-                  </div>
-                  <div class="network-dock-label">
-                    <strong>شبكة الجمعيات الشريكة</strong>
-                    <span>مؤسسات موثقة داخل وخارج مصر</span>
-                  </div>
+          <!-- Column B: The Core Engine (The NGOHUB Solution) -->
+          <div class="manifesto-col solution-col">
+            <div class="col-badge badge-solution"><i class="fa-solid fa-circle-check"></i> حل NGOHUB الحاسم</div>
+            <h3>نحن نؤهل جمعيتكم ونكتب مقترح مشروعكم حتى الاعتماد</h3>
+            <p class="col-lead">نُسلّح جمعيتكم بالخدمتين الأساسيتين اللتين تضمنان استيفاء شروط المانحين واقتناص التمويل:</p>
+            <ul class="manifesto-list solution-list">
+              <li>
+                <i class="fa-solid fa-check-circle text-emerald"></i>
+                <div>
+                  <strong>1. تجهيز وتأهيل الجمعية للمنح:</strong>
+                  <span>تدقيق شامل للملف المؤسسي للجمعية، مواءمة الهوية مع معايير المانح الدولي، وسد أي فجوة تنظيمية.</span>
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-check-circle text-emerald"></i>
+                <div>
+                  <strong>2. كتابة وصياغة مقترح المشروع التنموي:</strong>
+                  <span>صياغة احترافية متكاملة لمقترح المنحة، ومصفوفة النتائج (LogFrame)، والميزانية، ومتابعة التقديم الرسمي.</span>
+                </div>
+              </li>
+            </ul>
+            <div class="solution-note">
+              <i class="fa-solid fa-shield-halved text-emerald"></i>
+              <span>هدفنا المباشر: تحويل جمعيتكم من كيان محلي ورقي إلى شريك تنموي مؤهل ومعتمد لتلقي المنح الدولية.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- The Single Dominant Action for Screen 2: فحص الجاهزية الفوري التفاعلي -->
+        <div class="screen-single-action-wrap">
+          <a href="#screen-readiness-audit" class="btn-screen-action">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>افحص جاهزية جمعيتكم للمنح في 30 ثانية</span>
+            <i class="fa-solid fa-arrow-down"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 3: INTERACTIVE AUDIT - فحص الجاهزية الفوري للمنح ==================== -->
+    <div class="readiness-audit-screen" id="screen-readiness-audit">
+      <div class="container">
+        <div class="screen-header text-center">
+          <div class="screen-eyebrow"><i class="fa-solid fa-gauge-high text-emerald"></i> فحص الجاهزية التفاعلي • في 30 ثانية</div>
+          <h2 class="screen-title">هل ملف جمعيتكم مؤهل للقبول أم مهدد بالاستبعاد المالي والفني؟</h2>
+          <p class="screen-subtitle">حرّك مفاتيح الفحص وفق وضع جمعيتكم الحالي لتشخيص نقاط القوة والثغرات وفرص القبول فوراً</p>
+        </div>
+
+        <div class="audit-card-wrapper">
+          <div class="audit-card">
+            <!-- Left: 3 Core Criteria with iOS-Style Switches -->
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-list-check text-emerald"></i> الركائز الـ 3 الأكثر حسماً لدى لجان المانحين:</h3>
+                <p>قم بتفعيل المعايير المتوفرة حالياً لدى جمعيتكم لمشاهدة التقييم المباشر:</p>
+              </div>
+              
+              <div class="audit-switch-item" id="audit-row-1">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-receipt text-blue"></i> 1. ميزانية وقوائم مالية مدققة لآخر عامين</span>
+                  <span class="switch-desc">تثبت الإدارة الرشيدة والنزاهة المالية والقدرة المحاسبية على استيعاب أموال المنحة دون مخاطر.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="auditSwitchBudget">
+                    <input type="checkbox" id="auditSwitchBudget" onchange="calculateHomeAudit()">
+                    <span class="ios-slider">
+                      <span class="switch-label-state state-yes">نعم</span>
+                      <span class="switch-label-state state-no">لا</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item" id="audit-row-2">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-leaf text-emerald"></i> 2. قياس موثق للأثر البيئي والتنموي بمؤشرات رقمية</span>
+                  <span class="switch-desc">توضيح العائد الملموس على البيئة وصون الموارد (مثل وفورات المياه والحد من الانبعاثات).</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="auditSwitchImpact">
+                    <input type="checkbox" id="auditSwitchImpact" onchange="calculateHomeAudit()">
+                    <span class="ios-slider">
+                      <span class="switch-label-state state-yes">نعم</span>
+                      <span class="switch-label-state state-no">لا</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item" id="audit-row-3">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-globe text-purple"></i> 3. موقع رسمي وبنية بيانات رقمية معتمدة</span>
+                  <span class="switch-desc">تمتلك الجمعية بوابة إلكترونية رسمية مسجلة وسجلات كفاءات موثقة تثبت الحضور المؤسسي والشفافية.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="auditSwitchDigital">
+                    <input type="checkbox" id="auditSwitchDigital" onchange="calculateHomeAudit()">
+                    <span class="ios-slider">
+                      <span class="switch-label-state state-yes">نعم</span>
+                      <span class="switch-label-state state-no">لا</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Live Diagnostic Gauge & Adaptive CTA -->
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">مؤشر الجاهزية المتوقع</span>
+                  <span class="gauge-score-value" id="homeAuditScoreVal">20%</span>
+                </div>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar bar-danger" id="homeAuditProgressBar" style="width: 20%;"></div>
+                </div>
+              </div>
+
+              <div class="audit-feedback-box" id="homeAuditFeedbackBox">
+                <div class="feedback-badge badge-pain" id="homeAuditBadge">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <span id="homeAuditBadgeText">ملف عالي المخاطر التمويلية</span>
+                </div>
+                <p class="feedback-text" id="homeAuditFeedback">
+                  <strong>تشخيص الفحص الأولي:</strong> ملف الجمعية الحالي يفتقر لمقومات الامتثال المكتبي، مما يجعله عرضة للاستبعاد السريع أمام لجان التقييم الدولية. نحن نؤهل جمعيتكم ونسد هذه الثغرات لتأمين فرصة الفوز بالمنحة.
+                </p>
+              </div>
+
+              <div class="audit-action-group">
+                <button class="btn-screen-action audit-main-btn" id="homeAuditCtaBtn" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-file-signature"></i>
+                  <span id="homeAuditCtaText">سجّل جمعيتكم الآن لسد الثغرات وتأهيل ملف المنح</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="audit-secondary-links">
+                  <a href="calculators.html" class="audit-secondary-link">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span>أو استكشف حاسبات الجدوى ومطابقة المنح الكاملة</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                  <a href="#screen-q2-dossier" class="audit-scroll-next-link">
+                    <span>اكتشف كيف نجعل مقترحكم غير قابل للرفض (السؤال الثاني)</span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Full-Width Minimalist Trust Strip (Replaces 4 bulky boxes) -->
-        <div class="hero-trust-ribbon">
-          <div class="trust-ribbon-item">
-            <div class="ribbon-val text-gold"><i class="fa-solid fa-trophy"></i> المركز الأول</div>
-            <div class="ribbon-label">المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</div>
-          </div>
-          <div class="ribbon-divider"></div>
-          <div class="trust-ribbon-item">
-            <div class="ribbon-val text-emerald"><i class="fa-solid fa-award"></i> 7 مشاريع فائزة</div>
-            <div class="ribbon-label">ساهمنا في تأهيلها ونجاحها التنموي</div>
-          </div>
-          <div class="ribbon-divider"></div>
-          <div class="trust-ribbon-item">
-            <div class="ribbon-val text-purple"><i class="fa-solid fa-handshake"></i> 65+ جمعية</div>
-            <div class="ribbon-label">تعاملنا مع أكثر من 65 جمعية داخل وخارج مصر</div>
-          </div>
-          <div class="ribbon-divider"></div>
-          <div class="trust-ribbon-item">
-            <div class="ribbon-val text-cyan"><i class="fa-solid fa-globe"></i> 66+ منحة دولية</div>
-            <div class="ribbon-label">موثقة ومطابقة لمعايير التمويل المستدام</div>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Page Purpose & Clarity Box -->
-    <div class="container" style="margin-top: 15px; margin-bottom: 25px;">
-      <div class="page-clarity-box">
-        <div class="clarity-item">
-          <span class="clarity-item-title"><i class="fa-solid fa-circle-question"></i> ما هي هذه المنصة؟</span>
-          <p class="clarity-item-text">التحالف والمنصة الوطنية الرائدة لتمكين وتجمع الجمعيات الأهلية المصرية، الحائزة على المركز الأول بالمشروعات الخضراء الذكية (NISGP).</p>
-        </div>
-        <div class="clarity-item">
-          <span class="clarity-item-title"><i class="fa-solid fa-briefcase"></i> كيف تخدم جمعيتك ومجلس إدارتك؟</span>
-          <p class="clarity-item-text">تضع جمعيتكم على رادار المانحين الدوليين، تتيح مطابقة فورية لـ 66+ منحة موثقة، وتوفر أدوات رقمية مجانية لوقف الهدر المالي والإداري.</p>
-        </div>
-        <div class="clarity-item">
-          <span class="clarity-item-title"><i class="fa-solid fa-circle-check"></i> الخطوة التالية الموصى بها</span>
-          <p class="clarity-item-text">سجّل بيانات جمعيتك الآن بالضغط على زر (سجّل جمعيتك الآن وانضم للتحالف) لتوثيق ملفكم المؤسسي والبدء في الاستفادة فوراً.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4 NGO Core Enablement Pillars Section -->
-    <div class="pathways-section">
+    <!-- ==================== SCREEN 4: QUESTION 2 - أدوات القوة التي تجعل المقترح غير قابل للرفض ==================== -->
+    <div class="dossier-screen" id="screen-q2-dossier">
       <div class="container">
-        <div class="section-header">
-          <div class="section-subtitle">محاور التمكين المؤسسي</div>
-          <h3 class="section-title">كيف نُمكّن جمعيتك الأهلية وتصبح مؤهلة للمنح الكبرى؟</h3>
-          <p class="section-desc">منظومة شاملة صُممت خصيصاً لتلبية متطلبات الجمعيات الأهلية والمجتمعية</p>
+        <div class="screen-header text-center">
+          <div class="screen-eyebrow"><i class="fa-solid fa-layer-group text-emerald"></i> السؤال الثاني • حزمة الامتثال والجاهزية المتكاملة</div>
+          <h2 class="screen-title">كيف نجعل مقترح جمعيتكم غير قابل للرفض أمام الجهات المانحة؟</h2>
+          <p class="screen-subtitle">نُرفق بمقترح مشروعكم 4 مقومات قوة تنموية تثبت للمانحين الجدارة والأسبقية في نيل التمويل</p>
         </div>
 
-        <div class="pathways-grid">
-          <!-- Pillar 1 -->
-          <div class="pathway-card" onclick="openServiceModal('web_dev')">
-            <div class="pathway-icon"><i class="fa-solid fa-laptop-code"></i></div>
-            <h4>المواقع والمنصات الرسمية (.org)</h4>
-            <p>بناء وتصميم موقع إلكتروني احترافي متجاوب يوثق أنشطة الجمعية، تقارير الإنجاز، وقصص الأثر لتعزيز ثقة المانحين والداعمين.</p>
-            <span class="pathway-link">طلب تصميم موقع للجمعية <i class="fa-solid fa-arrow-left"></i></span>
+        <div class="dossier-pillars-grid">
+          <!-- Pillar 1: Feasibility Study -->
+          <div class="dossier-pillar-card">
+            <div class="pillar-icon-box text-blue"><i class="fa-solid fa-chart-line"></i></div>
+            <h4>1. دراسة جدوى تنموية صلبة</h4>
+            <p>إعداد دراسات جدوى فنية ومالية وتشغيلية تبرهن للجهة المانحة كفاءة إدارة ميزانية المشروع وتحقيق أعلى عائد تنموي.</p>
+            <span class="pillar-tag">سلامة مالية وتشغيلية</span>
           </div>
 
-          <!-- Pillar 2 -->
-          <div class="pathway-card green-pathway" onclick="openServiceModal('digital_transformation')">
-            <div class="pathway-icon"><i class="fa-solid fa-network-wired"></i></div>
-            <h4>إدارة المشاريع والتحول الرقمي</h4>
-            <p>نقل إدارة الجمعية من السجلات الورقية المبعثرة إلى منظومة وقواعد بيانات سحابية مشفرة لإدارة وتنسيق العمليات الميدانية وتوثيق الأنشطة التنموية.</p>
-            <span class="pathway-link">طلب أتمتة العمليات وإدارة المشاريع <i class="fa-solid fa-arrow-left"></i></span>
+          <!-- Pillar 2: Green Impact & Water Savings -->
+          <div class="dossier-pillar-card highlight-green-pillar">
+            <div class="pillar-icon-box text-emerald"><i class="fa-solid fa-leaf"></i></div>
+            <h4>2. قياس الأثر البيئي وصون الموارد</h4>
+            <p>دمج مؤشرات دقيقة لصون المياه وخفض البصمة البيئية (تتويجاً لخبرة NGOHUB الفائزة بالمركز الأول بالمشروعات الخضراء الذكية NISGP).</p>
+            <span class="pillar-tag text-emerald">أولوية الصناديق المناخية</span>
           </div>
 
-          <!-- Pillar 3 -->
-          <div class="pathway-card purple-pathway" onclick="openServiceModal('volunteer_mgmt')">
-            <div class="pathway-icon"><i class="fa-solid fa-users-gear"></i></div>
-            <h4>تنظيم وإدارة برامج المتطوعين</h4>
-            <p>هيكلة وتصنيف المتطوعين، استمارات التسجيل الرقمية، توثيق الساعات التطوعية، وإصدار شهادات المشاركة المعتمدة بكفاءة وموثوقية.</p>
-            <span class="pathway-link">طلب تنظيم برنامج التطوع <i class="fa-solid fa-arrow-left"></i></span>
+          <!-- Pillar 3: Official NGO Web Portal -->
+          <div class="dossier-pillar-card">
+            <div class="pillar-icon-box text-purple"><i class="fa-solid fa-globe"></i></div>
+            <h4>3. بوابة رقمية وموقع رسمي معتمد</h4>
+            <p>استيفاء شرط المانحين الأساسي في التحقق من وجود وهوية الجمعية وسابقة أعمالها وقنوات التواصل الرسمية المشفرة.</p>
+            <span class="pillar-tag">تحقق وهوية مؤسسية</span>
           </div>
 
-          <!-- Pillar 4 -->
-          <div class="pathway-card gold-pathway" onclick="openServiceModal('grants_proposals')">
-            <div class="pathway-icon"><i class="fa-solid fa-file-signature"></i></div>
-            <h4>صياغة المقترحات والتأهيل للمنح</h4>
-            <p>إعداد الملف التعريفي المؤسسي، مراجعة معايير الجهات المانحة الدولية، وصياغة مقترحات المشروعات التنموية والذكية والبيئية.</p>
-            <span class="pathway-link">طلب استشارة تأهيل للمنح <i class="fa-solid fa-arrow-left"></i></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Why Register Section (Institutional Repositioning & Importance) -->
-    <div class="why-register-section" style="padding: 50px 0; background: var(--bg-card); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-subtitle" style="color: var(--primary-green);"><i class="fa-solid fa-shield-halved"></i> المكانة المؤسسية والاعتماد</div>
-          <h3 class="section-title">لماذا يجب أن تُسجّل جمعيتك في تحالف NGOHUB اليوم؟</h3>
-          <p class="section-desc">الانضمام للتحالف خطوة استراتيجية تضع جمعيتك على رادار الشراكات الدولية وتؤهلها للمنح الكبرى</p>
-        </div>
-
-        <div class="pathways-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-          <div class="pathway-card" style="cursor: default;">
-            <div class="pathway-icon" style="background: rgba(2, 132, 199, 0.12); color: #0284c7;"><i class="fa-solid fa-radar"></i></div>
-            <h4>1. الظهور لرادار المانحين والشركاء</h4>
-            <p>الجمعيات غير المسجلة رقمياً تظل خارج رادار الهيئات والمنظمات المانحة الدولية؛ تسجيلك يوثق بيانات جمعيتك ويجعلها في صدارة خيارات الدعم والتمويل.</p>
-          </div>
-
-          <div class="pathway-card green-pathway" style="cursor: default;">
-            <div class="pathway-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-            <h4>2. التوثيق المؤسسي والجدارة الرسمية</h4>
-            <p>مواءمة وثائق الجمعية مع متطلبات قانون تنظيم العمل الأهلي رقم 149 لسنة 2019 وبناء ملف اعتمادي متكامل يثبت النزاهة والجاهزية أمام لجان التقييم.</p>
-          </div>
-
-          <div class="pathway-card purple-pathway" style="cursor: default;">
-            <div class="pathway-icon"><i class="fa-solid fa-bullseye"></i></div>
-            <h4>3. مطابقة المنح الفورية (Grant Matching)</h4>
-            <p>إشعار جمعيتك فورياً بالمنح التنموية والمناخية المناسبة لمجال عملها ونطاقها الجغرافي من بين أكثر من 66 منحة دولية موثقة ومعتمدة.</p>
-          </div>
-
-          <div class="pathway-card gold-pathway" style="cursor: default;">
-            <div class="pathway-icon"><i class="fa-solid fa-network-wired"></i></div>
-            <h4>4. منع الازدواجية وحماية الموارد</h4>
-            <p>التشبيك مع شبكة تضم أكثر من 65 جمعية شريكة لمنع ازدواجية صرف المساعدات وتوحيد الجهود الميدانية لتعظيم أثر التبرعات والتمويل.</p>
+          <!-- Pillar 4: Volunteer & Field Team Management -->
+          <div class="dossier-pillar-card">
+            <div class="pillar-icon-box text-amber"><i class="fa-solid fa-users-gear"></i></div>
+            <h4>4. منظومة رقمية لإدارة الكوادر</h4>
+            <p>توثيق الكفاءات والفرق الميدانية وساعات التطوع رقمياً لإثبات امتلاك الجمعية كادراً بشرياً قادراً على تنفيذ أنشطة المنحة على الأرض.</p>
+            <span class="pillar-tag">جاهزية تنفيذية ميدانية</span>
           </div>
         </div>
 
-        <div style="text-align: center; margin-top: 35px;">
-          <button class="btn-hero-register" onclick="openNgoRegisterModal()">
-            <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن وانضم للتحالف
+        <!-- The Single Dominant Action for Screen 3 -->
+        <div class="screen-single-action-wrap">
+          <button class="btn-screen-action" onclick="openNgoRegisterModal()">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>احجز جلسة فحص الجاهزية والاعتماد لجمعيتك</span>
+            <i class="fa-solid fa-arrow-left"></i>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Teaser Card for Calculators Hub & Impact Hub -->
-    <div class="home-teasers-section" style="padding: 45px 0;">
+    <!-- ==================== SCREEN 4: QUESTION 3 - برهان الأثر بالأرقام الهادئة ==================== -->
+    <div class="proof-screen" id="screen-q3-proof">
       <div class="container">
-        <div class="section-header" style="margin-bottom: 25px;">
-          <div class="section-subtitle" style="color: var(--primary-purple);"><i class="fa-solid fa-calculator"></i> مركز اتخاذ القرار بالأرقام</div>
-          <h3 class="section-title">مركز المحاكاة والتحليل المؤسسي التفاعلي</h3>
-          <p class="section-desc">اتخذ قرارات تطوير جمعيتك بالأرقام والجدوى الاقتصادية والجاهزية لا بالتخمين</p>
+        <div class="screen-header text-center">
+          <div class="screen-eyebrow"><i class="fa-solid fa-award text-gold"></i> السؤال الثالث • برهان الأثر والمصداقية الميدانية</div>
+          <h2 class="screen-title">ما هو برهان نجاحنا وتأثيرنا الميداني؟</h2>
+          <p class="screen-subtitle">أرقام وإنجازات حقيقية موثقة تثبت قدرة NGOHUB على نقل الجمعيات للجاهزية والنجاح</p>
         </div>
 
-        <div class="home-teasers-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-          <div class="home-teaser-card teaser-calc" onclick="window.location.href='calculators.html'">
-            <div class="teaser-icon-wrap" style="background: rgba(122, 75, 163, 0.12); color: #7a4ba3;">
-              <i class="fa-solid fa-calculator"></i>
-            </div>
-            <div class="teaser-body">
-              <span class="teaser-tag">أدوات رقمية تشخيصية</span>
-              <h4>مجمع الحاسبات المؤسسية المتخصصة</h4>
-              <p>شخّص فجوات جمعيتك عبر 4 حاسبات تفاعلية: حاسبة الجدوى الاقتصادية والوفر التشغيلي، حاسبة التدقيق المؤسسي والجاهزية للمنح، حاسبة مطابقة المنح، وحاسبة الأثر وصون الموارد.</p>
-              <span class="teaser-action-btn">استكشف مركز الحاسبات التفاعلية <i class="fa-solid fa-arrow-left"></i></span>
+        <div class="proof-content-layout">
+          <!-- Documentary Field Training Image -->
+          <div class="proof-image-box">
+            <img src="assets/images/hero_field_training.jpg" alt="ورش التدريب وبناء القدرات الميدانية للجمعيات الأهلية" class="proof-doc-img" loading="lazy" width="600" height="420">
+            <div class="proof-image-caption">
+              <i class="fa-solid fa-camera"></i>
+              <span>توثيق حقيقي لورش العمل وبناء القدرات الميدانية للجمعيات الأهلية</span>
             </div>
           </div>
 
-          <div class="home-teaser-card teaser-impact" onclick="window.location.href='impact.html'">
-            <div class="teaser-icon-wrap" style="background: rgba(2, 132, 199, 0.12); color: #0284c7;">
-              <i class="fa-solid fa-hand-holding-droplet"></i>
+          <!-- 3 Calm Anchor Metrics (بدون زحمة أرقام) -->
+          <div class="proof-metrics-col">
+            <div class="proof-stat-item">
+              <div class="proof-stat-icon text-gold"><i class="fa-solid fa-trophy"></i></div>
+              <div class="proof-stat-info">
+                <span class="proof-stat-number text-gold">المركز الأول</span>
+                <strong>المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)</strong>
+                <p>تتويج رسمي على مستوى الجمهورية تقديراً لحلول التحول الأخضر والتمكين البيئي والمؤسسي للجمعيات.</p>
+              </div>
             </div>
-            <div class="teaser-body">
-              <span class="teaser-tag">المرجع البيئي المعتمد</span>
-              <h4>تقرير الأثر وصون الموارد المائية</h4>
-              <p>الاطلاع على التقرير البيئي والمائي المعتمد الفائز بالمركز الأول في المبادرة الوطنية للمشروعات الخضراء الذكية (NISGP)، وما حققته الجمعيات الشريكة من وفر مائي وبيئي موثق.</p>
-              <span class="teaser-action-btn">عرض التقرير البيئي المعتمد <i class="fa-solid fa-arrow-left"></i></span>
+
+            <div class="proof-stat-item">
+              <div class="proof-stat-icon text-emerald"><i class="fa-solid fa-handshake"></i></div>
+              <div class="proof-stat-info">
+                <span class="proof-stat-number text-emerald">+65 جمعية</span>
+                <strong>جمعية ومؤسسة أهلية شريكة داخل وخارج مصر</strong>
+                <p>ساهمنا في نقلها إلى الجاهزية الرقمية وبناء ملفاتها الاعتمادية أمام لجان التقييم والمانحين.</p>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Platform Roadmap / Methodology -->
-    <div class="roadmap-section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-subtitle">منهجية العمل مع الجمعيات</div>
-          <h3 class="section-title">كيف تدعمك NGOHUB من البنية التحتية إلى التمويل والأثر؟</h3>
-          <p class="section-desc">خارطة طريق واضحة ومجربة لتمكين وتطوير الكيانات غير الربحية</p>
-        </div>
-
-        <div class="roadmap-grid">
-          <div class="roadmap-step-card">
-            <div class="step-num">1</div>
-            <h4>التشخيص وتحديد الاحتياج</h4>
-            <p>تقييم الوضع الرقمي والمؤسسي للجمعية وتحديد الأولويات العاجلة للتطوير والتأهيل.</p>
-          </div>
-
-          <div class="roadmap-step-card">
-            <div class="step-num">2</div>
-            <h4>بناء المنظومة والموقع</h4>
-            <p>تصميم الموقع الرسمي للجمعية، المساعدة في التقديم على المنح، وإدارة المشاريع وتنظيم المتطوعين.</p>
-          </div>
-
-          <div class="roadmap-step-card">
-            <div class="step-num">3</div>
-            <h4>صياغة مقترح المنحة والمكون الذكي</h4>
-            <p>مطابقة أنشطة الجمعية مع المنح الدولية وصياغة المقترحات المكتملة المعايير.</p>
-          </div>
-
-          <div class="roadmap-step-card">
-            <div class="step-num">4</div>
-            <h4>التقديم وقياس وتوثيق الأثر</h4>
-            <p>إرسال طلبات التمويل، إطلاق المشروعات، وإصدار تقارير قياس الأثر لضمان الاستدامة.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Frequently Asked Questions (FAQ) Section - Focused on NGOs -->
-    <div class="faq-section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-subtitle">الأسئلة الأكثر شيوعاً</div>
-          <h3 class="section-title">إجابات واضحة حول خدمات الجمعيات الأهلية</h3>
-          <p class="section-desc">كل ما تحتاج معرفته عن سياسة تقديم الخدمات، التحول الرقمي، والتأهيل للمنح</p>
-        </div>
-
-        <div class="faq-accordion-wrapper">
-          <div class="faq-item active">
-            <button class="faq-question" onclick="toggleFaq(this)">
-              <span>ما هي الخدمات والحلول التي تقدمها NGOHUB للجمعيات والمؤسسات الأهلية؟</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>نقدم 8 حلول متكاملة تشمل: المساعدة في إعداد وملفات التقديم على المنح، إدارة وتنسيق المشاريع التنموية غير الربحية، تصميم وتطوير المواقع الرسمية (.org / .com)، أتمتة العمليات وقواعد البيانات السحابية، تنظيم وتوثيق برامج المتطوعين، تصميم الهوية المؤسسية وتقارير الأثر السنوية، وبناء لوحات متابعة وتقييم الأداء (M&E).</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">
-              <span>ما هو الفارق بين الخدمات المجانية والخدمات ذات الموارد المدفوعة؟</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>الاستشارات المؤسسية، التوجيه، إرشاد كتابة المقترحات، وبرامج المتطوعين تقدمها NGOHUB كمبادرة تنموية مجانية. أما الخدمات التي تتطلب حجز موارد خارجية مدفوعة مثل: حجز النطاق الرسمي (.org)، والسيرفرات والاستضافات السحابية السنوية، فتوفرها المنصة بسعر التكلفة المباشرة لمزودي الخدمة أو باستخدام سيرفرات واستضافة الجمعية الخاصة دون أي هوامش ربحية.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">
-              <span>كيف تساعد NGOHUB الجمعيات في التأهيل للقبول في المنح الدولية والمحلية؟</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>نساعد الجمعية في استيفاء الشروط الأساسية التي يطلبها المانحون: 1) وجود موقع إلكتروني رسمي يوثق أنشطتها وسابقة أعمالها. 2) خطط ومنظومة واضحة لإدارة المشاريع وتوثيق الأنشطة. 3) صياغة مقترح المشروع بمكون ذكي أو بيئي وتحديد مؤشرات الأثر المستدام والشفافية المؤسسية.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">
-              <span>هل تخدم NGOHUB الجمعيات الأهلية الصغيرة والمحافظات؟</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>نعم بالتأكيد! صُممت منصة NGOHUB خصيصاً لمساندة الجمعيات الصغيرة والمتوسطة في كافة المحافظات بمصر والوطن العربي، لمساعدتها على امتلاك أدوات رقمية احترافية تضاهي المؤسسات الكبرى لتمكينها من المنافسة العادلة على التمويلات.</p>
+            <div class="proof-stat-item">
+              <div class="proof-stat-icon text-blue"><i class="fa-solid fa-globe"></i></div>
+              <div class="proof-stat-info">
+                <span class="proof-stat-number text-blue">منح دولية معتمدة</span>
+                <strong>موثقة ومطابقة لمعايير الاستدامة التنموية</strong>
+                <p>قاعدة بيانات محدثة للمنح المناخية والمجتمعية التي تتوافق مع قدرات واحتياجات الجمعيات الشريكة.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Dedicated NGO Alliance Registration Call-to-Action Section -->
-    <div class="registration-cta-section" style="padding: 50px 0; background: linear-gradient(135deg, rgba(47, 110, 58, 0.08) 0%, rgba(122, 75, 163, 0.08) 100%); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-top: 40px;">
-      <div class="container" style="text-align: center;">
-        <div class="hero-nisgp-badge" style="margin-bottom: 14px;">
-          <i class="fa-solid fa-trophy text-gold"></i> التحالف الوطني الأكبر لتمكين الجمعيات الأهلية
-        </div>
-        <h3 style="font-size: 2.1rem; font-weight: 900; color: var(--text-dark); margin-bottom: 14px;">
-          سجّل جمعيتك الآن وانضم لأكبر شبكة ومنصة للعمل الأهلي
-        </h3>
-        <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 780px; margin: 0 auto 26px; line-height: 1.75;">
-          خطوة واحدة تفصل جمعيتك عن الظهور لرادار المانحين، مطابقة المنح الدولية، وأتمتة منظومتك المؤسسية. تعاملنا مع أكثر من 65 جمعية ومؤسسة أهلية داخل وخارج مصر، ونفتح الباب لكافة الكيانات الأهلية للانضمام المباشر والاستفادة من مزايا التحالف.
-        </p>
-        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn-hero-register" onclick="openNgoRegisterModal()">
-            <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك الآن وانضم للتحالف
-          </button>
-          <a href="https://wa.me/201026847508?text=السلام%20عليكم،%20أريد%20تسجيل%20جمعيتنا%20في%20تحالف%20NGOHUB" target="_blank" class="btn-outline-wa" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 14px 24px; font-weight: 700; border-radius: var(--radius-md);">
-            <i class="fa-brands fa-whatsapp text-emerald" style="font-size: 1.2rem;"></i> تسجيل مباشر عبر واتساب
+        <!-- The Single Dominant Action for Screen 4 -->
+        <div class="screen-single-action-wrap">
+          <a href="grants.html" class="btn-screen-action-link">
+            <i class="fa-solid fa-globe"></i>
+            <span>استكشف بوابة المنح الدولية</span>
+            <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>
       </div>
     </div>
+
+    <!-- ==================== PAGE CLARITY BOX (MANDATORY INVARIANT) ==================== -->
+    <div class="container" style="margin-top: 30px; margin-bottom: 25px;">
+      <div class="page-clarity-box">
+        <div class="clarity-item">
+          <span class="clarity-item-title"><i class="fa-solid fa-circle-question"></i> ما هو مشروع NGOHUB؟</span>
+          <p class="clarity-item-text">المشروع الأخضر المؤسسي لتمكين وتأهيل الجمعيات الأهلية، الحائز على المركز الأول بالمشروعات الخضراء الذكية (NISGP).</p>
+        </div>
+        <div class="clarity-item">
+          <span class="clarity-item-title"><i class="fa-solid fa-briefcase"></i> كيف نخدم جمعيتكم ومجلس إدارتكم؟</span>
+          <p class="clarity-item-text">نؤهل جمعيتكم لاستيفاء معايير المانحين الدوليين، نصيغ مقترحات المشروعات التنموية باحترافية، ونربطكم بفرص التمويل والمنح الدولية الموثقة.</p>
+        </div>
+        <div class="clarity-item">
+          <span class="clarity-item-title"><i class="fa-solid fa-circle-check"></i> الخطوة التالية الموصى بها</span>
+          <p class="clarity-item-text">سجّل بيانات جمعيتك للبدء في مسار التقييم وصياغة المقترح والانضمام لتحالف المشروعات الخضراء.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 5: THE FINAL CLOSING COMMITMENT ==================== -->
+    <div class="closing-commitment-screen" id="screen-closing-cta">
+      <div class="container text-center">
+        <div class="hero-nisgp-badge-gold" style="margin-bottom: 14px;">
+          <i class="fa-solid fa-trophy text-gold"></i> التحالف الوطني الأكبر لتمكين الجمعيات الأهلية
+        </div>
+        <h2 class="closing-title">جاهز لنقل جمعيتك إلى رادار المانحين وتأمين التمويل القادم؟</h2>
+        <p class="closing-subtitle">
+          خطوة واحدة تفصل مجلس إدارتكم عن البدء في صياغة مقترح مشروعكم واستيفاء متطلبات التمويل الدولي بشراكة مؤسسية موثقة.
+        </p>
+        
+        <!-- The Single Dominant Action for Screen 5 -->
+        <div class="closing-action-wrap">
+          <button class="btn-hero-primary-wide" onclick="openNgoRegisterModal()">
+            <i class="fa-solid fa-building-circle-check"></i>
+            <span>سجّل جمعيتك الآن وانضم للتحالف</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- Note: Standalone pages (impact.html, calculators.html, partners.html, grants.html, services.html, about.html, contact.html) are maintained as dedicated high-speed pages. Only section-home and section-admin are served from index.html -->
@@ -773,7 +793,7 @@
             <i class="fa-solid fa-chart-pie"></i> نظرة عامة وإحصائيات
           </button>
           <button class="admin-tab-btn" id="atab-grants" onclick="switchAdminSubTab('grants')">
-            <i class="fa-solid fa-globe"></i> إدارة المنح والفرص (<span id="cmsGrantsCountBadge">66</span>)
+            <i class="fa-solid fa-globe"></i> إدارة المنح والفرص (<span id="cmsGrantsCountBadge">-</span>)
           </button>
           <button class="admin-tab-btn" id="atab-services" onclick="switchAdminSubTab('services')">
             <i class="fa-solid fa-cubes"></i> إدارة الخدمات (8)
@@ -787,7 +807,7 @@
         <div class="admin-subview active-subview" id="asub-overview">
           <div class="stats-grid" style="margin-bottom: 25px;">
             <div class="stat-card">
-              <div class="stat-number purple" id="cmsTotalGrants">66</div>
+              <div class="stat-number purple" id="cmsTotalGrants">-</div>
               <div class="stat-label">إجمالي الفرص والمنح الدولية الحقيقية</div>
             </div>
             <div class="stat-card">
@@ -857,10 +877,10 @@
             <table class="cms-table" id="cmsServicesTable">
               <thead>
                 <tr>
-                  <th>الخدمة</th>
-                  <th>النوع والتسعير</th>
+                  <th>المحور المؤسسي</th>
+                  <th>المسار والشراكة</th>
                   <th>الأيقونة</th>
-                  <th>الإجراءات</th>
+                  <th>التصنيف</th>
                 </tr>
               </thead>
               <tbody id="cmsServicesTbody">
@@ -919,7 +939,7 @@
           <h4>أقسام ومستندات المنصة</h4>
           <p><a href="index.html" style="color: inherit; text-decoration:none;">الرئيسية</a></p>
           <p><a href="services.html" style="color: inherit; text-decoration:none;">دليل خدمات الجمعيات</a></p>
-          <p><a href="grants.html" style="color: inherit; text-decoration:none;">بوابة المنح العالمية (66 منحة)</a></p>
+          <p><a href="grants.html" style="color: inherit; text-decoration:none;">بوابة المنح الدولية</a></p>
           <p><a href="calculators.html" style="color: inherit; text-decoration:none;">الحاسبات الرقمية التفاعلية</a></p>
           <p><a href="impact.html" style="color: inherit; text-decoration:none;">الأثر وصون المياه</a></p>
           <p><a href="about.html" style="color: inherit; text-decoration:none;">عن المنصة والرسالة</a></p>

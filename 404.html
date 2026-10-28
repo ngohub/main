@@ -45,10 +45,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   
   <style>
     :root {
@@ -71,9 +69,35 @@
       --border-color: #26334A;
       --primary-green-light: rgba(47, 110, 58, 0.22);
     }
+    [data-theme="glass"] {
+      --bg-main: #070B11;
+      --bg-card: rgba(15, 23, 42, 0.65);
+      --text-dark: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-color: rgba(255, 255, 255, 0.12);
+      --primary-green: #10B981;
+      --primary-green-dark: #059669;
+      --primary-green-light: rgba(16, 185, 129, 0.16);
+      --primary-purple: #8B5CF6;
+    }
+    [data-theme="glass"] body {
+      background-color: #070B11;
+      background-image: 
+        radial-gradient(circle at 12% 15%, rgba(16, 185, 129, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 88% 22%, rgba(139, 92, 246, 0.14) 0%, transparent 48%),
+        radial-gradient(circle at 50% 60%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    [data-theme="glass"] .error-card {
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
       background: var(--bg-main);
       color: var(--text-dark);
       min-height: 100vh;
@@ -97,9 +121,7 @@
       font-size: 6rem;
       font-weight: 900;
       line-height: 1;
-      background: linear-gradient(135deg, var(--primary-green), var(--primary-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--primary-green);
       margin-bottom: 12px;
     }
     .error-icon {

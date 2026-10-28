@@ -15,124 +15,179 @@
 
 // --- 1. Master Services Dataset (8 Services) ---
 let SERVICES_DATA = [
+  // --- المحور 1: الخدمات التمويلية الأساسية (محرك المنح) ---
   {
-    id: "web_dev",
-    title: "1. تصميم وتطوير المواقع والمنصات التفاعلية",
-    category: "digital",
-    is_paid: true,
-    price_label: "مدفوع (استضافة ونطاق ودعم)",
-    icon: "fa-laptop-code",
-    desc: "تصميم وتطوير مواقع ويب متجاوبة 100% مع الهواتف للجمعيات والمشروعات، مع ربط بوابات التبرع وتوثيق المشروعات وقصص الأثر التنموي.",
+    id: "grants_readiness",
+    title: "1. تجهيز وتأهيل الجمعيات للمنح والتمويل الدولي",
+    category: "grants",
+    tier_label: "تأهيل واعتماد للمنح",
+    icon: "fa-award",
+    desc: "تدقيق شامل للملف المؤسسي للجمعية، مواءمة الهيكل الإداري مع معايير المانحين الدوليين، وسد أي فجوة تنظيمية لضمان القبول التمويلي.",
     features: [
-      "نطاق رسمي (.org / .com) واستضافة سحابية خاصة سريعة",
-      "تصميم عصري متجاوب مع كافة أحجام الهواتف والشاشات",
-      "لوحة إدارة محتوى بسيطة وسهلة لفريق الجمعية",
-      "دعم فني وصيانة ومتابعة للأمان والنسخ الاحتياطي"
-    ]
-  },
-  {
-    id: "digital_transformation",
-    title: "2. التحول الرقمي وأتمتة المشروعات السحابية",
-    category: "digital",
-    is_paid: true,
-    price_label: "مدفوع (حجز سيرفر سحابي واستضافة)",
-    icon: "fa-network-wired",
-    desc: "نقل الجمعية من السجلات الورقية إلى منظومة سحابية متكاملة وقواعد بيانات آمنة لإدارة المشروعات والأنشطة والتقارير.",
-    features: [
-      "تجهيز قواعد بيانات سحابية وتشفير سجلات المشروعات",
-      "أتمتة استمارات التقديم وسجلات العمليات والفرز",
-      "تدريب كوادر الجمعية على الأدوات الرقمية الحديثة",
-      "ربط الإدارات واستخراج تقارير إحصائية دورية"
-    ]
-  },
-  {
-    id: "volunteer_mgmt",
-    title: "3. إدارة وتطوير برامج المتطوعين وبناء المنظومة",
-    category: "volunteering",
-    is_paid: false,
-    price_label: "مبادرة واستشارة مجانية",
-    icon: "fa-users-gear",
-    desc: "تنظيم وهيكلة برامج التطوع داخل الجمعيات، وتصنيف المهارات، وتوزيع المهام، وحساب وتوثيق الساعات التطوعية رقمياً.",
-    features: [
-      "بناء نموذج واستمارة تسجيل وتصنيف المتطوعين",
-      "حصر الساعات التطوعية وإصدار شهادات مشاركة معتمدة",
-      "تصميم برامج إدماج الشباب في العمل البيئي والتنموي",
-      "إرشاد الجمعيات لكيفية استبقاء وبناء ولاء المتطوعين"
+      "فحص استيفاء متطلبات الامتثال لدى الجهات المانحة",
+      "إعداد الملف التعريفي المؤسسي المعتمد (Due Diligence Pack)",
+      "تطوير السياسات الداخلية والإدارة الرشيدة والنزاهة المالية",
+      "إرشاد الجمعيات لفرص التمويل الأنسب لقدراتها الميدانية"
     ]
   },
   {
     id: "grants_proposals",
-    title: "4. التقديم على المنح وصياغة مقترحات المشروعات",
+    title: "2. كتابة وصياغة مقترحات المشروعات التنموية",
     category: "grants",
-    is_paid: false,
-    price_label: "مبادرة واستشارة مجانية",
+    tier_label: "صياغة مقترحات المنح",
     icon: "fa-file-signature",
-    desc: "إعداد الملف المؤسسي للجمعية، مراجعة معايير الجهات المانحة الدولية والمحلية، وصياغة مقترحات المشروعات والمكون الذكي للمسابقات.",
+    desc: "صياغة تنموية احترافية لمقترح المشروع وفق النماذج المعيارية المعتمدة (Logical Frameworks)، وإعداد مصفوفات النتائج والميزانيات التقديرية.",
     features: [
-      "تجهيز الملف التعريفي المؤسسي أمام الجهات المانحة",
-      "صياغة وتطوير المكون الذكي للمشروعات التنموية والبيئية",
-      "مراجعة معايير القبول في المنح القومية والدولية",
-      "إرشاد الجمعيات لاستيفاء متطلبات التمويل والشراكات"
+      "صياغة المكون البيئي والذكي للمشروعات التنموية",
+      "بناء الإطار المنطقي ومؤشرات قياس النجاح (KPIs)",
+      "إعداد الميزانية التقديرية التفصيلية وجدول التدفقات",
+      "مراجعة المعايير وتدقيق المقترح قبل التسليم النهائي"
     ]
   },
   {
-    id: "brand_identity",
-    title: "5. تصميم الهوية البصرية والمحتوى الرقمي للجمعيات",
-    category: "media",
-    is_paid: true,
-    price_label: "مدفوع (تصميم وإنتاج)",
-    icon: "fa-palette",
-    desc: "بناء هوية بصرية احترافية وشعارات تعكس رسالة الجمعية، وتصميم قوالب منشورات وتقارير أثر دورية لتعزيز ثقة المانحين والمجتمع.",
+    id: "grant_submission",
+    title: "3. التقديم الرسمي والمتابعة مع الجهات المانحة",
+    category: "grants",
+    tier_label: "متابعة واعتماد تمويلي",
+    icon: "fa-paper-plane",
+    desc: "إدارة عملية التقديم الإلكتروني والرسمي عبر بوابات المانحين، متابعة استفسارات لجان التقييم، ودعم الجمعية حتى توقيع الاتفاقية.",
     features: [
-      "تصميم دليل الهوية البصرية (الشعار، الألوان، الخطوط)",
-      "قوالب سوشيال ميديا جاهزة للأنشطة والفعاليات",
-      "تصميم تقرير الأثر السنوي (Annual Impact Report)",
-      "تصميم البروفايل التعريفي الرسمي (Company Profile)"
+      "رفع وإرسال الملفات عبر المنصات المعتمدة للمانحين",
+      "المتابعة الفنية للاستفسارات واستيفاء الملاحظات",
+      "المساندة في إعداد عروض التقديم والمقابلات الفنية",
+      "توجيه فريق الجمعية في إجراءات التعاقد وتدشين التمويل"
+    ]
+  },
+
+  // --- المحور 2: الدراسات الفنية والتنموية ---
+  {
+    id: "feasibility_study",
+    title: "4. دراسات الجدوى الفنية والمالية للمشروعات",
+    category: "studies",
+    tier_label: "دراسات جدوى معتمدة",
+    icon: "fa-chart-line",
+    desc: "إعداد دراسات جدوى اقتصادية واجتماعية وتشغيلية دقيقة تبرهن للمانح جدوى المشروع وسلامة تخصيص أموال المنحة وتحقيق الأثر.",
+    features: [
+      "تحليل الجدوى الاقتصادية والعائد على الاستثمار التنموي",
+      "تقدير التكاليف التشغيلية ومخاطر التنفيذ الميداني",
+      "تحديد النطاق الجغرافي واحتياجات المجتمعات المحلية",
+      "إعداد دراسات الجدوى البيئية وفق معايير الاستدامة"
+    ]
+  },
+  {
+    id: "impact_measurement",
+    title: "5. قياس وتوثيق مؤشرات الأثر البيئي وصون الموارد",
+    category: "studies",
+    tier_label: "قياس أثر بيئي موثق",
+    icon: "fa-leaf",
+    desc: "حساب العائد البيئي والمائي الموثق بالأرقام لتقديمه للصناديق الخضراء والمناخية (تتويجاً لفوز NGOHUB بالمركز الأول في NISGP).",
+    features: [
+      "قياس مؤشرات خفض البصمة المائية وصون الموارد",
+      "حساب خفض الانبعاثات وتحسين كفاءة الطاقة",
+      "إصدار تقارير قياس أثر دورية معتمدة للمانحين",
+      "مواءمة مخرجات المشروع مع أهداف التنمية المستدامة (SDGs)"
+    ]
+  },
+
+  // --- المحور 3: الحلول الرقمية والبنية التحتية المعتمدة ---
+  {
+    id: "web_dev",
+    title: "6. تصميم وتطوير البوابات والمواقع الرسمية للجمعيات",
+    category: "digital",
+    tier_label: "بنية تحتية ومواقع رسمية",
+    icon: "fa-globe",
+    desc: "بناء بوابات إلكترونية ومواقع رسمية متجاوبة توثق سابقة أعمال الجمعية ورسالتها وهوية مجلس إدارتها لاستيفاء شروط المانحين.",
+    features: [
+      "نطاق مؤسسي رسمي واستضافة سحابية مشفرة عالية السرعة",
+      "تصميم متجاوب يعكس الهيبة المؤسسية للجمعية",
+      "لوحة إدارة محتوى مرنة لفريق العمل وسجلات الأنشطة",
+      "حماية أمنية سيبرانية ونسخ احتياطي دوري مؤمن"
+    ]
+  },
+  {
+    id: "digital_transformation",
+    title: "7. التحول الرقمي وأتمتة السجلات المؤسسية",
+    category: "digital",
+    tier_label: "نظم سحابية مشفرة",
+    icon: "fa-network-wired",
+    desc: "نقل سجلات الجمعية الورقية إلى بيئة سحابية موحدة وقواعد بيانات مشفرة لإدارة الأنشطة والتقارير الرقابية بنزاهة وشفافية.",
+    features: [
+      "قواعد بيانات سحابية وتشفير كامل للبيانات المؤسسية",
+      "أتمتة استمارات التقديم وسجلات المتابعة الميدانية",
+      "تأهيل كوادر الجمعية على النظم الرقمية السحابية",
+      "استخراج مؤشرات الأداء والتقارير الرقابية اللحظية"
     ]
   },
   {
     id: "impact_dashboard",
-    title: "6. إدارة المشروعات ولوحات متابعة وتقييم الأثر (M&E)",
+    title: "8. لوحات القيادة ونظم المتابعة والتقييم (M&E)",
     category: "digital",
-    is_paid: true,
-    price_label: "مدفوع (تجهيز وبرمجة)",
+    tier_label: "لوحات متابعة وتقييم",
     icon: "fa-chart-pie",
-    desc: "لوحات تحكم ذكية (Dashboards) ترصد مؤشرات الأداء، وتوزيع المشروعات جغرافياً، وحجم الإنجاز لتسهيل عرضها أمام المانحين.",
+    desc: "لوحات تحكم ذكية ترصد مؤشرات الأداء، وتوزيع المشروعات جغرافياً، وحجم الإنجاز لتقديمها للجهات المانحة بشفافية تامة.",
     features: [
-      "رصد لحظي للمشروعات المنفذة ومؤشرات الأداء",
-      "خرائط جغرافية لمناطق التدخل والاحتياج التنموي",
-      "تصدير تقارير بيانية تفاعلية بصيغ PDF و Excel",
-      "تحليل مؤشرات خفض الانبعاثات للمشروعات البيئية"
-    ]
-  },
-  {
-    id: "capacity_building",
-    title: "7. برامج تدريب الكوادر وبناء القدرات المؤسسية",
-    category: "training",
-    is_paid: false,
-    price_label: "مبادرة واستشارة مجانية",
-    icon: "fa-chalkboard-user",
-    desc: "ورش عمل تدريبية متخصصة بالتعاون مع PROTIC لتأهيل العاملين بالجمعيات في مجالات الإدارة التنموية الفعالة والتحول الرقمي والبيئي.",
-    features: [
-      "ورش عمل تفاعلية حول إدارة الجمعيات الأهلية",
-      "تدريب على استخدام أدوات الذكاء الاصطناعي في العمل التنموي",
-      "جلسات توجيه فردية لمسؤولي المشروعات التنموية",
-      "حقائب تدريبية موثقة ودليل عمل مؤسسي"
+      "متابعة لحظية للمشاريع المنفذة ومؤشرات النجاح",
+      "خرائط رقمية تفاعلية للنطاقات الميدانية والتدخلات",
+      "تصدير تقارير تحليلية معتمدة للمانحين (PDF / Excel)",
+      "تكامل لحظي مع قواعد البيانات الميدانية"
     ]
   },
   {
     id: "ai_solutions",
-    title: "8. حلول الذكاء الاصطناعي وتلخيص البيانات التنموية",
+    title: "9. حلول الذكاء الاصطناعي وتلخيص البيانات التنموية",
     category: "digital",
-    is_paid: true,
-    price_label: "مدفوع (استهلاك أدوات AI)",
-    icon: "fa-robot",
-    desc: "تطويع أدوات ونماذج الذكاء الاصطناعي للرد الآلي وتلخيص أبحاث المشروعات وتصنيف المقترحات التنموية بكفاءة عالية.",
+    tier_label: "حلول الأتمتة المتقدمة",
+    icon: "fa-microchip",
+    desc: "تطويع تقنيات الذكاء الاصطناعي لتحليل أوراق السياسات التنموية، وتلخيص المقترحات، وأتمتة التواصل المؤسسي المعتمد.",
     features: [
-      "مساعد ذكي للرد الآلي لخدمة فرق العمل والمتطوعين",
-      "تلخيص سريع للتقارير وأوراق السياسات التنموية",
-      "أدوات ذكية لصياغة وتدقيق المحتوى والمراسلات",
-      "تكامل مع الواتساب والمنصات الرسمية"
+      "نظم ذكية لأتمتة الاستجابة للشركاء والفرق الميدانية",
+      "تلخيص واستخلاص الرؤى من تقارير التنمية المعقدة",
+      "أدوات مساعدة في مراجعة وتدقيق المراسلات والتقارير",
+      "تكامل مؤسسي آمن مع القنوات الرسمية المشفرة"
+    ]
+  },
+
+  // --- المحور 4: الكوادر والهوية وبناء القدرات ---
+  {
+    id: "volunteer_mgmt",
+    title: "10. تنظيم وهيكلة الكوادر وإدارة المتطوعين",
+    category: "capacity",
+    tier_label: "تنظيم فرق ميدانية",
+    icon: "fa-users-gear",
+    desc: "تنظيم وهيكلة برامج العمل الميداني والتطوع، وتصنيف المهارات، وتوثيق الساعات التطوعية رقمياً لإثبات القدرة التنفيذية.",
+    features: [
+      "نماذج مؤسسية متقدمة لتسجيل وتصنيف الكوادر",
+      "رصد المساهمات الميدانية وإصدار وثائق الاعتماد",
+      "دمج الكوادر الشابة في المشروعات الخضراء والتنموية",
+      "استراتيجيات الاستبقاء وبناء الولاء المؤسسي للفرق"
+    ]
+  },
+  {
+    id: "brand_identity",
+    title: "11. الهوية المؤسسية وتقارير الأثر السنوية",
+    category: "capacity",
+    tier_label: "هوية وتوثيق استراتيجي",
+    icon: "fa-palette",
+    desc: "بناء هوية بصرية رصينة وتقارير أثر دورية تعكس ثقل الجمعية وتاريخها الميداني وتعزز مصداقيتها أمام شركاء التنمية الدوليين.",
+    features: [
+      "دليل متكامل للهوية المؤسسية (الشعار، التيبوغرافيا، الألوان)",
+      "قوالب رسمية لتوثيق الفعاليات والشراكات الميدانية",
+      "إعداد وتصميم تقارير الأثر السنوية (Annual Impact Reports)",
+      "صياغة الملف المؤسسي التعريفي للشركاء والمانحين"
+    ]
+  },
+  {
+    id: "capacity_building",
+    title: "12. برامج التدريب وبناء القدرات المؤسسية (PROTIC)",
+    category: "capacity",
+    tier_label: "برامج تدريب معتمدة",
+    icon: "fa-chalkboard-user",
+    desc: "برامج تدريبية تخصصية بالتعاون مع PROTIC لتأهيل القيادات التنفيذية في الجمعيات على الإدارة الحديثة والتحول البيئي والمؤسسي.",
+    features: [
+      "ورش عمل تطبيقية في القيادة وإدارة المشاريع التنموية",
+      "تطبيقات الذكاء الاصطناعي في تسريع إنجاز الجمعيات",
+      "جلسات توجيه متخصصة لمديري البرامج والمشروعات",
+      "حقائب تدريبية وأدلة عمل مؤسسية متقدمة"
     ]
   }
 ];
@@ -149,10 +204,12 @@ let GOOGLE_SHEETS_WEBHOOK_URL = localStorage.getItem('ngohub_google_sheets_webho
 // --- 3. DOM Content Loaded Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  calculateHomeAudit();
   initGrantsDatabase();
   initServices();
   calculateEcoImpact();
   calculateReadinessScore();
+  calculateHomeAudit();
   calculateNgohubWater();
   calculateServicesImpact();
   loadSubmissionsInboxCount();
@@ -209,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- 4. Dark / Light Theme Engine ---
+// --- 4. Tri-Theme Engine (Light / Dark / Glass) ---
 function initTheme() {
   const savedTheme = localStorage.getItem('ngohub_theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
@@ -218,23 +275,43 @@ function initTheme() {
 
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  let newTheme = 'dark';
+  if (currentTheme === 'light') {
+    newTheme = 'dark';
+  } else if (currentTheme === 'dark') {
+    newTheme = 'glass';
+  } else {
+    newTheme = 'light';
+  }
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('ngohub_theme', newTheme);
   updateThemeIcon(newTheme);
-  showToast(`تم التبديل إلى المظهر ${newTheme === 'dark' ? 'الداكن 🌙' : 'الفاتح ☀️'}`);
+
+  let label = 'المؤسسي الفاخر ☀️';
+  if (newTheme === 'dark') label = 'الداكن 🌙';
+  if (newTheme === 'glass') label = 'الزجاجي ✨';
+  showToast(`تم التبديل إلى المظهر ${label}`);
 }
 
 function updateThemeIcon(theme) {
   const icon = document.getElementById('themeIcon');
   const mIcon = document.getElementById('mThemeIcon');
+  const toggleBtn = document.getElementById('btnThemeToggle');
+
+  let iconClass = 'fa-solid fa-moon';
+  let titleText = 'تبديل المظهر (المظهر الحالي: المؤسسي الفاخر)';
+
   if (theme === 'dark') {
-    if (icon) icon.className = 'fa-solid fa-sun';
-    if (mIcon) mIcon.className = 'fa-solid fa-sun';
-  } else {
-    if (icon) icon.className = 'fa-solid fa-moon';
-    if (mIcon) mIcon.className = 'fa-solid fa-moon';
+    iconClass = 'fa-solid fa-wand-magic-sparkles';
+    titleText = 'تبديل المظهر (المظهر الحالي: الداكن)';
+  } else if (theme === 'glass') {
+    iconClass = 'fa-solid fa-sun';
+    titleText = 'تبديل المظهر (المظهر الحالي: الزجاجي)';
   }
+
+  if (icon) icon.className = iconClass;
+  if (mIcon) mIcon.className = iconClass;
+  if (toggleBtn) toggleBtn.setAttribute('title', titleText);
 }
 
 // --- 5. Mobile Drawer Navigation ---
@@ -267,7 +344,7 @@ const PAGE_SEO_MAP = {
     hash: "services"
   },
   grants: {
-    title: "بوابة المنح والفرص التمويلية للجمعيات الأهلية (66+ منحة) | NGOHUB",
+    title: "بوابة المنح | NGOHUB",
     desc: "دليل المنح التنموية والدولية الموثقة: فرص تمويلية للمشروعات الخضراء والذكية، منح الجمعيات الناشئة، وبناء القدرات المؤسسية.",
     hash: "grants"
   },
@@ -401,6 +478,7 @@ function switchTab(tabId, pushHistory = true) {
         if (typeof calculateNgohubWater === 'function') calculateNgohubWater();
         if (typeof calculateServicesImpact === 'function') calculateServicesImpact();
         if (typeof calculateReadinessScore === 'function') calculateReadinessScore();
+  calculateHomeAudit();
       }
       return;
     }
@@ -628,9 +706,12 @@ function generateGrantCardHTML(g) {
           <i class="fa-solid fa-eye"></i> الشروط
         </button>
         <a href="${g.link}" target="_blank" class="btn-apply-direct">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> التقديم الرسمي المباشر
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> التقديم المباشر
         </a>
       </div>
+      <button type="button" class="btn-grant-proposal-cta" onclick="openServiceModal('grants_proposals')" style="width: 100%; margin-top: 10px; border-radius: 999px; font-weight: 700; padding: 10px 14px; font-size: 0.85rem; background: #059669; color: #FFFFFF; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);">
+        <i class="fa-solid fa-file-pen"></i> طلب تأهيل وصياغة مقترح لهذه المنحة
+      </button>
     </div>
   `;
 }
@@ -1133,9 +1214,16 @@ function initServices() {
   const customServices = localStorage.getItem('ngohub_custom_services');
   if (customServices) {
     try {
-      SERVICES_DATA = JSON.parse(customServices);
+      const parsed = JSON.parse(customServices);
+      if (Array.isArray(parsed) && parsed.length > 0 && parsed.every(s => s.tier_label && s.category && ['digital', 'grants', 'studies', 'capacity'].includes(s.category))) {
+        SERVICES_DATA = parsed;
+      } else {
+        console.warn("[NGOHUB] Legacy service schema detected in localStorage. Purging and restoring canonical institutional services.");
+        localStorage.removeItem('ngohub_custom_services');
+      }
     } catch (e) {
       console.error("Error parsing custom services:", e);
+      localStorage.removeItem('ngohub_custom_services');
     }
   }
   renderServices();
@@ -1164,52 +1252,161 @@ function renderServices() {
 
   const searchVal = (document.getElementById('servicesSearchInput')?.value || '').toLowerCase().trim();
 
-  let filtered = SERVICES_DATA.filter(s => {
-    if (currentServiceFilter === 'paid' && !s.is_paid) return false;
-    if (currentServiceFilter === 'free' && s.is_paid) return false;
+  // Categories Metadata
+  const CLUSTER_CONFIG = [
+    {
+      key: "grants",
+      num: "المحور الأول • المسار التمويلي الرئيسي",
+      badge: "المحرك الأساسي لـ NGOHUB",
+      badgeIcon: "fa-crown",
+      title: "خدمات التأهيل وصياغة مقترحات المشروعات التنموية",
+      desc: "الحزمة الاستراتيجية الحتمية لتمكين الجمعيات من استيفاء معايير المانحين الدوليين، صياغة المقترحات التنموية باحترافية، بناء مصفوفة النتائج، والمتابعة الرسمية حتى الاعتماد.",
+      accent: "emerald",
+      btnText: "طلب تأهيل وصياغة مقترح المنحة",
+      btnIcon: "fa-file-signature"
+    },
+    {
+      key: "studies",
+      num: "المحور الثاني • معايير الجدوى والاستدامة",
+      badge: "أولوية الصناديق الخضراء • NISGP",
+      badgeIcon: "fa-chart-pie",
+      title: "الدراسات الفنية والجدوى وقياس الأثر البيئي والمائي",
+      desc: "إعداد دراسات جدوى اقتصادية وفنية صلبة للمشروعات وقياس مؤشرات صون المياه والحد من الانبعاثات وفق أعلى معايير الاستدامة المعتمدة.",
+      accent: "blue",
+      btnText: "طلب دراسة الجدوى وقياس الأثر",
+      btnIcon: "fa-chart-line"
+    },
+    {
+      key: "digital",
+      num: "المحور الثالث • الامتثال والبنية التحتية",
+      badge: "الهوية الرقمية والشفافية",
+      badgeIcon: "fa-laptop-code",
+      title: "البنية الرقمية والمواقع الرسمية والتحول المؤسسي",
+      desc: "استيفاء شرط المانحين في التحقق الرقمي، تصميم بوابات رسمية معتمدة، حوسبة السجلات التنموية، ولوحات قيادة الأداء وأدوات الذكاء الاصطناعي.",
+      accent: "purple",
+      btnText: "طلب تطوير المنظومة والبوابة الرقمية",
+      btnIcon: "fa-globe"
+    },
+    {
+      key: "capacity",
+      num: "المحور الرابع • رأس المال البشري",
+      badge: "الجاهزية التنفيذية الميدانية",
+      badgeIcon: "fa-users-gear",
+      title: "الكوادر والهوية وبناء القدرات المؤسسية",
+      desc: "تنظيم وهيكلة فرق العمل وإدارة المتطوعين، إصدار تقارير الاستدامة السنوية للمانحين، وتنفيذ برامج تدريبية متقدمة لقيادات وكوادر الجمعيات.",
+      accent: "amber",
+      btnText: "طلب برنامج بناء القدرات والكوادر",
+      btnIcon: "fa-graduation-cap"
+    }
+  ];
+
+  // Filter categories to show based on currentServiceFilter
+  const activeClusters = currentServiceFilter === 'all'
+    ? CLUSTER_CONFIG
+    : CLUSTER_CONFIG.filter(c => c.key === currentServiceFilter);
+
+  let totalRendered = 0;
+  let html = '';
+
+  activeClusters.forEach(cluster => {
+    // Filter services belonging to this cluster
+    let clusterServices = SERVICES_DATA.filter(s => s.category === cluster.key);
 
     if (searchVal) {
-      const matchTitle = s.title.toLowerCase().includes(searchVal);
-      const matchDesc = s.desc.toLowerCase().includes(searchVal);
-      const matchFeatures = s.features.some(f => f.toLowerCase().includes(searchVal));
-      if (!matchTitle && !matchDesc && !matchFeatures) return false;
+      clusterServices = clusterServices.filter(s => {
+        const matchTitle = s.title.toLowerCase().includes(searchVal);
+        const matchDesc = s.desc.toLowerCase().includes(searchVal);
+        const matchTier = (s.tier_label || '').toLowerCase().includes(searchVal);
+        const matchFeatures = s.features.some(f => f.toLowerCase().includes(searchVal));
+        return matchTitle || matchDesc || matchTier || matchFeatures;
+      });
     }
-    return true;
+
+    if (clusterServices.length === 0) return;
+
+    totalRendered += clusterServices.length;
+
+    html += `
+      <section class="service-cluster-section cluster-accent-${cluster.accent}" id="cluster-${cluster.key}">
+        <!-- Cluster Header Banner -->
+        <div class="service-cluster-header">
+          <div class="cluster-badge-row">
+            <span class="cluster-badge badge-tag-${cluster.accent}">
+              <i class="fa-solid ${cluster.badgeIcon}"></i> ${cluster.badge}
+            </span>
+            <span class="cluster-count-pill">${clusterServices.length} خدمات معتمدة</span>
+          </div>
+          <div class="cluster-heading-wrap">
+            <span class="cluster-num-label">${cluster.num}</span>
+            <h3 class="cluster-title">${cluster.title}</h3>
+          </div>
+          <p class="cluster-desc">${cluster.desc}</p>
+        </div>
+
+        <!-- Cluster Cards Grid -->
+        <div class="cluster-cards-grid grid-${cluster.key}">
+          ${clusterServices.map((s, idx) => {
+            const serviceIndexNum = String(SERVICES_DATA.findIndex(item => item.id === s.id) + 1).padStart(2, '0');
+            const isFlagship = s.category === 'grants';
+            return `
+              <div class="service-dossier-card ${isFlagship ? 'card-flagship' : ''} card-theme-${cluster.accent}">
+                <!-- Top Accent Strip & Number -->
+                <div class="dossier-top-bar">
+                  <div class="dossier-icon-box box-${cluster.accent}">
+                    <i class="fa-solid ${s.icon}"></i>
+                  </div>
+                  <span class="dossier-tier-pill pill-${cluster.accent}">
+                    <i class="fa-solid fa-shield-halved"></i> ${s.tier_label}
+                  </span>
+                  <span class="dossier-index">${serviceIndexNum}</span>
+                </div>
+
+                <!-- Main Content -->
+                <div class="dossier-body">
+                  <h4 class="dossier-title">${s.title}</h4>
+                  <p class="dossier-text">${s.desc}</p>
+
+                  <div class="dossier-features-wrap">
+                    <span class="features-label">المخرجات والمقومات المعتمدة:</span>
+                    <ul class="dossier-features-list">
+                      ${s.features.map(f => `
+                        <li>
+                          <i class="fa-solid fa-circle-check text-${cluster.accent}"></i>
+                          <span>${f}</span>
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Footer Action Button -->
+                <div class="dossier-footer">
+                  <button type="button" class="btn-dossier-action btn-action-${cluster.accent}" onclick="openServiceModal('${s.id}')">
+                    <i class="fa-solid ${cluster.btnIcon}"></i>
+                    <span>${cluster.btnText}</span>
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </section>
+    `;
   });
 
-  if (filtered.length === 0) {
+  if (totalRendered === 0) {
     container.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: var(--bg-card); border-radius: var(--radius-md);">
-        <i class="fa-solid fa-circle-question" style="font-size: 2rem; color: var(--text-muted); margin-bottom: 10px;"></i>
-        <h4 style="color: var(--text-dark);">لم يتم العثور على خدمات مطابقة للبحث</h4>
+      <div class="services-empty-state">
+        <i class="fa-solid fa-circle-question" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px;"></i>
+        <h4>لم يتم العثور على محاور مطابقة للبحث</h4>
+        <p style="color: var(--text-secondary); margin-top: 6px;">جرّب استخدام كلمات بحث أخرى مثل: منح، دراسات، مواقع، كفاءات، تدريب.</p>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = filtered.map(s => `
-    <div class="service-box ${s.is_paid ? 'paid-service' : ''}">
-      <div class="service-box-header">
-        <div class="service-icon"><i class="fa-solid ${s.icon}"></i></div>
-        <span class="service-badge ${s.is_paid ? 'badge-paid' : 'badge-free'}">
-          ${s.is_paid ? '<i class="fa-solid fa-tag"></i> مدفوع' : '<i class="fa-solid fa-gift"></i> مبادرة مجانية'}
-        </span>
-      </div>
-
-      <h4 class="service-title">${s.title}</h4>
-      <p class="service-text">${s.desc}</p>
-
-      <ul class="service-features-list">
-        ${s.features.map(f => `<li><i class="fa-solid fa-check text-emerald"></i> ${f}</li>`).join('')}
-      </ul>
-
-      <div class="service-box-footer">
-        <button class="btn-service-req" onclick="openServiceModal('${s.id}')">
-          <i class="fa-solid fa-paper-plane"></i> طلب هذه الخدمة
-        </button>
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = html;
 }
 
 // --- 12. Modals Management ---
@@ -1223,19 +1420,12 @@ function openServiceModal(serviceId) {
   const srv = SERVICES_DATA.find(s => s.id === serviceId);
 
   if (typeInput) typeInput.value = serviceId;
-  if (titleElem) titleElem.innerText = srv ? `طلب: ${srv.title}` : 'طلب دعم أو خدمة للجمعية الأهلية';
+  if (titleElem) titleElem.innerText = srv ? `طلب: ${srv.title}` : 'طلب تقييم مؤسسي وشراكة تقنية';
   if (badgeElem) {
-    if (srv && srv.is_paid) {
-      badgeElem.className = 'service-modal-badge';
-      badgeElem.style.background = 'var(--accent-gold-light)';
-      badgeElem.style.color = '#B45309';
-      badgeElem.innerText = 'خدمة بموارد خارجية مدفوعة (استضافة ونطاق تقني)';
-    } else {
-      badgeElem.className = 'service-modal-badge';
-      badgeElem.style.background = 'var(--primary-green-light)';
-      badgeElem.style.color = 'var(--primary-green-dark)';
-      badgeElem.innerText = 'مبادرة واستشارة مجانية';
-    }
+    badgeElem.className = 'service-modal-badge';
+    badgeElem.style.background = 'rgba(16, 185, 129, 0.12)';
+    badgeElem.style.color = 'var(--primary-green-dark)';
+    badgeElem.innerText = srv ? srv.tier_label : 'شراكة وتقييم مؤسسي معتمد';
   }
 
   if (modal) modal.classList.add('active');
@@ -1587,29 +1777,24 @@ function renderCmsServicesTable() {
     <tr>
       <td><strong>${s.title}</strong></td>
       <td>
-        <span class="service-badge ${s.is_paid ? 'badge-paid' : 'badge-free'}">
-          ${s.is_paid ? 'مدفوع' : 'مجاني'}
+        <span class="service-badge badge-tier">
+          ${s.tier_label}
         </span>
       </td>
       <td><i class="fa-solid ${s.icon}"></i></td>
       <td>
-        <div class="table-actions">
-          <button class="btn-table-sm btn-secondary" onclick="toggleServicePaidStatus(${idx})">
-            تبديل (مدفوع/مجاني)
-          </button>
-        </div>
+        <span class="badge-category">${s.category === 'digital' ? 'نظم رقمية' : s.category === 'grants' ? 'منح وتمويل' : 'بناء قدرات'}</span>
       </td>
     </tr>
   `).join('');
 }
 
-function toggleServicePaidStatus(idx) {
-  SERVICES_DATA[idx].is_paid = !SERVICES_DATA[idx].is_paid;
-  localStorage.setItem('ngohub_custom_services', JSON.stringify(SERVICES_DATA));
+function refreshCmsServicesTable() {
   renderCmsServicesTable();
   renderServices();
-  showToast("تم تحديث حالة تسعير الخدمة بنجاح");
+  showToast("تم تحديث المحاور المؤسسية بنجاح");
 }
+const toggleServicePaidStatus = refreshCmsServicesTable;
 
 function renderCmsInboxTable() {
   const tbody = document.getElementById('cmsInboxTbody');
@@ -1627,7 +1812,7 @@ function renderCmsInboxTable() {
       <td><strong>${item.ngoName}</strong></td>
       <td>${item.contactPerson}</td>
       <td><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:green; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> ${item.phone}</a></td>
-      <td><span class="service-badge badge-free">${item.serviceTitle}</span></td>
+      <td><span class="service-badge badge-tier">${item.serviceTitle}</span></td>
       <td style="max-width:200px; font-size:0.82rem;">${item.details}</td>
     </tr>
   `).join('');
@@ -1686,9 +1871,15 @@ function handleImportJSONFile(e) {
         ACTIVE_GRANTS = data.grants;
         localStorage.setItem('ngohub_custom_grants', JSON.stringify(ACTIVE_GRANTS));
       }
-      if (data.services) {
-        SERVICES_DATA = data.services;
-        localStorage.setItem('ngohub_custom_services', JSON.stringify(SERVICES_DATA));
+      if (data.services && Array.isArray(data.services)) {
+        const isValidSchema = data.services.every(s => s.tier_label && s.category && ['digital', 'grants', 'studies', 'capacity'].includes(s.category));
+        if (isValidSchema) {
+          SERVICES_DATA = data.services;
+          localStorage.setItem('ngohub_custom_services', JSON.stringify(SERVICES_DATA));
+        } else {
+          console.warn("[NGOHUB] Imported JSON contained legacy service schema; retained institutional services.");
+          showToast("⚠️ ملف الـ JSON يحتوي على نموذج قديم، تم الحفاظ على محاور التمكين المؤسسي المعتمدة.");
+        }
       }
       if (data.submissions) {
         localStorage.setItem('ngohub_submitted_requests', JSON.stringify(data.submissions));
@@ -1814,3 +2005,111 @@ window.acceptAllCookies = acceptAllCompliance;
 window.acceptNecessaryCookies = acceptNecessaryCompliance;
 window.checkCookieConsent = checkComplianceNotice;
 
+
+// Hero Showcase Photo Switcher (Official Award Ceremony <-> Field Training)
+window.switchHeroShowcasePhoto = function(type) {
+  var img = document.getElementById('heroShowcaseImg');
+  var caption = document.getElementById('showcasePhotoCaption');
+  var btnAward = document.getElementById('btnTabAward');
+  var btnTraining = document.getElementById('btnTabTraining');
+  if (!img) return;
+
+  if (type === 'award') {
+    img.src = 'assets/images/hero_award_ceremony.jpg';
+    img.alt = 'تكريم رسمي معتمد - المركز الأول في المشروعات الخضراء الذكية';
+    if (caption) caption.textContent = 'التكريم الرسمي بالمركز الأول (المشروعات الخضراء الذكية)';
+    if (btnAward) btnAward.classList.add('active');
+    if (btnTraining) btnTraining.classList.remove('active');
+  } else if (type === 'training') {
+    img.src = 'assets/images/hero_field_training.jpg';
+    img.alt = 'ورش التدريب الميداني وبناء القدرات المؤسسية للجمعيات الأهلية';
+    if (caption) caption.textContent = 'ورش التدريب الميداني والتمكين البيئي وصون المياه';
+    if (btnTraining) btnTraining.classList.add('active');
+    if (btnAward) btnAward.classList.remove('active');
+  }
+};
+
+
+// ==========================================================================
+// Homepage Interactive Readiness Audit Calculator (Between Q1 & Q2)
+// ==========================================================================
+window.calculateHomeAudit = function() {
+  const bBudget = document.getElementById('auditSwitchBudget')?.checked || false;
+  const bImpact = document.getElementById('auditSwitchImpact')?.checked || false;
+  const bDigital = document.getElementById('auditSwitchDigital')?.checked || false;
+
+  const activeCount = (bBudget ? 1 : 0) + (bImpact ? 1 : 0) + (bDigital ? 1 : 0);
+  
+  // Score mapping: 0 -> 20%, 1 -> 45%, 2 -> 75%, 3 -> 95%
+  let score = 20;
+  if (activeCount === 1) score = 45;
+  else if (activeCount === 2) score = 75;
+  else if (activeCount === 3) score = 95;
+
+  const scoreValEl = document.getElementById('homeAuditScoreVal');
+  const barEl = document.getElementById('homeAuditProgressBar');
+  const badgeEl = document.getElementById('homeAuditBadge');
+  const badgeTextEl = document.getElementById('homeAuditBadgeText');
+  const feedbackEl = document.getElementById('homeAuditFeedback');
+  const ctaBtn = document.getElementById('homeAuditCtaBtn');
+  const ctaTextEl = document.getElementById('homeAuditCtaText');
+
+  if (scoreValEl) scoreValEl.textContent = score + '%';
+  if (barEl) {
+    barEl.style.width = score + '%';
+    if (score < 50) {
+      barEl.style.backgroundColor = '#ef4444';
+    } else if (score < 80) {
+      barEl.style.backgroundColor = '#d97706';
+    } else {
+      barEl.style.backgroundColor = '#059669';
+    }
+  }
+
+  if (activeCount <= 1) {
+    // Low score: 0 or 1
+    if (badgeEl) {
+      badgeEl.className = 'feedback-badge badge-pain';
+      if (badgeTextEl) badgeTextEl.textContent = 'ملف عالي المخاطر التمويلية';
+    }
+    if (feedbackEl) {
+      feedbackEl.innerHTML = '<strong>تشخيص الفحص الأولي:</strong> ملف الجمعية الحالي يفتقر لمقومات الامتثال المكتبي، مما يجعله عرضة للاستبعاد السريع أمام لجان التقييم الدولية. نحن نؤهل جمعيتكم ونسد هذه الثغرات لتأمين فرصة الفوز بالمنحة.';
+    }
+    if (ctaTextEl) {
+      ctaTextEl.textContent = 'سجّل جمعيتكم الآن لسد الثغرات وتأهيل ملف المنح';
+    }
+    if (ctaBtn) {
+      ctaBtn.className = 'btn-screen-action audit-main-btn btn-danger-tone';
+    }
+  } else if (activeCount === 2) {
+    // Medium-high score: 2
+    if (badgeEl) {
+      badgeEl.className = 'feedback-badge badge-warning';
+      if (badgeTextEl) badgeTextEl.textContent = 'ملف واعد يحتاج استكمال مقومات القوة';
+    }
+    if (feedbackEl) {
+      feedbackEl.innerHTML = '<strong>تشخيص الفحص الأولي:</strong> تمتلك الجمعية ركائز جيدة، لكن اكتمال المحور الناقص يضاعف فرصة فوزكم بالمنحة ويمنع أي ملاحظات من المانحين. فريق NGOHUB يسد الفجوة الأخيرة ويصيغ مقترحكم بالكامل.';
+    }
+    if (ctaTextEl) {
+      ctaTextEl.textContent = 'سجّل جمعيتكم لاستكمال الملف وصياغة مقترح المنحة';
+    }
+    if (ctaBtn) {
+      ctaBtn.className = 'btn-screen-action audit-main-btn btn-warning-tone';
+    }
+  } else {
+    // High score: 3
+    if (badgeEl) {
+      badgeEl.className = 'feedback-badge badge-solution';
+      if (badgeTextEl) badgeTextEl.textContent = 'جاهزية مؤسسية وتنافسية استثنائية';
+    }
+    if (feedbackEl) {
+      feedbackEl.innerHTML = '<strong>تشخيص الفحص الأولي:</strong> جمعيتكم تستوفي كافة المعايير الصارمة للصناديق الدولية. فريق NGOHUB جاهز للربط الفوري مع المنح المفتوحة وصياغة المقترح التنفيذي لضمان الاعتماد.';
+    }
+    if (ctaTextEl) {
+      ctaTextEl.textContent = 'انضم إلى NGOHUB للمطابقة وصياغة مقترح المنحة الدولية';
+    }
+    if (ctaBtn) {
+      ctaBtn.className = 'btn-screen-action audit-main-btn btn-success-tone';
+    }
+  }
+};
