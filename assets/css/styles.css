@@ -964,12 +964,12 @@ body {
   border-bottom: 1px solid var(--border-color);
 }
 .diag-header-badge {
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--primary-purple);
-  background: var(--primary-purple-light);
-  padding: 3px 12px;
-  border-radius: var(--radius-full);
+  background: none !important;
+  padding: 0;
+  border-radius: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1724,14 +1724,14 @@ body {
   color: var(--text-dark);
 }
 .badge-partner-tag {
-  display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--primary-purple);
-  background: var(--primary-purple-light);
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  margin: 3px 0;
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none !important;
+  padding: 0;
+  border-radius: 0;
+  margin: 4px 0 8px;
 }
 .work-info p {
   font-size: 0.85rem;
@@ -2356,12 +2356,12 @@ body {
   color: var(--text-dark);
 }
 .eco-val-badge {
-  background: var(--primary-green);
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  color: var(--primary-green);
+  font-size: 0.95rem;
   font-weight: 800;
+  background: none !important;
+  padding: 0;
+  border-radius: 0;
 }
 .eco-slider {
   width: 100%;
@@ -2745,11 +2745,13 @@ body {
   font-weight: 800;
   color: var(--text-dark);
 }
-.water-branch-badge {
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 20px;
+.water-branch-badge, .calc-section-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: none !important;
+  padding: 0;
+  border-radius: 0;
 }
 .badge-direct-water {
   background: rgba(16, 185, 129, 0.15);
@@ -2900,13 +2902,15 @@ body {
   gap: 20px;
 }
 .summary-header-badge {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 800;
-  color: var(--primary-green);
-  background: var(--primary-green-light);
-  padding: 4px 12px;
-  border-radius: 20px;
-  align-self: flex-start;
+  color: var(--text-dark);
+  background: none !important;
+  padding: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .summary-stats-grid {
   display: grid;
@@ -5669,7 +5673,7 @@ input, textarea, select {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center 65%;
   transform: scale(1.02);
   filter: brightness(0.78) contrast(1.05);
 }
@@ -5679,9 +5683,9 @@ input, textarea, select {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.85) 0%,
-    rgba(6, 44, 30, 0.80) 50%,
-    rgba(15, 23, 42, 0.95) 100%
+    rgba(10, 18, 30, 0.88) 0%,
+    rgba(10, 18, 30, 0.78) 45%,
+    rgba(10, 18, 30, 0.95) 100%
   );
 }
 
@@ -5705,7 +5709,7 @@ input, textarea, select {
 .hero-fullbleed-title .highlight-emerald {
   color: #34d399;
   display: inline-block;
-  text-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+  text-shadow: none !important;
 }
 
 .hero-fullbleed-desc {
@@ -5715,7 +5719,7 @@ input, textarea, select {
   margin: 0 auto 32px;
   line-height: 1.8;
   font-weight: 400;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: none;
 }
 
 .hero-single-action-wrap {
@@ -6226,7 +6230,7 @@ input, textarea, select {
 
 /* Dark Theme Overrides */
 [data-theme="dark"] .hero-fullbleed-overlay {
-  background: linear-gradient(180deg, rgba(10, 15, 28, 0.9) 0%, rgba(6, 30, 22, 0.88) 50%, rgba(10, 15, 28, 0.98) 100%);
+  background: linear-gradient(180deg, rgba(8, 14, 24, 0.92) 0%, rgba(8, 14, 24, 0.84) 45%, rgba(8, 14, 24, 0.98) 100%);
 }
 
 [data-theme="dark"] .manifesto-col,
@@ -7415,4 +7419,36 @@ input, textarea, select {
 /* Smooth Touch Inputs */
 input, select, textarea, button {
   touch-action: manipulation;
+}
+
+/* ==================== GLOBAL ANTI-SLOP: ZERO BANNERS / ZERO EYEBROW PILLS ==================== */
+.screen-eyebrow,
+.hero-nisgp-badge,
+.hero-nisgp-badge-gold,
+.col-badge,
+.pillar-tags,
+.page-hero-badge {
+  display: none !important;
+}
+
+.pillar-tag,
+.pillar-tag-text {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.service-modal-badge,
+.modal-donor-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
 }
