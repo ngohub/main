@@ -202,6 +202,53 @@ let adminAuthenticated = false;
 // Google Sheets Webhook Endpoint (تم الربط مع الاسكريبت الحي المباشر)
 let GOOGLE_SHEETS_WEBHOOK_URL = localStorage.getItem('ngohub_google_sheets_webhook_url') || "https://script.google.com/macros/s/AKfycbynU9c1SDeXkdEWMGQUJzsc9ERcYfPnhQ9yhorcEvgIZ2byHLtNRM1lHlLA3z-m7iYV/exec";
 
+// --- 2.1 Persistent Session Cookie & Cross-Session Storage Engine ---
+function setSessionCookie(name, value, days = 30) {
+  try {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+  } catch (e) {
+    console.warn("Could not set session cookie:", e);
+  }
+}
+
+function getSessionCookie(name) {
+  try {
+    const cname = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i].trim();
+      if (c.indexOf(cname) === 0) {
+        return c.substring(cname.length, c.length);
+      }
+    }
+  } catch (e) {
+    console.warn("Could not read session cookie:", e);
+  }
+  return "";
+}
+
+function deleteSessionCookie(name) {
+  try {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax;";
+  } catch (e) {}
+}
+
+function getStoredUserSession() {
+  try {
+    const local = localStorage.getItem('ngohub_user_session');
+    if (local) return JSON.parse(local);
+  } catch (e) {}
+  try {
+    const cookieVal = getSessionCookie('ngohub_user_session');
+    if (cookieVal) return JSON.parse(cookieVal);
+  } catch (e) {}
+  return null;
+}
+
 // --- 3. DOM Content Loaded Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -216,7 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSubmissionsInboxCount();
   checkComplianceNotice();
 
-  // Initialize Auth & Session State with Firebase integration
+  // Initialize Auth & Session State with Cookie & Firebase integration
+  currentUserSession = getStoredUserSession();
   if (currentUserSession && currentUserSession.role === 'admin') {
     adminAuthenticated = true;
     document.body.classList.add('admin-authenticated');
@@ -228,6 +276,16 @@ document.addEventListener("DOMContentLoaded", () => {
     fb.onAuthChange((user, profile) => {
       if (user) {
         const isAdm = fb.isCurrentUserAdmin();
+        // Strict guardrail: Prevent unverified users from gaining active session
+        if (!user.emailVerified && !isAdm) {
+          currentUserSession = null;
+          localStorage.removeItem('ngohub_user_session');
+          deleteSessionCookie('ngohub_user_session');
+          updateHeaderAuthState();
+          if (typeof initProfilePage === 'function') initProfilePage();
+          return;
+        }
+
         const isNgoRole = profile ? (profile.role === 'ngo') : false;
         currentUserSession = {
           id: user.uid,
@@ -238,12 +296,20 @@ document.addEventListener("DOMContentLoaded", () => {
           isNGO: isNgoRole,
           ngoData: profile ? profile.ngoData : null,
           photoURL: user.photoURL || '',
-          provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'password'
+          provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'password',
+          createdAt: profile?.createdAt || profile?.createdAtIso || new Date().toISOString()
         };
         localStorage.setItem('ngohub_user_session', JSON.stringify(currentUserSession));
+        setSessionCookie('ngohub_user_session', JSON.stringify(currentUserSession), 30);
       }
       updateHeaderAuthState();
+      if (typeof initProfilePage === 'function') initProfilePage();
     });
+  }
+
+  // Profile page auto-init if present
+  if (document.getElementById('profileContentArea')) {
+    initProfilePage();
   }
 
   if (window.NGOHUB_FIREBASE) {
@@ -1343,7 +1409,7 @@ function calculateGrantMatching() {
 }
 
 // --- 8.2.3 Unified Authentication & NGO Onboarding Modal Handlers ---
-let currentUserSession = JSON.parse(localStorage.getItem('ngohub_user_session') || 'null');
+let currentUserSession = getStoredUserSession();
 const ADMIN_AUTHORIZED_EMAILS = ['youssefkhedr92@gmail.com'];
 
 function openAuthModal(tab = 'login', isNGO = true) {
@@ -1446,6 +1512,61 @@ function showAuthNotice(viewId, type, messageHtml) {
 
 function clearAuthNotices() {
   document.querySelectorAll('.auth-dynamic-notice').forEach(el => el.remove());
+}
+
+// Field-Level Validation & Smooth Scroll Engine
+function clearFieldErrors(containerId) {
+  const container = document.getElementById(containerId) || document;
+  container.querySelectorAll('.field-inline-error').forEach(el => el.remove());
+  container.querySelectorAll('.field-error-highlight').forEach(el => {
+    el.classList.remove('field-error-highlight');
+    el.style.borderColor = '';
+    el.style.boxShadow = '';
+  });
+}
+
+function showFieldError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+
+  const parent = field.closest('.form-group') || field.parentNode;
+  const existing = parent.querySelector('.field-inline-error');
+  if (existing) existing.remove();
+
+  field.classList.add('field-error-highlight');
+  field.style.borderColor = '#ef4444';
+  field.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
+
+  const badge = document.createElement('div');
+  badge.className = 'field-inline-error';
+  badge.innerHTML = `<i class="fa-solid fa-circle-exclamation text-rose" style="color:#ef4444;"></i> <span>${message}</span>`;
+
+  // Insert above the input field
+  field.parentNode.insertBefore(badge, field);
+
+  const clearOnInput = () => {
+    badge.remove();
+    field.classList.remove('field-error-highlight');
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+    field.removeEventListener('input', clearOnInput);
+    field.removeEventListener('change', clearOnInput);
+  };
+  field.addEventListener('input', clearOnInput);
+  field.addEventListener('change', clearOnInput);
+}
+
+function scrollToFirstError(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+  field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => {
+    try {
+      field.focus({ preventScroll: true });
+    } catch (_) {
+      field.focus();
+    }
+  }, 250);
 }
 
 function redirectToRegisterWithEmail(email, pass = '') {
@@ -1755,41 +1876,76 @@ async function handleAuthLogin(e) {
 async function handleAuthRegister(e) {
   e.preventDefault();
   clearAuthNotices();
-  const name = document.getElementById('regNameInput').value.trim();
-  const email = document.getElementById('regEmailInput').value.trim().toLowerCase();
-  const pass = document.getElementById('regPassInput').value;
-  const isNGO = document.querySelector('input[name="regUserRole"]:checked').value === 'ngo';
+  clearFieldErrors('authViewRegister');
 
-  if (!name || !email || !pass) {
-    showAuthNotice('authViewRegister', 'warning', 'يرجى ملء جميع الحقول الأساسية.');
-    return;
+  const nameInput = document.getElementById('regNameInput');
+  const emailInput = document.getElementById('regEmailInput');
+  const passInput = document.getElementById('regPassInput');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+  const pass = passInput ? passInput.value : '';
+  const isNGO = document.querySelector('input[name="regUserRole"]:checked')?.value === 'ngo';
+
+  let firstErrorId = null;
+
+  if (!name) {
+    showFieldError('regNameInput', 'يرجى إدخال اسمك الكامل أو اسم ممثل الجمعية.');
+    if (!firstErrorId) firstErrorId = 'regNameInput';
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email) {
+    showFieldError('regEmailInput', 'يرجى إدخال البريد الإلكتروني.');
+    if (!firstErrorId) firstErrorId = 'regEmailInput';
+  } else if (!emailRegex.test(email)) {
+    showFieldError('regEmailInput', 'يرجى إدخال بريد إلكتروني صحيح (مثال: name@domain.com).');
+    if (!firstErrorId) firstErrorId = 'regEmailInput';
   }
 
   const hasNumber = /\d/.test(pass);
   const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pass);
 
-  if (pass.length < 8 || !hasNumber || !hasSpecial) {
-    showAuthNotice('authViewRegister', 'warning', '🔒 كلمة المرور يجب أن لا تقل عن 8 خانات، وتحتوي على رقم واحد على الأقل ورمز خاص (مثل: #، @، $، !).');
-    return;
+  if (!pass) {
+    showFieldError('regPassInput', 'يرجى إدخال كلمة المرور.');
+    if (!firstErrorId) firstErrorId = 'regPassInput';
+  } else if (pass.length < 8 || !hasNumber || !hasSpecial) {
+    showFieldError('regPassInput', '🔒 كلمة المرور يجب ألا تقل عن 8 خانات، وتتضمن رقماً واحداً ورمزاً خاصاً (مثل: #، @، $، !).');
+    if (!firstErrorId) firstErrorId = 'regPassInput';
   }
 
   let ngoData = null;
   if (isNGO) {
-    const ngoName = document.getElementById('regNgoName').value.trim();
-    const ngoGov = document.getElementById('regNgoGov').value;
-    const ngoRegNum = document.getElementById('regNgoRegNum').value.trim();
-    const ngoAddress = document.getElementById('regNgoAddress').value.trim();
-    const ngoContact = document.getElementById('regNgoContact').value.trim();
-    const ngoPhone = document.getElementById('regNgoPhone').value.trim();
-    const consent = document.getElementById('regNgoConsent').checked;
+    const ngoName = document.getElementById('regNgoName')?.value.trim();
+    const ngoGov = document.getElementById('regNgoGov')?.value;
+    const ngoRegNum = document.getElementById('regNgoRegNum')?.value.trim();
+    const ngoAddress = document.getElementById('regNgoAddress')?.value.trim();
+    const ngoContact = document.getElementById('regNgoContact')?.value.trim();
+    const ngoPhone = document.getElementById('regNgoPhone')?.value.trim();
+    const consent = document.getElementById('regNgoConsent')?.checked;
 
-    if (!ngoName || !ngoGov || !ngoPhone) {
-      showAuthNotice('authViewRegister', 'warning', 'يرجى إدخال اسم الجمعية، المحافظة، ورقم الهاتف / الواتساب.');
-      return;
+    if (!ngoName) {
+      showFieldError('regNgoName', 'يرجى كتابة الاسم الرسمي للجمعية المشهرة.');
+      if (!firstErrorId) firstErrorId = 'regNgoName';
+    }
+
+    if (!ngoGov) {
+      showFieldError('regNgoGov', 'يرجى اختيار المحافظة التابعة لها الجمعية.');
+      if (!firstErrorId) firstErrorId = 'regNgoGov';
+    }
+
+    if (!ngoPhone) {
+      showFieldError('regNgoPhone', 'يرجى إدخال رقم هاتف أو واتساب مسؤول التواصل.');
+      if (!firstErrorId) firstErrorId = 'regNgoPhone';
     }
 
     if (!consent) {
-      showAuthNotice('authViewRegister', 'warning', 'يرجى الموافقة على إقرار صحة البيانات والميثاق المؤسسي.');
+      showFieldError('regNgoConsent', 'يجب الموافقة على إقرار صحة البيانات والميثاق المؤسسي للمتابعة.');
+      if (!firstErrorId) firstErrorId = 'regNgoConsent';
+    }
+
+    if (firstErrorId) {
+      scrollToFirstError(firstErrorId);
       return;
     }
 
@@ -1801,6 +1957,11 @@ async function handleAuthRegister(e) {
       ngoContact,
       ngoPhone
     };
+  } else {
+    if (firstErrorId) {
+      scrollToFirstError(firstErrorId);
+      return;
+    }
   }
 
   const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -1992,6 +2153,7 @@ async function handleForgotPassword(e) {
 function saveUserSessionAndLogin(user, isNew = false) {
   currentUserSession = user;
   localStorage.setItem('ngohub_user_session', JSON.stringify(user));
+  setSessionCookie('ngohub_user_session', JSON.stringify(user), 30);
 
   closeAuthModal();
   updateHeaderAuthState();
@@ -2000,12 +2162,18 @@ function saveUserSessionAndLogin(user, isNew = false) {
     adminAuthenticated = true;
     document.body.classList.add('admin-authenticated');
     showToast(`👑 مرحباً بك يا ${user.name}! تم تسجيل الدخول كمسؤول للمنصة.`);
-    switchTab('admin', true);
-    renderAdminState();
+    if (window.location.pathname.includes('index') || window.location.pathname.endsWith('/')) {
+      switchTab('admin', true);
+      renderAdminState();
+    }
   } else {
     adminAuthenticated = false;
     document.body.classList.remove('admin-authenticated');
     showToast(`✅ أهلاً بك يا ${user.name}! تم تسجيل دخول جمعيتكم بنجاح.`);
+  }
+
+  if (typeof initProfilePage === 'function') {
+    initProfilePage();
   }
 }
 
@@ -2013,6 +2181,7 @@ function updateHeaderAuthState() {
   const authBtn = document.getElementById('headerAuthBtn');
   const authText = document.getElementById('headerAuthText');
   const mNavText = document.getElementById('mNavAuthText');
+  const mNavAuth = document.getElementById('mNav-auth');
 
   if (currentUserSession) {
     const isAdm = currentUserSession.role === 'admin';
@@ -2027,14 +2196,30 @@ function updateHeaderAuthState() {
     if (authText) authText.innerText = label;
     if (mNavText) mNavText.innerText = label;
     if (authBtn) {
-      authBtn.title = "انقر لإدارة الحساب أو تسجيل الخروج";
-      authBtn.onclick = handleUserMenuClick;
+      authBtn.title = `حسابي (${currentUserSession.name})`;
+      authBtn.className = isAdm ? 'btn-header-auth admin-active' : 'btn-header-auth user-active';
+      authBtn.innerHTML = isAdm 
+        ? '<i class="fa-solid fa-user-shield" style="color:#d97706;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color:var(--primary-green);"></i>';
+      authBtn.onclick = () => { window.location.href = 'profile.html'; };
+    }
+    if (mNavAuth) {
+      mNavAuth.onclick = () => { window.location.href = 'profile.html'; };
     }
   } else {
     adminAuthenticated = false;
     document.body.classList.remove('admin-authenticated');
     if (authText) authText.innerText = "دخول / تسجيل";
     if (mNavText) mNavText.innerText = "تسجيل الدخول / حسابي";
+    if (authBtn) {
+      authBtn.title = "تسجيل الدخول أو إنشاء حساب";
+      authBtn.className = 'btn-header-auth';
+      authBtn.innerHTML = '<i class="fa-solid fa-user-circle"></i>';
+      authBtn.onclick = () => { openAuthModal('login'); };
+    }
+    if (mNavAuth) {
+      mNavAuth.onclick = () => { openAuthModal('login'); closeMobileDrawer(); };
+    }
   }
 
   // Re-evaluate grants sign-in wall dynamically
@@ -2043,32 +2228,366 @@ function updateHeaderAuthState() {
   }
 }
 
-async function handleUserMenuClick() {
-  if (!currentUserSession) {
-    openAuthModal('login');
+// --- 8.2.4 Profile Page & Registered NGOs Directory Controller ---
+let cachedProfileNgosList = [];
+
+async function initProfilePage() {
+  const profileContainer = document.getElementById('profileContentArea');
+  if (!profileContainer) return;
+
+  const session = currentUserSession || getStoredUserSession();
+
+  if (!session) {
+    profileContainer.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); max-width: 600px; margin: 40px auto; box-shadow: 0 15px 40px rgba(0,0,0,0.06);">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(16, 185, 129, 0.12); color: var(--primary-green); display: inline-flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 20px;">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px;">تسجيل الدخول مطلوب</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 28px;">
+          يرجى تسجيل الدخول أو إنشاء حساب جديد للوصول إلى لوحة حسابك، تفاصيل الجمعية المعتمدة، ومتابعة سجل المنح.
+        </p>
+        <button type="button" class="btn-primary" onclick="openAuthModal('login')" style="padding: 12px 28px; font-size: 1.05rem; font-weight: 700; border-radius: 50px;">
+          <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول / حسابي
+        </button>
+      </div>
+    `;
     return;
   }
 
-  const isAdm = currentUserSession.role === 'admin';
-  const action = confirm(`حسابك الحالي: ${currentUserSession.name} (${currentUserSession.email})\nنوع الحساب: ${isAdm ? 'مشرف عام (Admin)' : (currentUserSession.isNGO ? 'جمعية معتمدة' : 'مستخدم فردي')}\n\nهل ترغب في تسجيل الخروج الآن؟`);
-  
-  if (action) {
-    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.logout) {
-      try {
-        await window.NGOHUB_FIREBASE.logout();
-      } catch (e) {
-        console.warn("Logout error:", e);
+  const isAdm = session.role === 'admin' || ADMIN_AUTHORIZED_EMAILS.includes((session.email || '').toLowerCase().trim());
+  const isNGO = session.isNGO || session.role === 'ngo' || !!session.ngoData;
+
+  // Calculate Account Age
+  let memberSinceText = 'سجلت حديثاً';
+  let exactDateStr = '';
+  if (session.createdAt) {
+    try {
+      const created = new Date(session.createdAt);
+      exactDateStr = created.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+      const now = new Date();
+      const diffTime = Math.abs(now - created);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 0) {
+        memberSinceText = 'سجلت اليوم في المنظومة';
+      } else if (diffDays === 1) {
+        memberSinceText = 'عضو منذ يوم واحد';
+      } else if (diffDays === 2) {
+        memberSinceText = 'عضو منذ يومين';
+      } else if (diffDays >= 3 && diffDays <= 10) {
+        memberSinceText = `عضو منذ ${diffDays} أيام`;
+      } else if (diffDays > 10 && diffDays < 30) {
+        memberSinceText = `عضو منذ ${diffDays} يوماً`;
+      } else {
+        const diffMonths = Math.floor(diffDays / 30);
+        if (diffMonths === 1) memberSinceText = 'عضو منذ شهر واحد';
+        else if (diffMonths === 2) memberSinceText = 'عضو منذ شهرين';
+        else if (diffMonths >= 3 && diffMonths <= 10) memberSinceText = `عضو منذ ${diffMonths} أشهر`;
+        else memberSinceText = `عضو منذ ${diffMonths} شهراً`;
       }
-    }
-    currentUserSession = null;
-    localStorage.removeItem('ngohub_user_session');
-    adminAuthenticated = false;
-    document.body.classList.remove('admin-authenticated');
-    updateHeaderAuthState();
-    renderAdminState();
-    showToast("تم تسجيل الخروج بنجاح.");
-    switchTab('home', false);
+    } catch (e) {}
   }
+
+  const roleBadgeHtml = isAdm
+    ? `<span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-solid fa-crown text-amber"></i> المشرف العام للمنصة (Admin)</span>`
+    : (isNGO 
+        ? `<span style="background: rgba(16, 185, 129, 0.12); color: #065f46; border: 1px solid #10b981; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-solid fa-building-circle-check text-emerald"></i> جمعية أهلية معتمدة</span>`
+        : `<span style="background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-solid fa-user"></i> حساب فردي</span>`);
+
+  let ngoProfileHtml = '';
+  if (isNGO && session.ngoData) {
+    const nd = session.ngoData;
+    const cleanPhone = (nd.ngoPhone || '').replace(/[^0-9]/g, '');
+    ngoProfileHtml = `
+      <div class="profile-section-card">
+        <div class="profile-card-title">
+          <i class="fa-solid fa-building-circle-check text-emerald"></i>
+          <span>ملف بيانات الجمعية الأهلية المشهرة</span>
+        </div>
+        <div class="ngo-details-grid">
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">1. اسم الجمعية المشهرة:</span>
+            <span class="ngo-detail-value">${nd.ngoName || session.name || '-'}</span>
+          </div>
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">2. المحافظة:</span>
+            <span class="ngo-detail-value"><i class="fa-solid fa-location-dot text-emerald"></i> ${nd.ngoGov || '-'}</span>
+          </div>
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">3. رقم القيد / الإشهار الرسمي:</span>
+            <span class="ngo-detail-value"><i class="fa-solid fa-certificate text-emerald"></i> ${nd.ngoRegNum || 'قيد المراجعة'}</span>
+          </div>
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">4. المقر والعنوان بالتفصيل:</span>
+            <span class="ngo-detail-value">${nd.ngoAddress || 'غير محدد'}</span>
+          </div>
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">5. مسؤول التواصل / الممثل:</span>
+            <span class="ngo-detail-value"><i class="fa-solid fa-user-tie text-emerald"></i> ${nd.ngoContact || session.name || '-'}</span>
+          </div>
+          <div class="ngo-detail-item">
+            <span class="ngo-detail-label">6. هاتف وواتساب التواصل:</span>
+            <span class="ngo-detail-value" style="display:flex; align-items:center; gap:8px;">
+              <span style="direction:ltr;">${nd.ngoPhone || '-'}</span>
+              ${cleanPhone ? `<a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-table-sm" style="background:#22c55e; color:#fff; text-decoration:none; padding:4px 8px; border-radius:6px;" title="واتساب"><i class="fa-brands fa-whatsapp"></i> مراسلة</a>` : ''}
+            </span>
+          </div>
+        </div>
+        <div style="margin-top: 20px; padding: 14px 18px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; font-size: 0.92rem; color: #065f46; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.3rem;"></i>
+          <span>تم توثيق بيانات الجمعية بنجاح وهي مشمولة في سجلات التحالف ومؤهلة للحصول على خدمات التأهيل والمنح.</span>
+        </div>
+      </div>
+    `;
+  }
+
+  let adminSectionHtml = '';
+  if (isAdm) {
+    adminSectionHtml = `
+      <div class="profile-section-card" style="border: 1px solid rgba(245, 158, 11, 0.35); background: linear-gradient(180deg, rgba(254, 243, 199, 0.12) 0%, var(--bg-card) 100%);">
+        <div class="profile-card-title" style="color: #b45309;">
+          <i class="fa-solid fa-shield-halved text-amber"></i>
+          <span>لوحة المشرف العام وسجل الجمعيات المسجلة المجمع (Admin Hub)</span>
+        </div>
+        
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;">
+          <a href="index.html#admin" class="btn-primary" style="padding: 12px 24px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+            <i class="fa-solid fa-gauge-high"></i> فتح لوحة تحكم إدارة المحتوى (CMS Dashboard)
+          </a>
+          <button type="button" class="btn-secondary" onclick="exportRegisteredNgosCsv()" style="padding: 12px 20px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-file-excel text-emerald"></i> تصدير بيانات الجمعيات (CSV / Excel)
+          </button>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-dark); margin: 0;">
+                <i class="fa-solid fa-building-flag text-emerald"></i> سجل الجمعيات الأهلية المسجلة
+              </h3>
+              <span id="profileNgoCountBadge" class="service-badge" style="background:#dcfce7; color:#15803d; border:1px solid #bbf7d0;">جاري التحميل...</span>
+            </div>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1; max-width: 500px; justify-content: flex-end;">
+              <input type="text" id="profileNgoSearchInput" oninput="filterProfileNgosTable()" placeholder="ابحث باسم الجمعية أو المحافظة..." class="form-input" style="padding: 8px 14px; font-size: 0.9rem; flex: 1; min-width: 180px;">
+              <select id="profileNgoGovSelect" onchange="filterProfileNgosTable()" class="form-select" style="padding: 8px 12px; font-size: 0.9rem; width: 140px;">
+                <option value="all">كل المحافظات</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+            <table class="cms-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+              <thead>
+                <tr style="background: var(--bg-card-alt); border-bottom: 2px solid var(--border-color); text-align: right;">
+                  <th style="padding: 12px;">الجمعية المشهرة</th>
+                  <th style="padding: 12px;">المحافظة</th>
+                  <th style="padding: 12px;">رقم القيد</th>
+                  <th style="padding: 12px;">مسؤول التواصل</th>
+                  <th style="padding: 12px;">الهاتف / واتساب</th>
+                  <th style="padding: 12px;">تاريخ التسجيل</th>
+                  <th style="padding: 12px; text-align: center;">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="profileNgosTbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                    <i class="fa-solid fa-spinner fa-spin"></i> جاري جلب الجمعيات المسجلة من Cloud Firestore بأمان...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  profileContainer.innerHTML = `
+    <!-- 1. Header Card -->
+    <div class="profile-header-card">
+      <div class="profile-user-main">
+        <div class="profile-avatar-large">
+          <i class="${isAdm ? 'fa-solid fa-user-shield' : (isNGO ? 'fa-solid fa-building-circle-check' : 'fa-solid fa-user')}"></i>
+        </div>
+        <div class="profile-user-details">
+          <h1>${session.name || 'مستخدم المنظومة'}</h1>
+          <div class="profile-user-email"><i class="fa-regular fa-envelope"></i> ${session.email}</div>
+          <div class="profile-badges-row">
+            ${roleBadgeHtml}
+            <span style="background: rgba(15, 23, 42, 0.05); color: var(--text-muted); padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;">
+              <i class="fa-solid fa-calendar-check text-emerald"></i> ${memberSinceText} ${exactDateStr ? `(${exactDateStr})` : ''}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-actions-bar">
+        ${isAdm ? `<a href="index.html#admin" class="btn-secondary" style="text-decoration:none;"><i class="fa-solid fa-sliders"></i> لوحة الإدارة</a>` : ''}
+        <button type="button" class="btn-table-sm" onclick="handleProfileLogout()" style="background: rgba(239, 68, 68, 0.12); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. NGO Profile (If NGO) -->
+    ${ngoProfileHtml}
+
+    <!-- 3. Admin Section & Directory (If Admin) -->
+    ${adminSectionHtml}
+  `;
+
+  if (isAdm) {
+    loadProfileNgosDirectory();
+  }
+}
+
+async function loadProfileNgosDirectory() {
+  const tbody = document.getElementById('profileNgosTbody');
+  const countBadge = document.getElementById('profileNgoCountBadge');
+  const govSelect = document.getElementById('profileNgoGovSelect');
+  if (!tbody) return;
+
+  let allUsers = [];
+  if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.getUsersList) {
+    try {
+      allUsers = await window.NGOHUB_FIREBASE.getUsersList();
+    } catch (e) {
+      console.warn("Could not fetch users from Firebase, fallback to local:", e);
+      allUsers = getRegisteredUsers();
+    }
+  } else {
+    allUsers = getRegisteredUsers();
+  }
+
+  // Filter only NGOs
+  cachedProfileNgosList = allUsers.filter(u => u.isNGO || u.role === 'ngo' || u.ngoData);
+
+  if (countBadge) {
+    countBadge.textContent = `${cachedProfileNgosList.length} جمعية مسجلة`;
+  }
+
+  // Populate governorate filter
+  if (govSelect) {
+    const govs = new Set();
+    cachedProfileNgosList.forEach(u => {
+      const g = (u.ngoData && u.ngoData.ngoGov) || '';
+      if (g) govs.add(g);
+    });
+    govSelect.innerHTML = '<option value="all">كل المحافظات</option>' + Array.from(govs).map(g => `<option value="${g}">${g}</option>`).join('');
+  }
+
+  renderProfileNgosTable(cachedProfileNgosList);
+}
+
+function renderProfileNgosTable(ngos) {
+  const tbody = document.getElementById('profileNgosTbody');
+  if (!tbody) return;
+
+  if (!ngos || ngos.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">لا توجد جمعيات مطابقة للبحث.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = ngos.map(user => {
+    const nd = user.ngoData || {};
+    const ngoName = nd.ngoName || user.name || '-';
+    const gov = nd.ngoGov || '-';
+    const regNum = nd.ngoRegNum || 'قيد المراجعة';
+    const contact = nd.ngoContact || user.name || '-';
+    const phone = nd.ngoPhone || '-';
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    const dateVal = user.createdAtIso || user.createdAt;
+    const dateStr = dateVal ? new Date(dateVal).toLocaleDateString('ar-EG') : 'حديثاً';
+
+    const waBtn = (cleanPhone && cleanPhone !== '-')
+      ? `<a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-table-sm" style="background:#22c55e; color:#fff; text-decoration:none; padding:4px 8px; border-radius:6px;" title="مراسلة"><i class="fa-brands fa-whatsapp"></i> ${phone}</a>`
+      : `<span style="color:var(--text-muted); font-size:0.85rem;">${phone}</span>`;
+
+    const detailBtn = `<button type="button" class="btn-table-sm" onclick="showAdminUserDetail('${user.uid || user.id}')" style="background:#0284c7; color:#fff; border:none; padding:5px 10px; border-radius:6px; cursor:pointer;" title="عرض استمارة التأهيل الكاملة"><i class="fa-solid fa-eye"></i> تفاصيل</button>`;
+
+    return `
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 12px; font-weight: 700; color: var(--text-dark);">${ngoName}</td>
+        <td style="padding: 12px;"><i class="fa-solid fa-location-dot text-emerald"></i> ${gov}</td>
+        <td style="padding: 12px; font-size: 0.85rem;">${regNum}</td>
+        <td style="padding: 12px;">${contact}</td>
+        <td style="padding: 12px;">${waBtn}</td>
+        <td style="padding: 12px; font-size: 0.85rem; color: var(--text-muted);">${dateStr}</td>
+        <td style="padding: 12px; text-align: center;">${detailBtn}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterProfileNgosTable() {
+  const q = (document.getElementById('profileNgoSearchInput')?.value || '').trim().toLowerCase();
+  const gov = document.getElementById('profileNgoGovSelect')?.value || 'all';
+
+  const filtered = cachedProfileNgosList.filter(u => {
+    const nd = u.ngoData || {};
+    const nameMatch = (nd.ngoName || '').toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q) || (nd.ngoContact || '').toLowerCase().includes(q);
+    const govMatch = (gov === 'all') || (nd.ngoGov === gov);
+    return nameMatch && govMatch;
+  });
+
+  renderProfileNgosTable(filtered);
+}
+
+function exportRegisteredNgosCsv() {
+  if (!cachedProfileNgosList || cachedProfileNgosList.length === 0) {
+    showToast("لا توجد جمعيات مسجلة للتصدير حالياً.", "warning");
+    return;
+  }
+
+  const headers = ["اسم الجمعية", "المحافظة", "رقم القيد والإشهار", "المقر والعنوان", "مسؤول التواصل", "رقم الهاتف والواتساب", "البريد الإلكتروني", "تاريخ التسجيل"];
+  const rows = cachedProfileNgosList.map(u => {
+    const nd = u.ngoData || {};
+    return [
+      `"${(nd.ngoName || u.name || '').replace(/"/g, '""')}"`,
+      `"${(nd.ngoGov || '').replace(/"/g, '""')}"`,
+      `"${(nd.ngoRegNum || '').replace(/"/g, '""')}"`,
+      `"${(nd.ngoAddress || '').replace(/"/g, '""')}"`,
+      `"${(nd.ngoContact || u.name || '').replace(/"/g, '""')}"`,
+      `"${(nd.ngoPhone || '').replace(/"/g, '""')}"`,
+      `"${(u.email || '').replace(/"/g, '""')}"`,
+      `"${(u.createdAtIso || u.createdAt || '').replace(/"/g, '""')}"`
+    ];
+  });
+
+  const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ngohub_registered_ngos_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("✅ تم تصدير بيانات الجمعيات المسجلة بنجاح!");
+}
+
+async function handleProfileLogout() {
+  const confirmed = confirm("هل ترغب في تسجيل الخروج من حسابك الآن؟");
+  if (!confirmed) return;
+
+  if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.logout) {
+    try {
+      await window.NGOHUB_FIREBASE.logout();
+    } catch (e) {
+      console.warn("Logout error:", e);
+    }
+  }
+  currentUserSession = null;
+  localStorage.removeItem('ngohub_user_session');
+  deleteSessionCookie('ngohub_user_session');
+  adminAuthenticated = false;
+  document.body.classList.remove('admin-authenticated');
+  updateHeaderAuthState();
+  showToast("تم تسجيل الخروج بنجاح.");
+  window.location.href = 'index.html';
 }
 
 // User List Storage & CMS Helpers
@@ -3191,10 +3710,13 @@ async function deleteCmsUser(userId) {
 }
 
 function viewCmsUserDetails(userId) {
-  const allUsers = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.cachedUsersList) || getRegisteredUsers();
+  let allUsers = cachedProfileNgosList;
+  if (!allUsers || allUsers.length === 0) {
+    allUsers = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.cachedUsersList) || getRegisteredUsers();
+  }
   const user = allUsers.find(u => (u.id === userId || u.uid === userId));
   if (!user || !user.ngoData) {
-    alert("لا توجد استمارة تفصيلية لهذا الحساب.");
+    showToast("لا توجد استمارة تفصيلية لهذا الحساب.", "info");
     return;
   }
 
@@ -3236,6 +3758,8 @@ function closeAdminUserDetailModal() {
   const modal = document.getElementById('adminUserDetailModal');
   if (modal) modal.style.display = 'none';
 }
+
+const showAdminUserDetail = viewCmsUserDetails;
 
 function renderCmsGrantsTable() {
   const tbody = document.getElementById('cmsGrantsTbody');

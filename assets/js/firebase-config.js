@@ -13,7 +13,9 @@ import {
   sendEmailVerification,
   signOut, 
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import {
   getFirestore,
@@ -41,6 +43,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Enable robust browser local persistence across sessions
+setPersistence(auth, browserLocalPersistence).catch(e => console.warn("Persistence init:", e));
 
 // Sole Platform Administrator
 const ADMIN_EMAILS = [
@@ -289,6 +294,18 @@ async function deleteUserAccount(uid) {
 function onAuthChange(callback) {
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
+      const normalizedEmail = (user.email || '').toLowerCase().trim();
+      const isAdm = ADMIN_EMAILS.includes(normalizedEmail);
+
+      // CRITICAL: Block unverified users from gaining active session
+      if (!user.emailVerified && !isAdm) {
+        try {
+          await signOut(auth);
+        } catch (_) {}
+        callback(null, null);
+        return;
+      }
+
       let profile = null;
 
       // Try fetching profile from Cloud Firestore
