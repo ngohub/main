@@ -905,6 +905,45 @@
         </p>
       </div>
 
+      <!-- VIEW 4: EMAIL VERIFICATION -->
+      <div class="auth-view" id="authViewVerify" style="display: none;">
+        <div class="auth-view-header" style="text-align: center;">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(16, 185, 129, 0.12); color: var(--primary-green); display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 12px; border: 2px dashed #10b981;">
+            <i class="fa-solid fa-envelope-circle-check"></i>
+          </div>
+          <h3>تحقق من بريدك الإلكتروني</h3>
+          <p>أرسلنا رابط تفعيل رسمي إلى عنوان بريدك المسجل لإثبات ملكية الحساب</p>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.04); border: 1px solid rgba(15, 23, 42, 0.1); border-radius: 12px; padding: 16px; margin: 18px 0; text-align: center;">
+          <span style="font-size: 0.88rem; color: var(--text-muted); display: block; margin-bottom: 6px;">عنوان البريد الإلكتروني:</span>
+          <strong id="verifyTargetEmail" style="font-size: 1.05rem; color: var(--primary-green); word-break: break-all; direction: ltr; display: inline-block;">user@example.com</strong>
+        </div>
+
+        <div style="font-size: 0.92rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 20px; text-align: right;">
+          <p style="margin-bottom: 8px;"><strong>خطوات إتمام التفعيل:</strong></p>
+          <ul style="padding-right: 20px; margin: 0; list-style-type: disc;">
+            <li>افتح صندوق الوارد في بريدك الإلكتروني (أو مجلد الرسائل غير المرغوب فيها Spam).</li>
+            <li>انقر على زر أو رابط <strong>"Verify your email"</strong> الصادر من منصة NGOHUB.</li>
+            <li>بعد النقر على الرابط، عُد إلى هذه الشاشة وسجّل دخولك مباشرة.</li>
+          </ul>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" class="btn-auth-submit btn-primary full-width" onclick="switchAuthTab('login')">
+            <i class="fa-solid fa-right-to-bracket"></i> قمت بالتفعيل، متابعة تسجيل الدخول
+          </button>
+          
+          <button type="button" id="btnResendVerification" class="btn-secondary full-width" onclick="resendVerificationFromView()" style="padding: 10px 16px; font-weight: 600; font-size: 0.92rem;">
+            <i class="fa-solid fa-paper-plane"></i> لم يصلك الرابط؟ إعادة الإرسال
+          </button>
+        </div>
+
+        <p class="auth-switch-note" style="margin-top: 18px;">
+          هل كتبت بريداً خاطئاً؟ <a href="javascript:void(0)" onclick="switchAuthTab('register')">العودة للتسجيل ببريد آخر</a>
+        </p>
+      </div>
+
       <!-- Auth Modal Legal Footer & Technical Support -->
       <div class="auth-modal-footer">
         <div class="auth-footer-legal-links">

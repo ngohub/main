@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   sendPasswordResetEmail, 
+  sendEmailVerification,
   signOut, 
   onAuthStateChanged,
   updateProfile
@@ -86,6 +87,16 @@ async function login(email, password) {
     console.warn("Could not check status in Firestore on login, continuing:", err);
   }
 
+  // Verify email verification (exempt platform administrator)
+  const isAdm = ADMIN_EMAILS.includes(normalizedEmail);
+  if (!user.emailVerified && !isAdm) {
+    await signOut(auth);
+    const err = new Error("لم يتم تأكيد هذا الحساب عبر البريد الإلكتروني بعد.");
+    err.code = "auth/unverified-email";
+    err.email = normalizedEmail;
+    throw err;
+  }
+
   return user;
 }
 
@@ -140,12 +151,34 @@ async function register(email, password, displayName, role = 'individual', ngoDa
     // Proceed so user is not blocked, but log error
   }
 
-  // 5. Persist locally in registered users cache
+  // 5. Send Verification Email Link
+  try {
+    await sendEmailVerification(user);
+    console.log("✉️ Verification email sent to:", normalizedEmail);
+  } catch (verifyErr) {
+    console.warn("Could not send verification email automatically:", verifyErr);
+  }
+
+  // 6. Sign out user until they click the email verification link
+  await signOut(auth);
+
+  // 7. Persist locally in registered users cache
   const allUsers = JSON.parse(localStorage.getItem('ngohub_registered_users') || '[]');
   allUsers.unshift(userData);
   localStorage.setItem('ngohub_registered_users', JSON.stringify(allUsers));
 
-  return { user, userData };
+  return { user, userData, emailVerified: false };
+}
+
+/**
+ * Resend Email Verification link to registered user
+ */
+async function resendVerification(email, password) {
+  const normalizedEmail = email.toLowerCase().trim();
+  const cred = await signInWithEmailAndPassword(auth, normalizedEmail, password);
+  await sendEmailVerification(cred.user);
+  await signOut(auth);
+  return true;
 }
 
 /**
@@ -300,6 +333,8 @@ window.NGOHUB_FIREBASE = {
   isCurrentUserAdmin,
   login,
   register,
+  resendVerification,
+  sendEmailVerification,
   resetPassword,
   logout,
   getUsersList,

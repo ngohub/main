@@ -1467,20 +1467,113 @@ function redirectToRegisterWithEmail(email, pass = '') {
   if (regName) regName.focus();
 }
 
-function switchAuthTab(tab) {
+let pendingVerificationCredentials = { email: '', pass: '' };
+let resendCooldownInterval = null;
+let resendCooldownSeconds = 0;
+
+function switchAuthTab(tab, email = '', pass = '') {
   clearAuthNotices();
   const viewLogin = document.getElementById('authViewLogin');
   const viewReg = document.getElementById('authViewRegister');
   const viewForgot = document.getElementById('authViewForgot');
+  const viewVerify = document.getElementById('authViewVerify');
   const btnLogin = document.getElementById('tabBtnLogin');
   const btnReg = document.getElementById('tabBtnRegister');
 
   if (viewLogin) viewLogin.style.display = (tab === 'login') ? 'block' : 'none';
   if (viewReg) viewReg.style.display = (tab === 'register') ? 'block' : 'none';
   if (viewForgot) viewForgot.style.display = (tab === 'forgot') ? 'block' : 'none';
+  if (viewVerify) viewVerify.style.display = (tab === 'verify') ? 'block' : 'none';
 
-  if (btnLogin) btnLogin.classList.toggle('active', tab === 'login');
-  if (btnReg) btnReg.classList.toggle('active', tab === 'register');
+  if (tab === 'verify') {
+    if (email) pendingVerificationCredentials.email = email;
+    if (pass) pendingVerificationCredentials.pass = pass;
+    const targetEl = document.getElementById('verifyTargetEmail');
+    if (targetEl && pendingVerificationCredentials.email) {
+      targetEl.textContent = pendingVerificationCredentials.email;
+    }
+    if (btnLogin) btnLogin.classList.remove('active');
+    if (btnReg) btnReg.classList.remove('active');
+  } else {
+    if (btnLogin) btnLogin.classList.toggle('active', tab === 'login');
+    if (btnReg) btnReg.classList.toggle('active', tab === 'register');
+  }
+}
+
+async function resendVerificationFromView() {
+  const email = pendingVerificationCredentials.email || document.getElementById('verifyTargetEmail')?.textContent || '';
+  const pass = pendingVerificationCredentials.pass || '';
+
+  if (!email || email.includes('example.com')) {
+    showToast("يرجى إدخال البريد الإلكتروني للمتابعة.", "error");
+    return;
+  }
+
+  await executeResendVerification(email, pass);
+}
+
+async function resendVerificationDirect(email, pass) {
+  pendingVerificationCredentials = { email, pass };
+  switchAuthTab('verify', email, pass);
+  await executeResendVerification(email, pass);
+}
+
+async function executeResendVerification(email, pass) {
+  if (resendCooldownSeconds > 0) {
+    showToast(`يرجى الانتظار ${resendCooldownSeconds} ثانية قبل إعادة الإرسال.`, "warning");
+    return;
+  }
+
+  const btn = document.getElementById('btnResendVerification');
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال رابط التفعيل...';
+  }
+
+  try {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.resendVerification && pass) {
+      await window.NGOHUB_FIREBASE.resendVerification(email, pass);
+      showToast("✉️ تم إعادة إرسال رابط التفعيل إلى بريدك الإلكتروني بنجاح!", "success");
+    } else if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.auth && window.NGOHUB_FIREBASE.auth.currentUser) {
+      await window.NGOHUB_FIREBASE.sendEmailVerification(window.NGOHUB_FIREBASE.auth.currentUser);
+      showToast("✉️ تم إعادة إرسال رابط التفعيل بنجاح!", "success");
+    } else {
+      showToast("✉️ تم طلب إعادة إرسال رابط التفعيل. يرجى مراجعة بريدك الإلكتروني.", "info");
+    }
+
+    // Start 60s cooldown timer
+    resendCooldownSeconds = 60;
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-clock"></i> إعادة الإرسال متاحة بعد (${resendCooldownSeconds}) ث`;
+    }
+
+    if (resendCooldownInterval) clearInterval(resendCooldownInterval);
+    resendCooldownInterval = setInterval(() => {
+      resendCooldownSeconds--;
+      if (resendCooldownSeconds <= 0) {
+        clearInterval(resendCooldownInterval);
+        resendCooldownInterval = null;
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> لم يصلك الرابط؟ إعادة الإرسال';
+        }
+      } else {
+        if (btn) {
+          btn.innerHTML = `<i class="fa-solid fa-clock"></i> إعادة الإرسال متاحة بعد (${resendCooldownSeconds}) ث`;
+        }
+      }
+    }, 1000);
+
+  } catch (err) {
+    console.error("Resend verification error:", err);
+    showToast("تعذر إعادة إرسال الرابط: " + (err.message || err), "error");
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  }
 }
 
 function openForgotPasswordView(email = '') {
@@ -1605,6 +1698,20 @@ async function handleAuthLogin(e) {
 
     if (code === 'auth/account-suspended') {
       showAuthNotice('authViewLogin', 'error', '<strong>⚠️ تم تجميد هذا الحساب مؤقتاً</strong> من قبل إدارة المنصة.<br>يرجى التواصل مع أمانة التحالف عبر واتساب (<a href="https://wa.me/201026847508" target="_blank" style="color:var(--primary-green); text-decoration:underline;">+201026847508</a>) لمراجعة الحساب وتنشيطه.');
+    } else if (code === 'auth/unverified-email') {
+      pendingVerificationCredentials = { email, pass };
+      showAuthNotice('authViewLogin', 'warning', `
+        <strong>⚠️ هذا الحساب غير مفعل بعد:</strong><br>
+        أرسلنا رابط تأكيد رسمي إلى بريدك الإلكتروني (<code>${email}</code>). يرجى فتح بريدك والنقر على الرابط لتفعيل الحساب.<br>
+        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-table-sm" onclick="switchAuthTab('verify', '${email}', '${pass}')" style="background:var(--primary-green); color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer; font-weight:700;">
+            <i class="fa-solid fa-envelope-circle-check"></i> الانتقال لشاشة التحقق
+          </button>
+          <button type="button" class="btn-table-sm" onclick="resendVerificationDirect('${email}', '${pass}')" style="background:#0284c7; color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer;">
+            <i class="fa-solid fa-paper-plane"></i> إعادة إرسال رابط التفعيل الآن
+          </button>
+        </div>
+      `);
     } else if (code === 'auth/user-not-found') {
       // Explicit user-not-found: Show redirecting message and transition
       showAuthNotice('authViewLogin', 'warning', `
@@ -1747,7 +1854,10 @@ async function handleAuthRegister(e) {
         });
       }
 
-      saveUserSessionAndLogin(newUser, true);
+      // Transition to verification notice view
+      pendingVerificationCredentials = { email, pass };
+      switchAuthTab('verify', email, pass);
+      showToast("✉️ تم إرسال رابط تأكيد رسمي إلى بريدك الإلكتروني بنجاح!", "success");
     } else {
       const isAdmin = ADMIN_AUTHORIZED_EMAILS.includes(email);
       const newUser = {
@@ -1780,7 +1890,9 @@ async function handleAuthRegister(e) {
         });
       }
 
-      saveUserSessionAndLogin(newUser, true);
+      pendingVerificationCredentials = { email, pass };
+      switchAuthTab('verify', email, pass);
+      showToast("✉️ تم إرسال رابط تأكيد رسمي إلى بريدك الإلكتروني بنجاح!", "success");
     }
   } catch (error) {
     console.error("Registration error:", error);
