@@ -1,0 +1,209 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: /users/{userId}
+    // Document ID: Firebase Auth UID (`userId`)
+    //
+    // Core Fields:
+    //   - uid: string (required, 1-128 chars, immutable, matches path & auth.uid)
+    //   - email: string (required, 5-254 chars, valid email format)
+    //   - name: string (required, 1-100 chars, user or NGO display name)
+    //   - role: string (required, allowed: 'ngo' | 'individual' | 'admin', immutable by non-admin)
+    //   - status: string (required, allowed: 'active' | 'suspended', immutable by non-admin)
+    //   - isNGO: bool (required, true for ngo accounts)
+    //   - ngoData: map or null (optional, restricted schema & bounded string lengths)
+    //       Allowed map keys:
+    //         - ngoName: string (<= 150 chars)
+    //         - ngoGov: string (<= 100 chars)
+    //         - ngoRegNum: string (<= 50 chars)
+    //         - ngoAddress: string (<= 250 chars)
+    //         - ngoContact: string (<= 100 chars)
+    //         - ngoPhone: string (<= 30 chars)
+    //   - createdAt: timestamp or string (required, immutable, <= 50 chars if string)
+    //   - provider: string (required, 1-50 chars, e.g. 'password', 'google.com')
+    //
+    // Optional Frontend Extension Fields:
+    //   - id: string (optional, 1-128 chars, matches uid if present)
+    //   - displayName: string (optional, 1-100 chars)
+    //   - createdAtIso: string (optional, <= 50 chars)
+    //   - statusUpdatedAt: timestamp or string (optional, <= 50 chars if string)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if authenticated user is the designated Sole Platform Administrator
+    function isAdmin() {
+      return isAuthenticated() &&
+        'email' in request.auth.token &&
+        request.auth.token.email == 'youssefkhedr92@gmail.com';
+    }
+
+    // Check if user is the document owner by path UID
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Ensure UID matches both the route path and request.auth.uid on create
+    function uidUnchanged(userId) {
+      return request.resource.data.uid == userId &&
+        request.resource.data.uid == request.auth.uid;
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      return email is string &&
+        email.size() >= 5 &&
+        email.size() <= 254 &&
+        email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    // Validate createdAt timestamp or string
+    function isValidCreatedAt(val) {
+      return (val is timestamp) ||
+        (val is string && val.size() >= 1 && val.size() <= 50);
+    }
+
+    // Validate optional statusUpdatedAt timestamp or string
+    function isValidStatusUpdatedAt(val) {
+      return (val is timestamp) ||
+        (val is string && val.size() >= 1 && val.size() <= 50);
+    }
+
+    // Validate NGO details map when present (null or map with bounded keys/lengths)
+    function isValidNgoData(data) {
+      return data == null || (
+        data is map &&
+        data.keys().hasOnly(['ngoName', 'ngoGov', 'ngoRegNum', 'ngoAddress', 'ngoContact', 'ngoPhone']) &&
+        (!('ngoName' in data) || (data.ngoName is string && data.ngoName.size() <= 150)) &&
+        (!('ngoGov' in data) || (data.ngoGov is string && data.ngoGov.size() <= 100)) &&
+        (!('ngoRegNum' in data) || (data.ngoRegNum is string && data.ngoRegNum.size() <= 50)) &&
+        (!('ngoAddress' in data) || (data.ngoAddress is string && data.ngoAddress.size() <= 250)) &&
+        (!('ngoContact' in data) || (data.ngoContact is string && data.ngoContact.size() <= 100)) &&
+        (!('ngoPhone' in data) || (data.ngoPhone is string && data.ngoPhone.size() <= 30))
+      );
+    }
+
+    // ===============================================================
+    // Domain Validator (Validator Function Pattern)
+    // Mandatory: Enforced in BOTH create and update operations
+    // ===============================================================
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'name', 'role', 'status', 'isNGO', 'createdAt', 'provider']) &&
+        data.keys().hasOnly([
+          'uid', 'id', 'email', 'name', 'displayName',
+          'role', 'status', 'isNGO', 'ngoData',
+          'createdAt', 'createdAtIso', 'provider', 'statusUpdatedAt'
+        ]) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 &&
+        data.email is string && isValidEmail(data.email) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+        data.role in ['ngo', 'individual', 'admin'] &&
+        data.status in ['active', 'suspended'] &&
+        data.isNGO is bool &&
+        isValidCreatedAt(data.createdAt) &&
+        data.provider is string && data.provider.size() >= 1 && data.provider.size() <= 50 &&
+        (!('ngoData' in data) || isValidNgoData(data.ngoData)) &&
+        (!('id' in data) || (data.id is string && data.id == data.uid)) &&
+        (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+        (!('createdAtIso' in data) || (data.createdAtIso is string && data.createdAtIso.size() <= 50)) &&
+        (!('statusUpdatedAt' in data) || isValidStatusUpdatedAt(data.statusUpdatedAt));
+    }
+
+    // ===============================================================
+    // Collection: /users/{userId}
+    // ===============================================================
+    match /users/{userId} {
+
+      // -------------------------------------------------------------
+      // READ Rules
+      // -------------------------------------------------------------
+      // GET: The document owner or the Platform Admin can read
+      allow get: if isOwner(userId) || isAdmin();
+
+      // LIST: Strictly restricted to Platform Administrator
+      // Prevents regular users or visitors from querying the /users collection
+      // and eliminates PII data leaks (Anti-PII Leak Guardrail)
+      allow list: if isAdmin();
+
+      // -------------------------------------------------------------
+      // CREATE Rules
+      // -------------------------------------------------------------
+      // Regular User:
+      //   - Must own the document path (request.auth.uid == userId)
+      //   - UID in body must match userId and auth.uid
+      //   - Initial status must be 'active'
+      //   - Role cannot be 'admin' (strictly 'ngo' or 'individual')
+      //   - Full schema and constraints validated by isValidUser()
+      // Platform Admin:
+      //   - Can provision any user document with full schema compliance
+      allow create: if isValidUser(request.resource.data) && (
+        (
+          isOwner(userId) &&
+          uidUnchanged(userId) &&
+          request.resource.data.status == 'active' &&
+          request.resource.data.role in ['ngo', 'individual']
+        ) || isAdmin()
+      );
+
+      // -------------------------------------------------------------
+      // UPDATE Rules
+      // -------------------------------------------------------------
+      // Regular User:
+      //   - Must own the document (request.auth.uid == userId)
+      //   - Existing account status must be 'active' (suspended accounts locked)
+      //   - Cannot modify 'uid' or 'createdAt' (immutable fields)
+      //   - Cannot modify 'role' (prevents privilege escalation)
+      //   - Cannot modify 'status' (prevents self-unfreezing/tampering)
+      //   - Full schema and constraints validated by isValidUser()
+      // Platform Admin:
+      //   - Can update any user document (change role, activate/suspend)
+      //   - Cannot corrupt 'uid' (must remain identical)
+      //   - Cannot corrupt 'createdAt' (immutable creation history)
+      //   - Full schema and constraints validated by isValidUser()
+      allow update: if isValidUser(request.resource.data) && (
+        (
+          isOwner(userId) &&
+          resource.data.status == 'active' &&
+          request.resource.data.uid == resource.data.uid &&
+          (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt) &&
+          request.resource.data.role == resource.data.role &&
+          request.resource.data.status == resource.data.status
+        ) ||
+        (
+          isAdmin() &&
+          request.resource.data.uid == resource.data.uid &&
+          (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt)
+        )
+      );
+
+      // -------------------------------------------------------------
+      // DELETE Rules
+      // -------------------------------------------------------------
+      // Exclusively restricted to the Sole Platform Administrator
+      // Regular users are strictly forbidden from deleting profiles directly
+      allow delete: if isAdmin();
+    }
+
+    // ===============================================================
+    // Global Default Deny
+    // ===============================================================
+    // Deny all reads and writes to any unspecified collections or documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

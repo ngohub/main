@@ -1,0 +1,65 @@
+{
+  "engine_version": "v8.0-autonomous",
+  "clock_start": "2026-11-16 23:15:40",
+  "clock_end": "2026-11-16 23:15:40",
+  "elapsed_seconds": 0.021,
+  "total_active_opportunities": 69,
+  "new_ingested_count": 31,
+  "expired_purged_count": 0,
+  "expired_purged_items": [],
+  "monitored_sources_count": 50,
+  "monitored_layers": {
+    "layer_1_international": {
+      "name": "المؤسسات الدولية والأممية",
+      "count": 8
+    },
+    "layer_2_bilateral": {
+      "name": "الوكالات الثنائية بمصر",
+      "count": 7
+    },
+    "layer_3_embassies": {
+      "name": "صناديق سفارات القاهرة للمشروعات المحلية",
+      "count": 8
+    },
+    "layer_4_independent": {
+      "name": "الصناديق العالمية المستقلة",
+      "count": 10
+    },
+    "layer_5_national": {
+      "name": "المؤسسات والتحالفات الوطنية بمصر",
+      "count": 10
+    },
+    "layer_6_portals": {
+      "name": "بوابات الرصد التنموية والشبكات المفتوحة",
+      "count": 7
+    }
+  },
+  "taxonomy_tag_distribution": {
+    "مبادرة بيئية": 25,
+    "صون المياه والطاقة": 20,
+    "ريادة أعمال وتوظيف": 21,
+    "عموم مصر": 33,
+    "تمويل كبير (أكثر من 2 مليون ج.م)": 32,
+    "أفراد ورواد أعمال خضر": 4,
+    "مناخ واستدامة بيئية": 20,
+    "تحول رقمي وتكنولوجيا": 10,
+    "منحة للجمعيات الأهلية": 26,
+    "تعليم وبناء قدرات": 43,
+    "محافظات الصعيد": 26,
+    "مبادرة مجتمعية / شبابية": 14,
+    "تمكين المرأة والفتيات": 23,
+    "حماية اجتماعية وصحة": 16,
+    "الدلتا والقناة": 1,
+    "القاهرة الكبرى": 3,
+    "تمويل متوسط (250 ألف - 2 مليون ج.م)": 11,
+    "تشجير واستدامة": 3,
+    "تمويل بذور (أقل من 250 ألف ج.م)": 1
+  },
+  "status": "HEALTHY_AND_SYNCHRONIZED",
+  "security_verification": {
+    "anti_spam_honeypot": "ACTIVE",
+    "zero_forbidden_words": true,
+    "zero_plaintext_credentials": true,
+    "cloudflare_auto_deploy_ready": true
+  }
+}

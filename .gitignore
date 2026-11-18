@@ -39,6 +39,8 @@ ngohub_digital_access_portal.png
 
 # Scratch & Large Archives
 *.zip
+scratch/
+scripts/
 audit_script.py
 generate_audit_pdf.py
 generate_preview_png.py

@@ -77,8 +77,8 @@
   
   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261028_v3">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261028_v3">
+  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261118_auth">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261118_auth">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -138,6 +138,11 @@
       </nav>
 
       <div class="header-action-group">
+        <button class="btn-header-auth" id="headerAuthBtn" onclick="openAuthModal('login')" title="تسجيل الدخول أو إنشاء حساب">
+          <i class="fa-solid fa-circle-user"></i>
+          <span class="btn-auth-text">حسابي</span>
+        </button>
+
         <button class="btn-hero-register" onclick="openNgoRegisterModal()" style="padding: 9px 18px !important; font-size: 0.92rem !important;" title="سجّل جمعيتك الآن وانضم للتحالف">
           <i class="fa-solid fa-building-circle-check"></i>
           <span class="btn-vol-text">سجّل جمعيتك الآن</span>
@@ -233,53 +238,27 @@
   <!-- Page Hero Banner -->
   <div class="page-hero-banner">
     <div class="container">
-            <h1 class="page-hero-title">بوابة المنح</h1>
-      <p class="page-hero-subtitle">قاعدة بيانات حية ومحدثة للفرص التمويلية ومنح التنمية المستدامة، المناخ، والتحول الرقمي المفتوحة للجمعيات المصرية والعربية</p>
+      <h1 class="page-hero-title">بوابة المنح والتمويل التنموي الدولي</h1>
+      <p class="page-hero-subtitle">دليل مؤسسي موثق يتيح للجمعيات الأهلية استكشاف المنح التنموية المفتوحة، معايير الأهلية، والبدء في إعداد وصياغة مقترحات المشروعات المؤهلة للتمويل</p>
     </div>
   </div>
 
-  <!-- Page Purpose & Clarity Box -->
-  <div class="container" style="margin-top: -15px; margin-bottom: 25px;">
-    <div class="page-clarity-box">
-      <div class="clarity-item">
-        <span class="clarity-item-title"><i class="fa-solid fa-circle-question"></i> ما هي هذه الصفحة؟</span>
-        <p class="clarity-item-text">البوابة الرسمية لقاعدة بيانات المنح الدولية والتمويلات التنموية غير المستردة (موثقة ومحدثة باستمرار للجمعيات والمؤسسات الأهلية).</p>
-      </div>
-      <div class="clarity-item">
-        <span class="clarity-item-title"><i class="fa-solid fa-briefcase"></i> كيف يخدم جمعيتك ومجلس إدارتك؟</span>
-        <p class="clarity-item-text">تتيح فرز واكتشاف المنح المطابقة لنشاط جمعيتكم ونطاقها الجغرافي والاطلاع الفوري على معايير الأهلية والمواعيد الرسمية النهائية لجهات التمويل.</p>
-      </div>
-      <div class="clarity-item">
-        <span class="clarity-item-title"><i class="fa-solid fa-circle-check"></i> الخطوة التالية الموصى بها</span>
-        <p class="clarity-item-text">سجّل جمعيتك في التحالف لبدء إعداد وصياغة ملفات المقترحات واستيفاء المتطلبات التقنية والمؤسسية المشروطة لدى المانحين.</p>
-      </div>
-    </div>
-  </div>
   <!-- ==================== 5. GRANTS & GLOBAL OPPORTUNITIES PORTAL ==================== -->
   <section id="section-grants" class="page-section active-section">
-    <div class="grants-section">
+    <div class="grants-section" style="padding-top: 25px;">
       <div class="container">
-        <div class="section-header">
-          <div class="section-subtitle">البوابة العالمية المعتمدة للمنح</div>
-          <h3 class="section-title">بوابة الفرص والمنح الدولية الحقيقية 100%</h3>
-          <p class="section-desc">قاعدة بيانات الفرص والمنح التنموية النشطة والموثقة من كبرى الهيئات الدولية والمانحين لتمويل الجمعيات والمشروعات</p>
-        </div>
-
         <!-- Advanced Multi-Criteria Search & Filter System -->
         <div class="grants-filter-card">
-          <!-- Filter Row 1: Search & Export -->
+          <!-- Filter Row 1: Search & Reset -->
           <div class="filter-bar-top">
-            <div class="search-box-wrapper">
+            <div class="search-box-wrapper" style="flex: 1;">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" id="grantsSearchInput" placeholder="ابحث باسم المنحة، الجهة المانحة، الكلمات المفتاحية (مناخ، تكنولوجيا، شباب...)" oninput="filterGrantsMaster()">
             </div>
 
             <div class="export-actions">
-              <button class="btn-export" onclick="exportData('csv')">
-                <i class="fa-solid fa-file-csv"></i> تصدير CSV
-              </button>
-              <button class="btn-export" onclick="exportData('json')">
-                <i class="fa-solid fa-file-code"></i> تصدير JSON
+              <button type="button" class="btn-export" onclick="resetAllGrantsFilters()" title="إعادة ضبط كافة الفلاتر والوسوم">
+                <i class="fa-solid fa-arrow-rotate-left"></i> إعادة ضبط الفلاتر
               </button>
             </div>
           </div>
@@ -287,7 +266,7 @@
           <!-- Filter Row 2: Target Category Tabs -->
           <div class="grants-type-tabs">
             <button class="type-tab-btn active" data-type="all" onclick="setGrantTypeFilter('all')">
-              <i class="fa-solid fa-layer-group"></i> كافة الفرص والمنح (<span id="totalGrantsBadge"></span>)
+              <i class="fa-solid fa-layer-group"></i> كافة الفرص والمنح
             </button>
             <button class="type-tab-btn" data-type="ngo" onclick="setGrantTypeFilter('ngo')">
               <i class="fa-solid fa-building-columns"></i> منح الجمعيات والمؤسسات
@@ -298,9 +277,46 @@
             <button class="type-tab-btn" data-type="individual_green" onclick="setGrantTypeFilter('individual_green')">
               <i class="fa-solid fa-user-graduate"></i> منح الشباب وريادة الأعمال
             </button>
-            <button class="type-tab-btn" data-type="volunteer" onclick="setGrantTypeFilter('volunteer')">
-              <i class="fa-solid fa-hand-holding-heart"></i> فرص التطوع الدولي (UNV)
+            <button class="type-tab-btn" data-type="un_agencies" onclick="setGrantTypeFilter('un_agencies')">
+              <i class="fa-solid fa-earth-americas"></i> منح وشراكات الأمم المتحدة بمصر (UN)
             </button>
+          </div>
+
+          <!-- Filter Row 2.5: Interactive Taxonomy Tags Quick-Bar -->
+          <div class="grants-tags-quickbar-wrapper">
+            <div class="tags-quickbar-label">
+              <i class="fa-solid fa-tags text-emerald"></i>
+              <span>وسوم الرصد الذكي السريع:</span>
+            </div>
+            <div class="grants-tags-quickbar" id="grantsQuickTagsBar">
+              <button type="button" class="tag-pill-btn active" data-tag="all" onclick="setGrantTagFilter('all')">
+                <i class="fa-solid fa-asterisk"></i> كافة الوسوم
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="بيئة وتشجير" onclick="setGrantTagFilter('بيئة وتشجير')">
+                <i class="fa-solid fa-leaf text-emerald"></i> بيئة وتشجير واستدامة
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="تمكين المرأة والفتيات" onclick="setGrantTagFilter('تمكين المرأة والفتيات')">
+                <i class="fa-solid fa-venus text-purple"></i> تمكين المرأة والفتيات
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="منحة للجمعيات الأهلية" onclick="setGrantTagFilter('منحة للجمعيات الأهلية')">
+                <i class="fa-solid fa-building-columns"></i> جمعيات أهلية
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="فرصة لمدير مشروع" onclick="setGrantTagFilter('فرصة لمدير مشروع')">
+                <i class="fa-solid fa-user-tie"></i> مدراء مشاريع واستشارات
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="صون المياه والطاقة" onclick="setGrantTagFilter('صون المياه والطاقة')">
+                <i class="fa-solid fa-droplet text-azure"></i> صون المياه والطاقة
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="تحول رقمي وتكنولوجيا" onclick="setGrantTagFilter('تحول رقمي وتكنولوجيا')">
+                <i class="fa-solid fa-laptop-code"></i> تحول رقمي وتكنولوجيا
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="ريادة أعمال وتوظيف" onclick="setGrantTagFilter('ريادة أعمال وتوظيف')">
+                <i class="fa-solid fa-seedling text-amber"></i> ريادة أعمال خضراء وتوظيف
+              </button>
+              <button type="button" class="tag-pill-btn" data-tag="محافظات الصعيد" onclick="setGrantTagFilter('محافظات الصعيد')">
+                <i class="fa-solid fa-map-pin"></i> الصعيد والدلتا
+              </button>
+            </div>
           </div>
 
           <!-- Filter Row 3: Thematic Sector & Region Dropdowns -->
@@ -310,8 +326,9 @@
               <select id="sectorFilterSelect" onchange="filterGrantsMaster()">
                 <option value="all">كافة المجالات التنموية</option>
                 <option value="climate">البيئة والتغير المناخي والاستدامة</option>
+                <option value="capacity">بناء القدرات والتطوير المؤسسي</option>
                 <option value="digital">التحول الرقمي والتكنولوجيا والابتكار</option>
-                <option value="education">التعليم وبناء القدرات والمعرفة</option>
+                <option value="education">التعليم والتدريب وبناء المعرفة</option>
                 <option value="health">الصحة والإغاثة الإنسانية</option>
                 <option value="economic">التمكين الاقتصادي وريادة الأعمال</option>
               </select>
@@ -321,6 +338,7 @@
               <label for="regionFilterSelect"><i class="fa-solid fa-map-location-dot"></i> النطاق الجغرافي:</label>
               <select id="regionFilterSelect" onchange="filterGrantsMaster()">
                 <option value="all">كافة النطاقات الجغرافية</option>
+                <option value="egypt">جمهورية مصر العربية (محلي ومحافظات)</option>
                 <option value="global">عالمي (مفتوح لكافة الدول)</option>
                 <option value="mena">الشرق الأوسط وشمال إفريقيا والعالم العربي</option>
                 <option value="africa">إفريقيا والدول النامية</option>
@@ -489,7 +507,7 @@
               <option value="ngo">منح الجمعيات والمؤسسات</option>
               <option value="project">منح المشروعات والابتكار</option>
               <option value="individual_green">منح الشباب وريادة الأعمال</option>
-              <option value="volunteer">فرص التطوع الدولي والإنساني</option>
+              <option value="un_agencies">منح وشراكات الأمم المتحدة بمصر (UN)</option>
             </select>
           </div>
 
@@ -629,6 +647,11 @@
         <ul class="modal-eligibility-list" id="mEligibility"></ul>
       </div>
 
+      <div class="modal-body-section" id="mApplyMethodSection">
+        <h5><i class="fa-solid fa-route text-emerald"></i> آلية وقناة التقديم المباشر:</h5>
+        <div class="modal-apply-guide-box" id="mApplyGuide"></div>
+      </div>
+
       <div style="margin-top: 25px;">
         <button type="button" class="btn-primary full-width" onclick="closeModal(); openServiceModal('grants_proposals');" style="width: 100%; justify-content: center; margin-bottom: 12px; background: #059669; font-weight: 800; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);">
           <i class="fa-solid fa-file-pen"></i> طلب تأهيل وصياغة مقترح لهذه المنحة مع NGOHUB
@@ -659,34 +682,247 @@
     <i class="fa-solid fa-circle-check"></i> <span id="toastText">تمت العملية بنجاح</span>
   </div>
 
-  <!-- ==================== NGO ALLIANCE REGISTRATION MODAL (GOOGLE FORMS EMBED) ==================== -->
-  <div class="modal-overlay" id="ngoRegisterModal">
-    <div class="modal-card modal-register-card">
-      <button class="modal-close-btn" onclick="closeNgoRegisterModal()"><i class="fa-solid fa-xmark"></i></button>
-      <div class="modal-service-header" style="text-align: center; margin-bottom: 15px;">
-        
-        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--text-dark); margin-bottom: 6px;">
-          استمارة تسجيل الجمعية الأهلية والانضمام للتحالف
-        </h3>
-        <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 620px; margin: 0 auto;">
-          سجّل بيانات جمعيتك لتأهيلها للظهور أمام المانحين، مطابقة المنح الدولية، والاستفادة من خدمات الدعم المؤسسي والتحول الرقمي.
+  <!-- ==================== UNIFIED AUTHENTICATION & NGO ONBOARDING MODAL ==================== -->
+  <div class="modal-overlay" id="authModal" style="display: none;">
+    <div class="modal-card modal-auth-card">
+      <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="إغلاق النافذة"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- Auth Tabs Header -->
+      <div class="auth-tabs-nav">
+        <button type="button" class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">
+          <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+        </button>
+        <button type="button" class="auth-tab-btn" id="tabBtnRegister" onclick="switchAuthTab('register')">
+          <i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد
+        </button>
+      </div>
+
+      <!-- VIEW 1: LOGIN -->
+      <div class="auth-view active-auth-view" id="authViewLogin">
+        <div class="auth-view-header">
+          <h3>مرحباً بك مجدداً في NGOHUB</h3>
+          <p>سجّل دخولك للوصول إلى لوحة المتابعة، ملف الجمعية، والمنح المحفوظة</p>
+        </div>
+
+        <form id="authLoginForm" onsubmit="handleAuthLogin(event)">
+          <div class="form-group">
+            <label for="loginEmailInput"><i class="fa-solid fa-envelope"></i> البريد الإلكتروني:</label>
+            <input type="email" id="loginEmailInput" required placeholder="name@example.com" class="form-input">
+          </div>
+          <div class="form-group" style="margin-top: 14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label for="loginPassInput"><i class="fa-solid fa-lock"></i> كلمة المرور:</label>
+              <a href="javascript:void(0)" onclick="openForgotPasswordView()" class="link-forgot-pass">نسيت كلمة المرور؟</a>
+            </div>
+            <input type="password" id="loginPassInput" required placeholder="••••••••" class="form-input">
+          </div>
+          <button type="submit" class="btn-auth-submit btn-primary full-width" style="margin-top: 20px;">
+            <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+          </button>
+        </form>
+
+        <p class="auth-switch-note">
+          ليس لديك حساب؟ <a href="javascript:void(0)" onclick="switchAuthTab('register')">أنشئ حساب جمعيتك الآن</a>
         </p>
       </div>
 
-      <!-- Embedded Google Form -->
-      <div class="google-form-embed-wrapper">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeHyKe4kvduC5r8L7-slvQltFID3AF5dJ5fxlgwzxPTUn7yTg/viewform?embedded=true" width="100%" height="860" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" title="نموذج تسجيل جمعية في NGOHUB">جارٍ تحميل استمارة التسجيل الرسمية…</iframe>
+      <!-- VIEW 2: REGISTER -->
+      <div class="auth-view" id="authViewRegister" style="display: none;">
+        <div class="auth-view-header">
+          <h3>إنشاء حساب جديد في NGOHUB</h3>
+          <p>انضم لتحالف الجمعيات واستفد من فرص المنح والدعم المؤسسي الفوري</p>
+        </div>
+
+        <form id="authRegisterForm" onsubmit="handleAuthRegister(event)">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="regNameInput"><i class="fa-solid fa-user"></i> اسمك الشخصي / ممثل الجمعية:</label>
+              <input type="text" id="regNameInput" required placeholder="مثال: أحمد محمود" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="regEmailInput"><i class="fa-solid fa-envelope"></i> البريد الإلكتروني:</label>
+              <input type="email" id="regEmailInput" required placeholder="name@example.com" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 12px;">
+            <label for="regPassInput"><i class="fa-solid fa-lock"></i> كلمة المرور:</label>
+            <input type="password" id="regPassInput" required minlength="8" placeholder="8 خانات على الأقل تشمل أرقاماً ورموزاً (#@$)" class="form-input">
+          </div>
+
+          <!-- Role Selector: Are you representing an NGO? -->
+          <div class="reg-role-card">
+            <div class="role-card-header">
+              <i class="fa-solid fa-building-flag text-emerald"></i>
+              <strong>هل أنت من جمعية أهلية أو تمثل جمعية؟</strong>
+            </div>
+            <div class="role-selector-radios">
+              <label class="role-radio-btn">
+                <input type="radio" name="regUserRole" value="ngo" checked onchange="handleRoleSelectionChange(true)">
+                <span class="role-radio-label"><i class="fa-solid fa-circle-check"></i> نعم، أمثل جمعية أهلية</span>
+              </label>
+              <label class="role-radio-btn">
+                <input type="radio" name="regUserRole" value="individual" onchange="handleRoleSelectionChange(false)">
+                <span class="role-radio-label">لا، حساب فردي / باحث</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NGO Alliance Benefits Box (Highlighted to client) -->
+          <div class="ngo-benefits-card" id="ngoBenefitsBox">
+            <div class="benefits-card-top">
+              <i class="fa-solid fa-award text-amber"></i>
+              <strong>مزايا الجمعيات المنضمة لتحالف NGOHUB:</strong>
+            </div>
+            <div class="benefits-card-grid">
+              <div class="benefit-card-item">
+                <i class="fa-solid fa-bullseye text-emerald"></i>
+                <span>أولوية الترشيح والمطابقة لأحدث المنح المفتوحة</span>
+              </div>
+              <div class="benefit-card-item">
+                <i class="fa-solid fa-file-shield text-emerald"></i>
+                <span>فحص ومراجعة أولية مجانية لأوراق وملف الجمعية</span>
+              </div>
+              <div class="benefit-card-item">
+                <i class="fa-solid fa-pen-nib text-emerald"></i>
+                <span>دعم فني في صياغة مقترحات المشروعات والميزانيات</span>
+              </div>
+              <div class="benefit-card-item">
+                <i class="fa-solid fa-badge-check text-emerald"></i>
+                <span>ظهور رسمي معتمد وموثق أمام لجان المانحين</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- The 7 Google Form Qualification Questions -->
+          <div class="ngo-qualification-block" id="ngoQualificationBlock">
+            <h4 class="qual-block-title"><i class="fa-solid fa-list-check text-emerald"></i> استمارة تأهيل وبيانات الجمعية الأهلية:</h4>
+            
+            <div class="form-group">
+              <label for="regNgoName">1. اسم الجمعية المشهرة:</label>
+              <input type="text" id="regNgoName" placeholder="اكتب الاسم الرسمي للجمعية" class="form-input">
+            </div>
+
+            <div class="form-row-2" style="margin-top: 12px;">
+              <div class="form-group">
+                <label for="regNgoGov">2. المحافظة:</label>
+                <select id="regNgoGov" class="form-select">
+                  <option value="">اختر المحافظة...</option>
+                  <option value="القاهرة">القاهرة</option>
+                  <option value="الجيزة">الجيزة</option>
+                  <option value="الإسكندرية">الإسكندرية</option>
+                  <option value="البحيرة">البحيرة</option>
+                  <option value="الدقهلية">الدقهلية</option>
+                  <option value="الشرقية">الشرقية</option>
+                  <option value="الغربية">الغربية</option>
+                  <option value="كفر الشيخ">كفر الشيخ</option>
+                  <option value="المنوفية">المنوفية</option>
+                  <option value="القليوبية">القليوبية</option>
+                  <option value="الفيوم">الفيوم</option>
+                  <option value="بني سويف">بني سويف</option>
+                  <option value="المنيا">المنيا</option>
+                  <option value="أسيوط">أسيوط</option>
+                  <option value="سوهاج">سوهاج</option>
+                  <option value="قنا">قنا</option>
+                  <option value="الأقصر">الأقصر</option>
+                  <option value="أسوان">أسوان</option>
+                  <option value="البحر الأحمر">البحر الأحمر</option>
+                  <option value="الوادي الجديد">الوادي الجديد</option>
+                  <option value="مطروح">مطروح</option>
+                  <option value="شمال سيناء">شمال سيناء</option>
+                  <option value="جنوب سيناء">جنوب سيناء</option>
+                  <option value="بورسعيد">بورسعيد</option>
+                  <option value="الإسماعيلية">الإسماعيلية</option>
+                  <option value="السويس">السويس</option>
+                  <option value="دمياط">دمياط</option>
+                  <option value="خارج مصر">خارج مصر</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="regNgoRegNum">4. رقم قيد / إشهار الجمعية:</label>
+                <input type="text" id="regNgoRegNum" placeholder="مثال: قيد 1450 لسنة 2019" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 12px;">
+              <label for="regNgoAddress">3. عنوان الجمعية بالتفصيل:</label>
+              <input type="text" id="regNgoAddress" placeholder="المدينة / المركز / الشارع" class="form-input">
+            </div>
+
+            <div class="form-row-2" style="margin-top: 12px;">
+              <div class="form-group">
+                <label for="regNgoContact">5. اسم مسؤول التواصل / الممثل:</label>
+                <input type="text" id="regNgoContact" placeholder="الاسم والصفة بالجمعية" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="regNgoPhone">6. رقم الهاتف / واتساب:</label>
+                <input type="tel" id="regNgoPhone" placeholder="01xxxxxxxxx" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-checkbox-wrapper" style="margin-top: 14px;">
+              <label class="custom-checkbox-row">
+                <input type="checkbox" id="regNgoConsent" checked>
+                <span><strong>7. إقرار بصحة البيانات:</strong> أقر بأن البيانات المقدمة صحيحة ومطابقة للسجلات الرسمية، وأوافق على تواصل فريق NGOHUB مع الجمعية لمناقشة فرص التعاون والمنح المناسبة.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Legal & Privacy Agreement -->
+          <div class="auth-legal-notice">
+            بإنشاء الحساب، فإنك توافق على <a href="terms.html" target="_blank">شروط الاستخدام</a> و <a href="privacy.html" target="_blank">سياسة الخصوصية</a> الخاصة بمنصة NGOHUB.
+          </div>
+
+          <button type="submit" class="btn-auth-submit btn-primary full-width" style="margin-top: 16px;">
+            <i class="fa-solid fa-user-plus"></i> إتمام التسجيل والانضمام للتحالف
+          </button>
+        </form>
+
+        <p class="auth-switch-note">
+          لديك حساب بالفعل؟ <a href="javascript:void(0)" onclick="switchAuthTab('login')">تسجيل الدخول</a>
+        </p>
       </div>
 
-      <!-- Direct WhatsApp Support Bar -->
-      <div class="form-wa-fallback-bar">
-        <div class="form-wa-fallback-text">
-          <i class="fa-brands fa-whatsapp text-emerald" style="font-size: 1.25rem;"></i>
-          <span>هل تفضل التسجيل أو الاستفسار المباشر مع أمانة التحالف؟</span>
+      <!-- VIEW 3: FORGOT PASSWORD -->
+      <div class="auth-view" id="authViewForgot" style="display: none;">
+        <div class="auth-view-header">
+          <h3>استعادة كلمة المرور</h3>
+          <p>أدخل بريدك الإلكتروني المسجل وسنرسل لك تعليمات إعادة التعيين فوراً</p>
         </div>
-        <a href="https://wa.me/201026847508?text=السلام%20عليكم،%20أريد%20تسجيل%20جمعيتنا%20في%20تحالف%20NGOHUB" target="_blank" class="btn-wa-direct-reg">
-          <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب الرسمي
-        </a>
+
+        <form id="authForgotForm" onsubmit="handleForgotPassword(event)">
+          <div class="form-group">
+            <label for="forgotEmailInput"><i class="fa-solid fa-envelope"></i> البريد الإلكتروني المسجل:</label>
+            <input type="email" id="forgotEmailInput" required placeholder="name@example.com" class="form-input">
+          </div>
+          <button type="submit" class="btn-auth-submit btn-primary full-width" style="margin-top: 18px;">
+            <i class="fa-solid fa-paper-plane"></i> إرسال رابط استعادة كلمة المرور
+          </button>
+        </form>
+
+        <p class="auth-switch-note">
+          تذكرت كلمة المرور؟ <a href="javascript:void(0)" onclick="switchAuthTab('login')">العودة لتسجيل الدخول</a>
+        </p>
+      </div>
+
+      <!-- Auth Modal Legal Footer & Technical Support -->
+      <div class="auth-modal-footer">
+        <div class="auth-footer-legal-links">
+          <a href="privacy.html" target="_blank">سياسة الخصوصية</a>
+          <span>•</span>
+          <a href="terms.html" target="_blank">شروط الاستخدام</a>
+          <span>•</span>
+          <a href="cookies.html" target="_blank">ملفات الكوكيز</a>
+        </div>
+        <div class="auth-footer-support-box">
+          <i class="fa-solid fa-headset text-emerald"></i>
+          <span>
+            تواجه مشكلة في تسجيل الدخول؟ تواصل مع الدعم الفني:
+            <a href="mailto:youssefkhedr92@gmail.com" class="support-email-link">youssefkhedr92@gmail.com</a>
+            أو عبر
+            <a href="https://wa.me/201026847508" target="_blank" class="support-wa-link"><i class="fa-brands fa-whatsapp"></i> واتساب الدعم</a>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -711,7 +947,8 @@
   </div>
 
   <!-- Scripts -->
+  <script type="module" src="assets/js/firebase-config.js?v=20261118_v1"></script>
   <script src="assets/js/grants_data.min.js?v=20261003" defer></script>
-  <script src="assets/js/app.min.js?v=20261028_v3" defer></script>
+  <script src="assets/js/app.min.js?v=20261118_auth" defer></script>
 </body>
 </html>

@@ -101,10 +101,31 @@ function renderGrantsList(category = 'all', query = '') {
   const container = document.getElementById('grantsListContainer');
   if (!container) return;
 
-  const data = (typeof GRANTS_DATA !== 'undefined') ? GRANTS_DATA : [];
+  const data = (typeof GRANTS_DATABASE !== 'undefined') ? GRANTS_DATABASE :
+               ((typeof GRANTS_DATA !== 'undefined') ? GRANTS_DATA : []);
   
   const filtered = data.filter(item => {
-    const matchCat = (category === 'all') || (item.category === category) || (item.field === category);
+    let matchCat = (category === 'all');
+    if (!matchCat) {
+      if (item.category === category || item.field === category) {
+        matchCat = true;
+      } else if (category === 'البيئة والمناخ') {
+        matchCat = (item.sector === 'climate') || (item.tags && item.tags.some(t => t.includes('بيئ') || t.includes('مناخ') || t.includes('تشجير')));
+      } else if (category === 'تمكين المرأة') {
+        matchCat = (item.tags && item.tags.some(t => t.includes('مرأة') || t.includes('سيدات') || t.includes('فتيات')));
+      } else if (category === 'التحول الرقمي') {
+        matchCat = (item.sector === 'digital') || (item.tags && item.tags.some(t => t.includes('رقمي') || t.includes('تكنولوج')));
+      } else if (category === 'التعليم والتدريب') {
+        matchCat = (item.sector === 'education' || item.sector === 'capacity') || (item.tags && item.tags.some(t => t.includes('تعليم') || t.includes('قدرات')));
+      } else if (category === 'un_agencies' || category === 'الأمم المتحدة' || category.includes('الأمم المتحدة') || category.includes('UN')) {
+        const unPattern = /(?:\bUN\b|\bUN[-_]|\bUNPP\b|الأمم المتحدة|امم متحدة|UNDP|UNIDO|UNOPS|FAO|UN-Habitat|WFP|UNEP|UNICEF|ILO|UN Women|الفاو|اليونيسف|اليونيدو|اليونوبس)/i;
+        const itemTags = Array.isArray(item.tags) ? item.tags : [];
+        const fields = [item.donor || '', item.badge || '', item.id || '', item.title || '', item.type || '', ...itemTags];
+        matchCat = item.type === 'un_agencies' || fields.some(f => unPattern.test(f));
+      } else if (item.type === category) {
+        matchCat = true;
+      }
+    }
     const matchQ = query === '' || 
                    (item.title && item.title.toLowerCase().includes(query)) ||
                    (item.donor && item.donor.toLowerCase().includes(query)) ||
@@ -121,7 +142,7 @@ function renderGrantsList(category = 'all', query = '') {
     return;
   }
 
-  container.innerHTML = filtered.slice(0, 20).map(g => `
+  container.innerHTML = filtered.slice(0, 30).map(g => `
     <div class="grant-item-card">
       <div class="grant-card-top">
         <h4>${g.title}</h4>
@@ -129,8 +150,8 @@ function renderGrantsList(category = 'all', query = '') {
       </div>
       <p class="grant-desc">${g.description ? g.description.substring(0, 110) + '...' : 'فرصة تمويلية موثقة لدعم المشروعات التنموية والبيئية.'}</p>
       <div class="grant-card-bottom">
-        <span class="grant-funding"><i class="fa-solid fa-coins"></i> ${g.funding || 'تمويل معتمد'}</span>
-        <a href="${g.url || 'https://wa.me/201026847508'}" target="_blank" class="btn-grant-apply">
+        <span class="grant-funding"><i class="fa-solid fa-coins"></i> ${g.amount || g.funding || 'تمويل معتمد'}</span>
+        <a href="${g.link || g.url || 'https://wa.me/201026847508'}" target="_blank" rel="noopener noreferrer" class="btn-grant-apply">
           التفاصيل والتقديم <i class="fa-solid fa-arrow-left"></i>
         </a>
       </div>
@@ -149,7 +170,7 @@ function verifyCertificateDemo() {
     resBox.innerHTML = `
       <div style="background: #e8f5e9; border: 1px solid #81c784; padding: 12px; border-radius: 8px; color: #1b5e20;">
         <i class="fa-solid fa-circle-check"></i> <strong>شهادة معتمدة وموثقة:</strong><br>
-        الاسم: كادر تطوعي معتمد | عدد الساعات: 60 ساعة تدريبية<br>
+        الاسم: كادر مؤسسي معتمد | عدد الساعات: 60 ساعة تدريبية<br>
         المجال: إدارة المنظمات الخضراء والحوسبة السحابية | الكود: ${code}
       </div>`;
   } else {

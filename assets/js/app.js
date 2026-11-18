@@ -195,6 +195,7 @@ let SERVICES_DATA = [
 // --- 2. Global State & Database Sync ---
 let ACTIVE_GRANTS = [];
 let currentGrantTypeFilter = 'all';
+let currentTagFilter = 'all';
 let currentServiceFilter = 'all';
 let adminAuthenticated = false;
 
@@ -214,6 +215,64 @@ document.addEventListener("DOMContentLoaded", () => {
   calculateServicesImpact();
   loadSubmissionsInboxCount();
   checkComplianceNotice();
+
+  // Initialize Auth & Session State with Firebase integration
+  if (currentUserSession && currentUserSession.role === 'admin') {
+    adminAuthenticated = true;
+    document.body.classList.add('admin-authenticated');
+  }
+  updateHeaderAuthState();
+
+  function initFirebaseAuthSync(fb) {
+    if (!fb || !fb.onAuthChange) return;
+    fb.onAuthChange((user, profile) => {
+      if (user) {
+        const isAdm = fb.isCurrentUserAdmin();
+        const isNgoRole = profile ? (profile.role === 'ngo') : false;
+        currentUserSession = {
+          id: user.uid,
+          uid: user.uid,
+          name: (profile && profile.displayName) || user.displayName || user.email.split('@')[0],
+          email: user.email,
+          role: isAdm ? 'admin' : (isNgoRole ? 'ngo' : 'individual'),
+          isNGO: isNgoRole,
+          ngoData: profile ? profile.ngoData : null,
+          photoURL: user.photoURL || '',
+          provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'password'
+        };
+        localStorage.setItem('ngohub_user_session', JSON.stringify(currentUserSession));
+      }
+      updateHeaderAuthState();
+    });
+  }
+
+  if (window.NGOHUB_FIREBASE) {
+    initFirebaseAuthSync(window.NGOHUB_FIREBASE);
+  } else {
+    window.addEventListener('ngohub:firebase-ready', (e) => {
+      initFirebaseAuthSync(e.detail || window.NGOHUB_FIREBASE);
+    });
+  }
+
+  // Auto-open Auth modal from query param or cross-page redirection
+  const urlParams = new URLSearchParams(window.location.search);
+  const openAuthParam = urlParams.get('openAuth');
+  const pendingAuth = sessionStorage.getItem('ngohub_pending_auth');
+
+  if (openAuthParam) {
+    const isNGO = urlParams.get('isNGO') !== 'false';
+    setTimeout(() => {
+      openAuthModal(openAuthParam, isNGO);
+    }, 200);
+  } else if (pendingAuth) {
+    sessionStorage.removeItem('ngohub_pending_auth');
+    try {
+      const p = JSON.parse(pendingAuth);
+      setTimeout(() => {
+        openAuthModal(p.tab || 'register', p.isNGO !== false);
+      }, 200);
+    } catch (e) {}
+  }
 
   // Multi-Page & Deep-Link Detection
   const currentPath = window.location.pathname.toLowerCase();
@@ -417,9 +476,26 @@ function switchTab(tabId, pushHistory = true) {
   const currentPath = window.location.pathname.toLowerCase();
   const isIndex = currentPath.endsWith('index.html') || currentPath.endsWith('/') || currentPath === '';
 
-  // Admin routing
+  // Admin routing with Stealth 404 Guard (0 Firestore Reads)
   if (tabId === 'admin') {
+    const isAdm = adminAuthenticated || (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.isCurrentUserAdmin());
     const adminSec = document.getElementById('section-admin');
+    const notFoundSec = document.getElementById('section-404');
+
+    if (!isAdm) {
+      // STEALTH 404 SHIELD: Hide CMS existence from non-admin visitors (0 Firestore Reads)
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(sec => sec.classList.remove('active-section'));
+      if (notFoundSec) notFoundSec.classList.add('active-section');
+      if (pushHistory) {
+        history.pushState({ tab: '404' }, '', '#admin');
+      }
+      document.title = '404 - الصفحة غير موجودة | NGOHUB منصة العمل الأهلي';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMobileDrawer();
+      return;
+    }
+
     if (isIndex && adminSec) {
       const sections = document.querySelectorAll('.page-section');
       sections.forEach(sec => sec.classList.remove('active-section'));
@@ -603,6 +679,49 @@ function setGrantTypeFilter(type) {
   renderGrants();
 }
 
+function setGrantTagFilter(tag) {
+  currentTagFilter = tag;
+  const buttons = document.querySelectorAll('#grantsQuickTagsBar .tag-pill-btn');
+  buttons.forEach(btn => {
+    const btnTag = btn.getAttribute('data-tag');
+    if (tag === 'all' && btnTag === 'all') {
+      btn.classList.add('active');
+    } else if (tag !== 'all' && btnTag !== 'all' && (btnTag === tag || tag.includes(btnTag) || btnTag.includes(tag))) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  renderGrants();
+}
+
+function resetAllGrantsFilters() {
+  currentGrantTypeFilter = 'all';
+  currentTagFilter = 'all';
+  const searchInput = document.getElementById('grantsSearchInput');
+  if (searchInput) searchInput.value = '';
+  const sectorSelect = document.getElementById('sectorFilterSelect');
+  if (sectorSelect) sectorSelect.value = 'all';
+  const regionSelect = document.getElementById('regionFilterSelect');
+  if (regionSelect) regionSelect.value = 'all';
+
+  document.querySelectorAll('.grants-type-tabs .type-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-type') === 'all');
+  });
+  document.querySelectorAll('#grantsQuickTagsBar .tag-pill-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tag') === 'all');
+  });
+  renderGrants();
+}
+
+function filterByTag(tag) {
+  setGrantTagFilter(tag);
+  const filterSection = document.querySelector('.grants-tags-quickbar-wrapper');
+  if (filterSection) {
+    filterSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
 function filterGrantsMaster() {
   renderGrants();
 }
@@ -614,6 +733,197 @@ function loadMoreGrants() {
   renderGrants();
 }
 
+function getGrantDeadlineBadge(deadline) {
+  if (!deadline) {
+    return {
+      cssClass: 'deadline-badge rolling',
+      icon: '<i class="fa-solid fa-rotate"></i>',
+      label: 'تقديم دوري ومستمر'
+    };
+  }
+
+  const dStr = String(deadline).trim();
+
+  // 1. Check for rolling / continuous keywords
+  const rollingKeywords = [
+    'مستمر', 'دائم', 'طوال العام', 'على مدار العام', 'متجدد', 'متجددة',
+    'مفتوح', 'دورية', 'يومياً', 'يوميا', 'أسبوعية', 'شهري', 'rolling'
+  ];
+  if (rollingKeywords.some(kw => dStr.includes(kw))) {
+    return {
+      cssClass: 'deadline-badge rolling',
+      icon: '<i class="fa-solid fa-rotate"></i>',
+      label: 'تقديم متجدد ومفتوح'
+    };
+  }
+
+  // 2. Check for ISO or slash date format
+  const isoMatch = dStr.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+  const slashMatch = dStr.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+
+  let targetDate = null;
+  if (isoMatch) {
+    targetDate = new Date(parseInt(isoMatch[1], 10), parseInt(isoMatch[2], 10) - 1, parseInt(isoMatch[3], 10));
+  } else if (slashMatch) {
+    targetDate = new Date(parseInt(slashMatch[3], 10), parseInt(slashMatch[2], 10) - 1, parseInt(slashMatch[1], 10));
+  }
+
+  if (targetDate && !isNaN(targetDate.getTime())) {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diffMs = targetDate - today;
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) {
+      return {
+        cssClass: 'deadline-badge expired',
+        icon: '<i class="fa-solid fa-circle-xmark"></i>',
+        label: 'أغلقت المنحة'
+      };
+    } else if (diffDays === 0) {
+      return {
+        cssClass: 'deadline-badge urgent',
+        icon: '<i class="fa-solid fa-hourglass-end"></i>',
+        label: 'اليوم الأخير للتقديم (عاجل)'
+      };
+    } else if (diffDays === 1) {
+      return {
+        cssClass: 'deadline-badge urgent',
+        icon: '<i class="fa-solid fa-hourglass-half"></i>',
+        label: 'متبقي يوم واحد (عاجل)'
+      };
+    } else if (diffDays === 2) {
+      return {
+        cssClass: 'deadline-badge urgent',
+        icon: '<i class="fa-solid fa-hourglass-half"></i>',
+        label: 'متبقي يومان (عاجل)'
+      };
+    } else if (diffDays <= 10) {
+      return {
+        cssClass: 'deadline-badge urgent',
+        icon: '<i class="fa-solid fa-hourglass-half"></i>',
+        label: `متبقي ${diffDays} أيام (عاجل)`
+      };
+    } else if (diffDays <= 15) {
+      return {
+        cssClass: 'deadline-badge urgent',
+        icon: '<i class="fa-solid fa-hourglass-half"></i>',
+        label: `متبقي ${diffDays} يوماً (عاجل)`
+      };
+    } else {
+      return {
+        cssClass: 'deadline-badge safe',
+        icon: '<i class="fa-solid fa-calendar-check"></i>',
+        label: `متبقي ${diffDays} يوماً`
+      };
+    }
+  }
+
+  // 3. Seasonal or descriptive deadline
+  return {
+    cssClass: 'deadline-badge safe',
+    icon: '<i class="fa-solid fa-calendar-days"></i>',
+    label: dStr
+  };
+}
+
+function deriveGrantTags(g) {
+  if (Array.isArray(g.tags) && g.tags.length >= 3) {
+    return g.tags;
+  }
+
+  const tags = [];
+  const text = `${g.title || ''} ${g.description || ''} ${g.donor || ''} ${g.badge || ''}`.toLowerCase();
+  const sector = (g.sector || '').toLowerCase();
+  const type = (g.type || '').toLowerCase();
+  const region = (g.region || '').toLowerCase();
+  const amount = (g.amount || '').toLowerCase();
+  const location = (g.location || '').toLowerCase();
+
+  // Dimension 1: Target category
+  if (['شجر', 'تشجير', 'أشجار', 'غرس'].some(k => text.includes(k))) {
+    tags.push('تشجير واستدامة');
+    tags.push('مبادرة بيئية');
+  } else if (type === 'un_agencies' || ['undp', 'unops', 'unido', 'unicef', 'fao', 'wfp', 'unep', 'ilo', 'un women', 'unpp', 'الأمم المتحدة'].some(k => text.includes(k))) {
+    tags.push('منحة للجمعيات الأهلية');
+    tags.push('شراكات الأمم المتحدة');
+  } else if (type === 'volunteer' || text.includes('تطوع') || text.includes('شباب')) {
+    tags.push('مبادرة مجتمعية / شبابية');
+  } else if (type === 'individual_green' || ['رواد', 'ريادة أعمال', 'أفراد'].some(k => text.includes(k))) {
+    tags.push('أفراد ورواد أعمال خضر');
+  } else if (['استشار', 'مختص', 'خبير', 'خبراء'].some(k => text.includes(k))) {
+    tags.push('فرصة لمختص / استشاري');
+  } else if (['مدير مشروع', 'مدراء مشاريع', 'مديري مشروعات', 'إدارة مشاريع', 'إدارة مشروعات'].some(k => text.includes(k))) {
+    tags.push('فرصة لمدير مشروع');
+  } else if (sector === 'climate' || ['بيئ', 'مناخ', 'طبيع', 'كربون', 'تنوع بيولوجي'].some(k => text.includes(k))) {
+    tags.push('مبادرة بيئية');
+  } else {
+    tags.push('منحة للجمعيات الأهلية');
+  }
+
+  // Dimension 2: Thematic field
+  if (['مرأة', 'مراة', 'سيدات', 'فتيات', 'نساء', 'نسائي'].some(k => text.includes(k))) {
+    tags.push('تمكين المرأة والفتيات');
+  }
+
+  // Water & Energy - require specific words, NOT bare 'ري' which matches 'مشاريع'
+  const isWaterEnergy = ['مياه', 'طاقة', 'شمسية', 'كهرومائية', 'ترشيد الري', 'مياه الري', 'شبكات الري'].some(k => text.includes(k)) ||
+    /(?:\s|^)(?:ري|الري)(?:\s|$)/.test(text);
+  if (isWaterEnergy) {
+    tags.push('صون المياه والطاقة');
+  }
+
+  if (sector === 'climate' || ['مناخ', 'كربون', 'تصحر', 'احتباس', 'بيئ', 'تنوع بيولوجي'].some(k => text.includes(k))) {
+    if (!tags.includes('مناخ واستدامة بيئية') && !tags.includes('صون المياه والطاقة')) {
+      tags.push('مناخ واستدامة بيئية');
+    }
+  }
+  if (sector === 'digital' || ['رقمي', 'تكنولوج', 'برمج', 'ذكاء اصطناعي', 'بيانات'].some(k => text.includes(k))) {
+    tags.push('تحول رقمي وتكنولوجيا');
+  }
+  if (sector === 'economic' || ['ريادة أعمال', 'تمكين اقتصادي', 'سلاسل القيمة', 'تشغيل', 'توظيف', 'حرف تراثية', 'فرص عمل'].some(k => text.includes(k))) {
+    tags.push('ريادة أعمال وتوظيف');
+  }
+  if (sector === 'education' || sector === 'capacity' || ['تعليم', 'تدريب', 'بناء قدرات', 'نضج مؤسسي', 'تأهيل', 'إدارة رشيدة', 'قدرات'].some(k => text.includes(k))) {
+    tags.push('تعليم وبناء قدرات');
+  }
+  if (sector === 'health' || ['صحة', 'صحي', 'طبية', 'رعاية', 'أزمات', 'إغاثة', 'تكافل'].some(k => text.includes(k))) {
+    tags.push('حماية اجتماعية وصحة');
+  }
+
+  // Dimension 3: Geography
+  const geoText = `${location} ${text}`;
+  if (['عموم', 'كافة', 'جميع', 'مختلف', 'الجمهورية'].some(k => location.includes(k))) {
+    tags.push('عموم مصر');
+  } else if (['صعيد', 'أسوان', 'قنا', 'الأقصر', 'سوهاج', 'أسيوط', 'المنيا', 'بني سويف', 'الفيوم'].some(k => geoText.includes(k))) {
+    tags.push('محافظات الصعيد');
+  } else if (['دلتا', 'إسكندرية', 'قناة', 'بورسعيد', 'سويس', 'إسماعيلية', 'بحيرة', 'غربية', 'دقهلية'].some(k => geoText.includes(k))) {
+    tags.push('الدلتا والقناة');
+  } else if (['حدود', 'سيناء', 'مطروح', 'وادي جديد', 'بحر أحمر', 'حلايب'].some(k => geoText.includes(k))) {
+    tags.push('المحافظات الحدودية والساحلية');
+  } else if (['قاهرة', 'جيزة', 'قليوبية'].some(k => geoText.includes(k))) {
+    tags.push('القاهرة الكبرى');
+  } else if (region === 'egypt' || geoText.includes('مصر')) {
+    tags.push('عموم مصر');
+  }
+
+  // Dimension 4: Financial Scale
+  if (['أقل من', 'بذور', 'seed', 'صغيرة'].some(k => amount.includes(k)) || (amount.includes('ألف') && !amount.includes('مليون') && !amount.includes('دولار'))) {
+    tags.push('تمويل بذور (أقل من 250 ألف ج.م)');
+  } else if (['مليون', 'دولار', 'يورو', 'فرنك', 'إسترليني', 'ين', 'dollar', 'euro'].some(k => amount.includes(k))) {
+    tags.push('تمويل كبير (أكثر من 2 مليون ج.م)');
+  } else if (!amount.includes('بدل') && !amount.includes('شهادة') && !amount.includes('تطوع')) {
+    tags.push('تمويل متوسط (250 ألف - 2 مليون ج.م)');
+  }
+
+  const uniqueTags = Array.from(new Set(tags));
+  if (uniqueTags.length < 3) {
+    if (!uniqueTags.includes('عموم مصر')) uniqueTags.push('عموم مصر');
+    if (!uniqueTags.includes('منحة للجمعيات الأهلية')) uniqueTags.push('منحة للجمعيات الأهلية');
+  }
+  return uniqueTags.slice(0, 5);
+}
+
 function renderGrants() {
   const container = document.getElementById('grantsGridContainer');
   if (!container) return;
@@ -623,17 +933,72 @@ function renderGrants() {
   const selectedRegion = document.getElementById('regionFilterSelect')?.value || 'all';
 
   let filtered = ACTIVE_GRANTS.filter(g => {
-    if (currentGrantTypeFilter !== 'all' && g.type !== currentGrantTypeFilter) return false;
-    if (selectedSector !== 'all' && g.sector && g.sector !== selectedSector) return false;
+    if (currentGrantTypeFilter === 'un_agencies') {
+      const unPattern = /(?:\bUN\b|\bUN[-_]|\bUNPP\b|الأمم المتحدة|امم متحدة|UNDP|UNIDO|UNOPS|FAO|UN-Habitat|WFP|UNEP|UNICEF|ILO|UN Women|الفاو|اليونيسف|اليونيدو|اليونوبس)/i;
+      const grantTags = (Array.isArray(g.tags) && g.tags.length > 0) ? g.tags : deriveGrantTags(g);
+      const targetFields = [
+        g.donor || '',
+        g.badge || '',
+        g.id || '',
+        g.title || '',
+        g.type || '',
+        ...grantTags
+      ];
+      const isUn = g.type === 'un_agencies' || targetFields.some(field => unPattern.test(field));
+      if (!isUn) return false;
+    } else if (currentGrantTypeFilter !== 'all' && g.type !== currentGrantTypeFilter) {
+      return false;
+    }
+    if (selectedSector !== 'all' && g.sector && g.sector !== selectedSector && !(selectedSector === 'education' && g.sector === 'capacity')) return false;
     if (selectedRegion !== 'all' && g.region && g.region !== selectedRegion) return false;
 
+    // Filter by quick taxonomy tag with semantic multi-keyword support
+    if (currentTagFilter && currentTagFilter !== 'all') {
+      const tagLower = currentTagFilter.toLowerCase().trim();
+      let keywords = [tagLower];
+      if (tagLower.includes('بيئة') || tagLower.includes('تشجير')) {
+        keywords = ['بيئ', 'شجر', 'مناخ', 'طبيع', 'أشجار', 'كربون', 'تنوع بيولوجي'];
+      } else if (tagLower.includes('مرأة') || tagLower.includes('نساء') || tagLower.includes('فتيات') || tagLower.includes('سيدات')) {
+        keywords = ['مرأة', 'مراة', 'نساء', 'فتيات', 'سيدات'];
+      } else if (tagLower.includes('جمعيات')) {
+        keywords = ['جمعيات', 'أهلي'];
+      } else if (tagLower.includes('مدير') || tagLower.includes('مدراء') || tagLower.includes('استشار')) {
+        keywords = ['مدير', 'مدراء', 'مستشار', 'استشار', 'خبير', 'خبراء'];
+      } else if (tagLower.includes('مياه') || tagLower.includes('طاقة')) {
+        keywords = ['مياه', 'طاقة', 'شمسية', 'كهرومائية', 'الري', 'ترشيد الري', 'شبكات الري'];
+      } else if (tagLower.includes('رقمي') || tagLower.includes('تكنولوج')) {
+        keywords = ['رقمي', 'تكنولوج', 'برمج', 'ذكاء اصطناعي', 'بيانات'];
+      } else if (tagLower.includes('ريادة') || tagLower.includes('توظيف') || tagLower.includes('أعمال')) {
+        keywords = ['ريادة', 'رواد', 'أعمال', 'توظيف', 'تشغيل'];
+      } else if (tagLower.includes('صعيد') || tagLower.includes('دلتا')) {
+        keywords = ['صعيد', 'أسوان', 'قنا', 'سوهاج', 'أسيوط', 'منيا', 'بني سويف', 'دلتا', 'بحيرة', 'دقهلية', 'شرقية', 'غربية', 'منوفية', 'قليوبية', 'قناة'];
+      }
+
+      const grantTags = (Array.isArray(g.tags) && g.tags.length > 0) ? g.tags : deriveGrantTags(g);
+      const directTagMatch = grantTags.some(t => (t || '').toLowerCase().trim() === tagLower);
+      if (!directTagMatch) {
+        const matchInTags = grantTags.some(t => {
+          const tLow = (t || '').toLowerCase();
+          return keywords.some(kw => tLow.includes(kw));
+        });
+        const matchInTitle = keywords.some(kw => (g.title || '').toLowerCase().includes(kw));
+        const matchInDesc = keywords.some(kw => (g.description || '').toLowerCase().includes(kw));
+        const matchInBadge = keywords.some(kw => (g.badge || '').toLowerCase().includes(kw));
+        if (!matchInTags && !matchInTitle && !matchInDesc && !matchInBadge) return false;
+      }
+    }
+
+    // Search query matching across title, donor, description, location, badge, tags, and eligibility
     if (searchVal) {
       const matchTitle = (g.title || '').toLowerCase().includes(searchVal);
       const matchDonor = (g.donor || '').toLowerCase().includes(searchVal);
       const matchDesc = (g.description || '').toLowerCase().includes(searchVal);
       const matchLocation = (g.location || '').toLowerCase().includes(searchVal);
       const matchBadge = (g.badge || '').toLowerCase().includes(searchVal);
-      if (!matchTitle && !matchDonor && !matchDesc && !matchLocation && !matchBadge) return false;
+      const grantTags = (Array.isArray(g.tags) && g.tags.length > 0) ? g.tags : deriveGrantTags(g);
+      const matchTags = grantTags.some(t => (t || '').toLowerCase().includes(searchVal));
+      const matchEligibility = Array.isArray(g.eligibility) && g.eligibility.some(e => (e || '').toLowerCase().includes(searchVal));
+      if (!matchTitle && !matchDonor && !matchDesc && !matchLocation && !matchBadge && !matchTags && !matchEligibility) return false;
     }
 
     return true;
@@ -641,7 +1006,7 @@ function renderGrants() {
 
   const countText = document.getElementById('resultsCountText');
   if (countText) {
-    countText.innerText = `عرض ${filtered.length} من أصل ${ACTIVE_GRANTS.length} فرصة ومنحة موثقة`;
+    countText.innerText = `عرض ${filtered.length} فرصة ومنحة تنموية`;
   }
 
   if (filtered.length === 0) {
@@ -650,12 +1015,45 @@ function renderGrants() {
         <i class="fa-solid fa-filter-circle-xmark" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px;"></i>
         <h4 style="color: var(--text-dark); font-weight: 800;">لم يتم العثور على فرص مطابقة للبحث</h4>
         <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 6px;">جرب تغيير خيارات الفلترة أو كتابة كلمات بحث أخرى مثل (جمعيات، مناخ، تكنولوجيا، تمويل، استدامة)</p>
+        <button type="button" class="tag-pill-btn active" onclick="resetAllGrantsFilters()" style="margin-top: 16px; padding: 8px 22px; cursor: pointer;">
+          <i class="fa-solid fa-arrow-rotate-left"></i> إعادة ضبط كافة الفلاتر والوسوم
+        </button>
       </div>
     `;
     return;
   }
 
-  const isFiltering = searchVal || selectedSector !== 'all' || selectedRegion !== 'all' || currentGrantTypeFilter !== 'all';
+  // Sign-In Wall for Grants: require login to view full grants database
+  if (!currentUserSession) {
+    const previewGrants = filtered.slice(0, 2);
+    let previewHtml = previewGrants.map(g => generateGrantCardHTML(g)).join('');
+    
+    container.innerHTML = `
+      ${previewHtml}
+      <div class="grants-signin-wall" style="grid-column: 1/-1; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.05)); border: 2px dashed var(--primary-green); border-radius: var(--radius-xl, 16px); padding: 48px 24px; text-align: center; margin: 20px 0; box-shadow: var(--shadow-lg);">
+        <div style="width: 70px; height: 70px; margin: 0 auto 18px; background: rgba(16, 185, 129, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary-green);">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px;">
+          قاعدة بيانات المنح والفرص التمويلية الكاملة مقفلة للزوار
+        </h3>
+        <p style="max-width: 620px; margin: 0 auto 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
+          للوصول إلى تفاصيل المنح، شروط التقديم، المواعيد النهائية، وروابط الجهات المانحة الرسمية، يرجى تسجيل الدخول أو إنشاء حساب لجمعيتكم الأهلية مجاناً في دقيقة واحدة.
+        </p>
+        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn-primary" onclick="openAuthModal('register')" style="padding: 14px 32px; font-size: 1.05rem; border-radius: 10px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-md);">
+            <i class="fa-solid fa-user-plus"></i> إنشاء حساب جمعية مجاناً
+          </button>
+          <button type="button" class="btn-secondary" onclick="openAuthModal('login')" style="padding: 14px 28px; font-size: 1.05rem; border-radius: 10px; font-weight: 700; cursor: pointer;">
+            <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const isFiltering = searchVal || selectedSector !== 'all' || selectedRegion !== 'all' || currentGrantTypeFilter !== 'all' || currentTagFilter !== 'all';
   const displayList = isFiltering ? filtered : filtered.slice(0, grantsRenderLimit);
 
   let html = displayList.map(g => generateGrantCardHTML(g)).join('');
@@ -677,35 +1075,93 @@ function renderGrants() {
 function generateGrantCardHTML(g) {
   let badgeClass = 'ngo-type';
   if (g.type === 'individual_green') badgeClass = 'individual-type';
+  else if (g.type === 'un_agencies') badgeClass = 'un-type';
   else if (g.type === 'volunteer') badgeClass = 'volunteer-type';
+
+  const deadlineBadge = getGrantDeadlineBadge(g.deadline);
+  const tags = (Array.isArray(g.tags) && g.tags.length > 0) ? g.tags : deriveGrantTags(g);
+
+  // Criteria / Conditions (top 2-3 items)
+  const criteriaList = (Array.isArray(g.eligibility) && g.eligibility.length > 0)
+    ? g.eligibility.slice(0, 2)
+    : ["مطابقة المعايير التنموية واللوائح المنظمة", "تقديم المقترح والمستندات الرسمية المعتمدة"];
+
+  const tagsHtml = tags.map(t => {
+    const cleanTag = t.replace(/'/g, "\\'");
+    return `<button type="button" class="grant-tag-chip" onclick="filterByTag('${cleanTag}')"><i class="fa-solid fa-tag"></i> ${sanitizeText(t)}</button>`;
+  }).join('');
+
+  const criteriaHtml = criteriaList.map(c => `
+    <li><i class="fa-solid fa-check text-emerald"></i> <span>${sanitizeText(c)}</span></li>
+  `).join('');
 
   return `
     <div class="grant-card">
-      <span class="grant-badge-type ${badgeClass}">${g.badge || 'فرصة معتمدة'}</span>
+      <div class="grant-card-top-bar">
+        <span class="grant-badge-type ${badgeClass}">
+          <i class="fa-solid fa-award"></i> ${sanitizeText(g.badge || 'فرصة معتمدة')}
+        </span>
+        <span class="${deadlineBadge.cssClass}">
+          ${deadlineBadge.icon} ${sanitizeText(deadlineBadge.label)}
+        </span>
+      </div>
+
       <div>
-        <div class="grant-donor"><i class="fa-solid fa-building-columns"></i> ${g.donor}</div>
-        <h4 class="grant-title">${g.title}</h4>
-        <p class="grant-desc">${g.description}</p>
+        <div class="grant-donor"><i class="fa-solid fa-building-columns"></i> ${sanitizeText(g.donor)}</div>
+        <h4 class="grant-title">${sanitizeText(g.title)}</h4>
+        <p class="grant-desc">${sanitizeText(g.description)}</p>
+
+        <!-- Prominent Financial Amount Box -->
+        <div class="grant-amount-box">
+          <div class="amount-box-label">
+            <i class="fa-solid fa-hand-holding-dollar text-emerald"></i>
+            <span>التمويل / الدعم:</span>
+          </div>
+          <div class="amount-box-val">${sanitizeText(g.amount)}</div>
+        </div>
+
+        <!-- Interactive Taxonomy Tags -->
+        <div class="grant-tags-container">
+          ${tagsHtml}
+        </div>
+
+        <!-- Conditions / Eligibility Snippet -->
+        <div class="grant-conditions-box">
+          <div class="conditions-box-title">
+            <i class="fa-solid fa-clipboard-check text-emerald"></i>
+            <span>أبرز شروط ومعايير الأهلية:</span>
+          </div>
+          <ul class="conditions-box-list">
+            ${criteriaHtml}
+          </ul>
+        </div>
+
+        <!-- Direct Application Channel / Method -->
+        <div class="grant-apply-method-box">
+          <div class="apply-method-header">
+            <i class="fa-solid fa-paper-plane text-emerald"></i>
+            <span>طريقة وقناة التقديم المباشر:</span>
+          </div>
+          <p class="apply-method-text">${sanitizeText(g.application_method || 'تقديم إلكتروني مباشر عبر البوابة الرسمية')}</p>
+        </div>
+
         <div class="grant-meta-list">
           <div class="meta-row">
-            <span class="meta-label">التمويل / المزايا:</span>
-            <span class="meta-value">${g.amount}</span>
-          </div>
-          <div class="meta-row">
             <span class="meta-label">الموعد النهائي:</span>
-            <span class="meta-value">${g.deadline}</span>
+            <span class="meta-value">${sanitizeText(g.deadline)}</span>
           </div>
           <div class="meta-row">
-            <span class="meta-label">النطاق:</span>
-            <span class="meta-value" style="color: var(--text-dark);">${g.location}</span>
+            <span class="meta-label">نطاق التقديم:</span>
+            <span class="meta-value" style="color: var(--text-dark);">${sanitizeText(g.location)}</span>
           </div>
         </div>
       </div>
+
       <div class="grant-card-footer">
-        <button class="btn-view-details" onclick="openGrantModal('${g.id}')">
-          <i class="fa-solid fa-eye"></i> الشروط
+        <button type="button" class="btn-view-details" onclick="openGrantModal('${g.id}')">
+          <i class="fa-solid fa-eye"></i> الشروط كاملة
         </button>
-        <a href="${g.link}" target="_blank" class="btn-apply-direct">
+        <a href="${g.link}" target="_blank" rel="noopener noreferrer" class="btn-apply-direct">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> التقديم المباشر
         </a>
       </div>
@@ -886,23 +1342,678 @@ function calculateGrantMatching() {
   }
 }
 
-// --- 8.2.3 NGO Alliance Registration Modal Handlers ---
-function openNgoRegisterModal() {
-  const modal = document.getElementById('ngoRegisterModal');
-  if (modal) {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  } else {
-    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeHyKe4kvduC5r8L7-slvQltFID3AF5dJ5fxlgwzxPTUn7yTg/viewform?embedded=true', '_blank');
+// --- 8.2.3 Unified Authentication & NGO Onboarding Modal Handlers ---
+let currentUserSession = JSON.parse(localStorage.getItem('ngohub_user_session') || 'null');
+const ADMIN_AUTHORIZED_EMAILS = ['youssefkhedr92@gmail.com'];
+
+function openAuthModal(tab = 'login', isNGO = true) {
+  const modal = document.getElementById('authModal');
+  if (!modal) {
+    // Save pending intent and redirect to index.html with registration/login modal opened
+    sessionStorage.setItem('ngohub_pending_auth', JSON.stringify({ tab, isNGO }));
+    window.location.href = `index.html?openAuth=${encodeURIComponent(tab)}&isNGO=${isNGO}`;
+    return;
+  }
+
+  modal.style.display = 'flex';
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  switchAuthTab(tab);
+  if (tab === 'register') {
+    handleRoleSelectionChange(isNGO);
+    const radio = document.querySelector(`input[name="regUserRole"][value="${isNGO ? 'ngo' : 'individual'}"]`);
+    if (radio) radio.checked = true;
   }
 }
 
-function closeNgoRegisterModal() {
-  const modal = document.getElementById('ngoRegisterModal');
+function closeAuthModal() {
+  const modal = document.getElementById('authModal');
   if (modal) {
+    modal.style.display = 'none';
     modal.classList.remove('active');
     document.body.style.overflow = '';
   }
+}
+
+// Backwards compatibility for legacy calls
+function openNgoRegisterModal() {
+  openAuthModal('register', true);
+}
+
+function closeNgoRegisterModal() {
+  closeAuthModal();
+}
+
+function showAuthNotice(viewId, type, messageHtml) {
+  const view = document.getElementById(viewId);
+  if (!view) return;
+  
+  let box = view.querySelector('.auth-dynamic-notice');
+  if (!box) {
+    box = document.createElement('div');
+    box.className = 'auth-dynamic-notice';
+    const form = view.querySelector('form');
+    if (form) {
+      view.insertBefore(box, form);
+    } else {
+      view.appendChild(box);
+    }
+  }
+
+  let bg = 'rgba(16, 185, 129, 0.12)';
+  let border = '#10b981';
+  let color = '#065f46';
+  let icon = 'fa-solid fa-circle-check';
+
+  if (type === 'warning') {
+    bg = 'rgba(245, 158, 11, 0.12)';
+    border = '#f59e0b';
+    color = '#92400e';
+    icon = 'fa-solid fa-triangle-exclamation';
+  } else if (type === 'error') {
+    bg = 'rgba(239, 68, 68, 0.12)';
+    border = '#ef4444';
+    color = '#991b1b';
+    icon = 'fa-solid fa-circle-xmark';
+  } else if (type === 'info') {
+    bg = 'rgba(14, 165, 233, 0.12)';
+    border = '#0ea5e9';
+    color = '#075985';
+    icon = 'fa-solid fa-circle-info';
+  }
+
+  box.style.cssText = `
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: ${bg};
+    border: 1px solid ${border};
+    color: ${color};
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    animation: fadeIn 0.25s ease-in-out;
+  `;
+
+  box.innerHTML = `
+    <i class="${icon}" style="font-size: 1.25rem; margin-top: 2px; flex-shrink: 0;"></i>
+    <div style="flex: 1;">${messageHtml}</div>
+  `;
+}
+
+function clearAuthNotices() {
+  document.querySelectorAll('.auth-dynamic-notice').forEach(el => el.remove());
+}
+
+function redirectToRegisterWithEmail(email, pass = '') {
+  clearAuthNotices();
+  switchAuthTab('register');
+  const regEmail = document.getElementById('regEmailInput');
+  const regPass = document.getElementById('regPassInput');
+  const regName = document.getElementById('regNameInput');
+  if (regEmail && email) regEmail.value = email;
+  if (regPass && pass && pass.length >= 8) regPass.value = pass;
+  
+  const radio = document.querySelector('input[name="regUserRole"][value="ngo"]');
+  if (radio) {
+    radio.checked = true;
+    handleRoleSelectionChange(true);
+  }
+
+  showAuthNotice('authViewRegister', 'info', `✨ <strong>مرحباً بك!</strong> تم تحويلك لإنشاء حساب جديد بالبريد (<code>${email}</code>). يرجى إكمال بيانات الجمعية للاستفادة من كامل المزايا.`);
+  if (regName) regName.focus();
+}
+
+function switchAuthTab(tab) {
+  clearAuthNotices();
+  const viewLogin = document.getElementById('authViewLogin');
+  const viewReg = document.getElementById('authViewRegister');
+  const viewForgot = document.getElementById('authViewForgot');
+  const btnLogin = document.getElementById('tabBtnLogin');
+  const btnReg = document.getElementById('tabBtnRegister');
+
+  if (viewLogin) viewLogin.style.display = (tab === 'login') ? 'block' : 'none';
+  if (viewReg) viewReg.style.display = (tab === 'register') ? 'block' : 'none';
+  if (viewForgot) viewForgot.style.display = (tab === 'forgot') ? 'block' : 'none';
+
+  if (btnLogin) btnLogin.classList.toggle('active', tab === 'login');
+  if (btnReg) btnReg.classList.toggle('active', tab === 'register');
+}
+
+function openForgotPasswordView(email = '') {
+  clearAuthNotices();
+  switchAuthTab('forgot');
+  const forgotInput = document.getElementById('forgotEmailInput');
+  if (forgotInput) {
+    if (email) forgotInput.value = email;
+    else {
+      const loginEmail = document.getElementById('loginEmailInput')?.value || '';
+      if (loginEmail) forgotInput.value = loginEmail;
+    }
+    forgotInput.focus();
+  }
+}
+
+function handleRoleSelectionChange(isNGO) {
+  const benefitsBox = document.getElementById('ngoBenefitsBox');
+  const qualBlock = document.getElementById('ngoQualificationBlock');
+  if (benefitsBox) benefitsBox.style.display = isNGO ? 'block' : 'none';
+  if (qualBlock) qualBlock.style.display = isNGO ? 'block' : 'none';
+}
+
+// Google OAuth Handler (Integrated with Firebase Auth & Fallback)
+async function handleGoogleSignIn() {
+  const isNGO = document.querySelector('input[name="regUserRole"]:checked')?.value === 'ngo';
+  
+  showToast("جاري الاتصال بحساب Google...");
+
+  if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.googleSignIn) {
+    try {
+      const user = await window.NGOHUB_FIREBASE.googleSignIn(isNGO ? 'ngo' : 'individual', null);
+      const isAdm = window.NGOHUB_FIREBASE.isCurrentUserAdmin();
+      
+      const sessionUser = {
+        id: user.uid,
+        uid: user.uid,
+        name: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        role: isAdm ? 'admin' : (isNGO ? 'ngo' : 'individual'),
+        provider: 'google',
+        photoURL: user.photoURL || '',
+        createdAt: new Date().toISOString()
+      };
+      saveUserSessionAndLogin(sessionUser);
+    } catch (error) {
+      console.error("Google sign in error:", error);
+      if (error.code === 'auth/account-suspended') {
+        alert("⚠️ تم تجميد هذا الحساب مؤقتاً من قبل إدارة المنصة.");
+      } else if (error.code !== 'auth/popup-closed-by-user') {
+        alert("تعذر تسجيل الدخول بواسطة Google: " + (error.message || error));
+      }
+    }
+  } else {
+    // Simulated Fallback for offline development
+    setTimeout(() => {
+      const googleUser = {
+        id: 'g_' + Date.now(),
+        name: "يوسف خضر (Google Admin)",
+        email: "youssefkhedr92@gmail.com",
+        provider: "google",
+        role: "admin",
+        createdAt: new Date().toISOString()
+      };
+      saveUserSessionAndLogin(googleUser);
+    }, 700);
+  }
+}
+
+async function handleAuthLogin(e) {
+  e.preventDefault();
+  clearAuthNotices();
+  const emailInput = document.getElementById('loginEmailInput');
+  const passInput = document.getElementById('loginPassInput');
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+  const pass = passInput ? passInput.value : '';
+
+  if (!email || !pass) {
+    showAuthNotice('authViewLogin', 'warning', 'يرجى إدخال البريد الإلكتروني وكلمة المرور.');
+    return;
+  }
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق من الحساب...';
+  }
+
+  try {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.login) {
+      const user = await window.NGOHUB_FIREBASE.login(email, pass);
+      const isAdm = window.NGOHUB_FIREBASE.isCurrentUserAdmin();
+
+      const sessionUser = {
+        id: user.uid,
+        uid: user.uid,
+        name: user.displayName || email.split('@')[0],
+        email: user.email,
+        role: isAdm ? 'admin' : 'client',
+        provider: 'password',
+        createdAt: new Date().toISOString()
+      };
+
+      saveUserSessionAndLogin(sessionUser);
+    } else {
+      // Local fallback
+      const isAdmin = ADMIN_AUTHORIZED_EMAILS.includes(email);
+      const user = {
+        id: 'usr_' + Date.now(),
+        name: email.split('@')[0],
+        email: email,
+        role: isAdmin ? 'admin' : 'client',
+        provider: 'password',
+        createdAt: new Date().toISOString()
+      };
+      saveUserSessionAndLogin(user);
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    const code = error.code || '';
+
+    if (code === 'auth/account-suspended') {
+      showAuthNotice('authViewLogin', 'error', '<strong>⚠️ تم تجميد هذا الحساب مؤقتاً</strong> من قبل إدارة المنصة.<br>يرجى التواصل مع أمانة التحالف عبر واتساب (<a href="https://wa.me/201026847508" target="_blank" style="color:var(--primary-green); text-decoration:underline;">+201026847508</a>) لمراجعة الحساب وتنشيطه.');
+    } else if (code === 'auth/user-not-found') {
+      // Explicit user-not-found: Show redirecting message and transition
+      showAuthNotice('authViewLogin', 'warning', `
+        <strong>⚠️ هذا البريد الإلكتروني غير مسجل في المنظومة بعد.</strong><br>
+        <span style="display:inline-block; margin-top:4px;"><i class="fa-solid fa-arrows-rotate fa-spin"></i> جاري توجيهك لإنشاء حساب جديد لجمعيتكم خلال لحظات...</span>
+      `);
+      setTimeout(() => {
+        redirectToRegisterWithEmail(email, pass);
+      }, 1600);
+    } else if (code === 'auth/invalid-credential' || code === 'auth/wrong-password') {
+      // Invalid credential (wrong password OR unregistered user in Firebase v10+)
+      showAuthNotice('authViewLogin', 'error', `
+        <strong>❌ تعذر تسجيل الدخول:</strong> البريد الإلكتروني أو كلمة المرور غير صحيحة.<br>
+        <span style="font-size:0.88rem; color:inherit; display:block; margin:6px 0;">إذا كنت لم تنشئ حساباً بعد، أو إذا نسيت كلمة المرور:</span>
+        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-table-sm" onclick="redirectToRegisterWithEmail('${email}', '${pass}')" style="background:var(--primary-green); color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer; font-weight:700;">
+            <i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد بهذا البريد
+          </button>
+          <button type="button" class="btn-table-sm" onclick="openForgotPasswordView('${email}')" style="background:#475569; color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer;">
+            <i class="fa-solid fa-key"></i> نسيت كلمة المرور؟
+          </button>
+        </div>
+      `);
+    } else if (code === 'auth/too-many-requests') {
+      showAuthNotice('authViewLogin', 'warning', '<strong>⏳ تم إيقاف المحاولات مؤقتاً</strong> لحماية أمان الحساب لكثرة المحاولات الخاطئة. يرجى الانتظار بضع دقائق أو استعادة كلمة المرور.');
+    } else if (code === 'auth/invalid-email') {
+      showAuthNotice('authViewLogin', 'warning', '<strong>✉️ صيغة البريد غير صحيحة.</strong> يرجى كتابة بريد إلكتروني سليم (مثال: name@domain.com).');
+    } else if (code === 'auth/network-request-failed') {
+      showAuthNotice('authViewLogin', 'error', '<strong>📡 تعذر الاتصال بالخادم.</strong> يرجى التأكد من اتصال الإنترنت والمحاولة مجدداً.');
+    } else {
+      showAuthNotice('authViewLogin', 'error', `تعذر تسجيل الدخول: ${error.message || error}`);
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
+  }
+}
+
+async function handleAuthRegister(e) {
+  e.preventDefault();
+  clearAuthNotices();
+  const name = document.getElementById('regNameInput').value.trim();
+  const email = document.getElementById('regEmailInput').value.trim().toLowerCase();
+  const pass = document.getElementById('regPassInput').value;
+  const isNGO = document.querySelector('input[name="regUserRole"]:checked').value === 'ngo';
+
+  if (!name || !email || !pass) {
+    showAuthNotice('authViewRegister', 'warning', 'يرجى ملء جميع الحقول الأساسية.');
+    return;
+  }
+
+  const hasNumber = /\d/.test(pass);
+  const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pass);
+
+  if (pass.length < 8 || !hasNumber || !hasSpecial) {
+    showAuthNotice('authViewRegister', 'warning', '🔒 كلمة المرور يجب أن لا تقل عن 8 خانات، وتحتوي على رقم واحد على الأقل ورمز خاص (مثل: #، @، $، !).');
+    return;
+  }
+
+  let ngoData = null;
+  if (isNGO) {
+    const ngoName = document.getElementById('regNgoName').value.trim();
+    const ngoGov = document.getElementById('regNgoGov').value;
+    const ngoRegNum = document.getElementById('regNgoRegNum').value.trim();
+    const ngoAddress = document.getElementById('regNgoAddress').value.trim();
+    const ngoContact = document.getElementById('regNgoContact').value.trim();
+    const ngoPhone = document.getElementById('regNgoPhone').value.trim();
+    const consent = document.getElementById('regNgoConsent').checked;
+
+    if (!ngoName || !ngoGov || !ngoPhone) {
+      showAuthNotice('authViewRegister', 'warning', 'يرجى إدخال اسم الجمعية، المحافظة، ورقم الهاتف / الواتساب.');
+      return;
+    }
+
+    if (!consent) {
+      showAuthNotice('authViewRegister', 'warning', 'يرجى الموافقة على إقرار صحة البيانات والميثاق المؤسسي.');
+      return;
+    }
+
+    ngoData = {
+      ngoName,
+      ngoGov,
+      ngoRegNum,
+      ngoAddress,
+      ngoContact,
+      ngoPhone
+    };
+  }
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إنشاء الحساب السحابي...';
+  }
+
+  try {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.register) {
+      const { user, userData } = await window.NGOHUB_FIREBASE.register(
+        email, 
+        pass, 
+        name, 
+        isNGO ? 'ngo' : 'individual', 
+        ngoData
+      );
+
+      const isAdm = window.NGOHUB_FIREBASE.isCurrentUserAdmin();
+      const newUser = {
+        id: user.uid,
+        uid: user.uid,
+        name: name,
+        email: email,
+        role: isAdm ? 'admin' : (isNGO ? 'ngo' : 'individual'),
+        isNGO: isNGO,
+        ngoData: ngoData,
+        provider: 'password',
+        createdAt: new Date().toISOString()
+      };
+
+      // Also sync local storage
+      const allUsers = getRegisteredUsers();
+      allUsers.unshift(newUser);
+      localStorage.setItem('ngohub_registered_users', JSON.stringify(allUsers));
+
+      // Dual-sync to Google Sheets for instant admin notification
+      if (isNGO && ngoData) {
+        sendToGoogleSheets({
+          type: "تسجيل جمعية جديدة",
+          date: new Date().toLocaleString('ar-EG'),
+          email: email,
+          name: name,
+          ngoName: ngoData.ngoName,
+          ngoGov: ngoData.ngoGov,
+          ngoRegNum: ngoData.ngoRegNum,
+          ngoAddress: ngoData.ngoAddress,
+          ngoContact: ngoData.ngoContact,
+          ngoPhone: ngoData.ngoPhone
+        });
+      }
+
+      saveUserSessionAndLogin(newUser, true);
+    } else {
+      const isAdmin = ADMIN_AUTHORIZED_EMAILS.includes(email);
+      const newUser = {
+        id: 'usr_' + Date.now(),
+        name: name,
+        email: email,
+        role: isAdmin ? 'admin' : (isNGO ? 'ngo' : 'individual'),
+        isNGO: isNGO,
+        ngoData: ngoData,
+        provider: 'password',
+        createdAt: new Date().toISOString()
+      };
+
+      const allUsers = getRegisteredUsers();
+      allUsers.unshift(newUser);
+      localStorage.setItem('ngohub_registered_users', JSON.stringify(allUsers));
+
+      if (isNGO && ngoData) {
+        sendToGoogleSheets({
+          type: "تسجيل جمعية جديدة",
+          date: new Date().toLocaleString('ar-EG'),
+          email: email,
+          name: name,
+          ngoName: ngoData.ngoName,
+          ngoGov: ngoData.ngoGov,
+          ngoRegNum: ngoData.ngoRegNum,
+          ngoAddress: ngoData.ngoAddress,
+          ngoContact: ngoData.ngoContact,
+          ngoPhone: ngoData.ngoPhone
+        });
+      }
+
+      saveUserSessionAndLogin(newUser, true);
+    }
+  } catch (error) {
+    console.error("Registration error:", error);
+    const code = error.code || '';
+
+    if (code === 'auth/email-already-in-use') {
+      showAuthNotice('authViewRegister', 'info', `
+        <strong>ℹ️ هذا البريد الإلكتروني مسجل بالفعل في منصة NGOHUB.</strong><br>
+        <span style="display:inline-block; margin-top:4px;"><i class="fa-solid fa-arrows-rotate fa-spin"></i> جاري توجيهك لتسجيل الدخول مباشرة...</span>
+      `);
+      setTimeout(() => {
+        clearAuthNotices();
+        switchAuthTab('login');
+        const loginEmail = document.getElementById('loginEmailInput');
+        if (loginEmail) loginEmail.value = email;
+        const loginPass = document.getElementById('loginPassInput');
+        if (loginPass) {
+          loginPass.value = '';
+          loginPass.focus();
+        }
+        showAuthNotice('authViewLogin', 'info', `🔑 الحساب مسجل مسبقاً. يرجى كتابة كلمة المرور لتسجيل الدخول، أو انقر على <strong>"نسيت كلمة المرور؟"</strong> لاستعادتها.`);
+      }, 1600);
+    } else if (code === 'auth/weak-password') {
+      showAuthNotice('authViewRegister', 'warning', '<strong>🔒 كلمة المرور غير مطابقة لمعايير الأمان.</strong> يجب أن لا تقل عن 8 خانات وتتضمن رقماً ورمزاً خاصاً (#@$).');
+    } else if (code === 'auth/invalid-email') {
+      showAuthNotice('authViewRegister', 'warning', '<strong>✉️ صيغة البريد غير صحيحة.</strong> يرجى التحقق من كتابة البريد بشكل سليم.');
+    } else if (code === 'auth/network-request-failed') {
+      showAuthNotice('authViewRegister', 'error', '<strong>📡 تعذر الاتصال بالخادم.</strong> يرجى التأكد من اتصال الإنترنت.');
+    } else {
+      showAuthNotice('authViewRegister', 'error', `تعذر إنشاء الحساب: ${error.message || error}`);
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
+  }
+}
+
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  clearAuthNotices();
+  const emailInput = document.getElementById('forgotEmailInput');
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+
+  if (!email) {
+    showAuthNotice('authViewForgot', 'warning', 'يرجى كتابة البريد الإلكتروني المسجل.');
+    return;
+  }
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الرابط...';
+  }
+
+  try {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.resetPassword) {
+      await window.NGOHUB_FIREBASE.resetPassword(email);
+    }
+    showAuthNotice('authViewForgot', 'success', `
+      <strong>✅ تم إرسال رابط استعادة كلمة المرور بنجاح!</strong><br>
+      يرجى تفقد بريدك الإلكتروني (<code>${email}</code>) وصندوق الوارد أو مجلد الرسائل غير المرغوب فيها (Spam).<br>
+      جاري إعادتك لتسجيل الدخول خلال لحظات...
+    `);
+    document.getElementById('authForgotForm').reset();
+    setTimeout(() => {
+      clearAuthNotices();
+      switchAuthTab('login');
+      const loginEmail = document.getElementById('loginEmailInput');
+      if (loginEmail) loginEmail.value = email;
+    }, 2800);
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    const code = error.code || '';
+    if (code === 'auth/user-not-found') {
+      showAuthNotice('authViewForgot', 'warning', `
+        <strong>⚠️ البريد الإلكتروني غير مسجل بعد في المنصة.</strong><br>
+        <button type="button" class="btn-table-sm" onclick="redirectToRegisterWithEmail('${email}')" style="background:var(--primary-green); color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer; margin-top:8px; font-weight:700;">
+          <i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد الآن
+        </button>
+      `);
+    } else if (code === 'auth/invalid-email') {
+      showAuthNotice('authViewForgot', 'warning', '✉️ صيغة البريد غير صحيحة.');
+    } else {
+      showAuthNotice('authViewForgot', 'error', `تعذر إرسال الرابط: ${error.message || error}`);
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
+  }
+}
+
+function saveUserSessionAndLogin(user, isNew = false) {
+  currentUserSession = user;
+  localStorage.setItem('ngohub_user_session', JSON.stringify(user));
+
+  closeAuthModal();
+  updateHeaderAuthState();
+
+  if (user.role === 'admin') {
+    adminAuthenticated = true;
+    document.body.classList.add('admin-authenticated');
+    showToast(`👑 مرحباً بك يا ${user.name}! تم تسجيل الدخول كمسؤول للمنصة.`);
+    switchTab('admin', true);
+    renderAdminState();
+  } else {
+    adminAuthenticated = false;
+    document.body.classList.remove('admin-authenticated');
+    showToast(`✅ أهلاً بك يا ${user.name}! تم تسجيل دخول جمعيتكم بنجاح.`);
+  }
+}
+
+function updateHeaderAuthState() {
+  const authBtn = document.getElementById('headerAuthBtn');
+  const authText = document.getElementById('headerAuthText');
+  const mNavText = document.getElementById('mNavAuthText');
+
+  if (currentUserSession) {
+    const isAdm = currentUserSession.role === 'admin';
+    if (isAdm) {
+      adminAuthenticated = true;
+      document.body.classList.add('admin-authenticated');
+    } else {
+      adminAuthenticated = false;
+      document.body.classList.remove('admin-authenticated');
+    }
+    const label = isAdm ? `الإدارة (${currentUserSession.name})` : currentUserSession.name;
+    if (authText) authText.innerText = label;
+    if (mNavText) mNavText.innerText = label;
+    if (authBtn) {
+      authBtn.title = "انقر لإدارة الحساب أو تسجيل الخروج";
+      authBtn.onclick = handleUserMenuClick;
+    }
+  } else {
+    adminAuthenticated = false;
+    document.body.classList.remove('admin-authenticated');
+    if (authText) authText.innerText = "دخول / تسجيل";
+    if (mNavText) mNavText.innerText = "تسجيل الدخول / حسابي";
+  }
+
+  // Re-evaluate grants sign-in wall dynamically
+  if (typeof renderGrants === 'function' && document.getElementById('grantsGridContainer')) {
+    renderGrants();
+  }
+}
+
+async function handleUserMenuClick() {
+  if (!currentUserSession) {
+    openAuthModal('login');
+    return;
+  }
+
+  const isAdm = currentUserSession.role === 'admin';
+  const action = confirm(`حسابك الحالي: ${currentUserSession.name} (${currentUserSession.email})\nنوع الحساب: ${isAdm ? 'مشرف عام (Admin)' : (currentUserSession.isNGO ? 'جمعية معتمدة' : 'مستخدم فردي')}\n\nهل ترغب في تسجيل الخروج الآن؟`);
+  
+  if (action) {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.logout) {
+      try {
+        await window.NGOHUB_FIREBASE.logout();
+      } catch (e) {
+        console.warn("Logout error:", e);
+      }
+    }
+    currentUserSession = null;
+    localStorage.removeItem('ngohub_user_session');
+    adminAuthenticated = false;
+    document.body.classList.remove('admin-authenticated');
+    updateHeaderAuthState();
+    renderAdminState();
+    showToast("تم تسجيل الخروج بنجاح.");
+    switchTab('home', false);
+  }
+}
+
+// User List Storage & CMS Helpers
+function getRegisteredUsers() {
+  let stored = localStorage.getItem('ngohub_registered_users');
+  if (!stored) {
+    // Seed initial realistic data for testing
+    const seed = [
+      {
+        id: 'usr_sample_1',
+        name: 'د. سامح عبد الفتاح',
+        email: 'sameh.ngo@example.org',
+        role: 'ngo',
+        isNGO: true,
+        ngoData: {
+          ngoName: 'جمعية نهضة حوش عيسى لتنمية المجتمع',
+          ngoGov: 'البحيرة',
+          ngoRegNum: 'قيد 2140 لسنة 2017',
+          ngoAddress: 'شارع الجمهورية - حوش عيسى',
+          ngoContact: 'د. سامح عبد الفتاح (رئيس مجلس الإدارة)',
+          ngoPhone: '01026847508'
+        },
+        provider: 'password',
+        createdAt: '2026-11-15T10:30:00.000Z'
+      },
+      {
+        id: 'usr_sample_2',
+        name: 'م. مروة الألفي',
+        email: 'marwa.alfy@gmail.com',
+        role: 'ngo',
+        isNGO: true,
+        ngoData: {
+          ngoName: 'مؤسسة بصمة خضراء للتنمية والبيئة',
+          ngoGov: 'الإسكندرية',
+          ngoRegNum: 'إشهار 948 لسنة 2020',
+          ngoAddress: 'سيدي بشر قبلي - الإسكندرية',
+          ngoContact: 'م. مروة الألفي (المدير التنفيذي)',
+          ngoPhone: '01223456789'
+        },
+        provider: 'google',
+        createdAt: '2026-11-16T14:15:00.000Z'
+      },
+      {
+        id: 'usr_sample_3',
+        name: 'يوسف خضر (المسؤول العام)',
+        email: 'youssefkhedr92@gmail.com',
+        role: 'admin',
+        isNGO: false,
+        ngoData: null,
+        provider: 'google',
+        createdAt: '2026-11-17T09:00:00.000Z'
+      }
+    ];
+    localStorage.setItem('ngohub_registered_users', JSON.stringify(seed));
+    return seed;
+  }
+  return JSON.parse(stored);
 }
 
 
@@ -1437,6 +2548,12 @@ function closeServiceModal() {
 }
 
 function openGrantModal(grantId) {
+  if (!currentUserSession) {
+    openAuthModal('register');
+    if (window.showToast) showToast("🔒 يرجى تسجيل الدخول أو إنشاء حساب للاطلاع على كامل تفاصيل المنحة ورابط التقديم.", "warning");
+    return;
+  }
+
   const grant = ACTIVE_GRANTS.find(g => g.id === grantId);
   if (!grant) return;
 
@@ -1446,7 +2563,21 @@ function openGrantModal(grantId) {
 
   const eligList = document.getElementById('mEligibility');
   if (eligList) {
-    eligList.innerHTML = grant.eligibility ? grant.eligibility.map(item => `<li>${item}</li>`).join('') : '<li>يرجى مراجعة الموقع الرسمي للمنحة للاطلاع على كامل الشروط والمعايير.</li>';
+    eligList.innerHTML = grant.eligibility ? grant.eligibility.map(item => `<li>${sanitizeText(item)}</li>`).join('') : '<li>يرجى مراجعة الموقع الرسمي للمنحة للاطلاع على كامل الشروط والمعايير.</li>';
+  }
+
+  const applyGuide = document.getElementById('mApplyGuide');
+  if (applyGuide) {
+    const methodText = grant.application_method || 'التقديم الإلكتروني المباشر عبر البوابة الرسمية للجهة المانحة.';
+    applyGuide.innerHTML = `
+      <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <i class="fa-solid fa-circle-arrow-left text-emerald" style="margin-top:4px; font-size:1.1rem; flex-shrink:0;"></i>
+        <span><strong>قناة وآلية التقديم:</strong> ${sanitizeText(methodText)}</span>
+      </div>
+      <div style="font-size:0.86rem; color:var(--text-muted); margin-top:8px; border-top:1px dashed var(--border-color); padding-top:8px;">
+        <i class="fa-solid fa-circle-info text-azure"></i> زر <strong>التقديم المباشر</strong> بالأسفل ينقلك مباشرة لصفحة التقديم أو كراسة الشروط الرسمية دون الحاجة للبحث في الصفحة الرئيسية للموقع.
+      </div>
+    `;
   }
 
   const origLink = document.getElementById('mOriginalLink');
@@ -1492,7 +2623,8 @@ function handleAddGrantSubmit(e) {
   if (type === 'ngo') badge = "منحة جمعيات";
   else if (type === 'project') badge = "منحة مشروعات";
   else if (type === 'individual_green') badge = "منحة شبابية خضراء";
-  else if (type === 'volunteer') badge = "تطوع دولي";
+  else if (type === 'un_agencies') badge = "شراكات ومنح الأمم المتحدة (UN)";
+  else if (type === 'volunteer') badge = "فرص دولية";
 
   const newGrant = {
     id: "custom_grant_" + Date.now(),
@@ -1507,6 +2639,7 @@ function handleAddGrantSubmit(e) {
     link,
     badge,
     description: desc,
+    tags: deriveGrantTags({ type, sector, region, title, description: desc, amount }),
     eligibility: eligRaw.split('\n').map(s => s.trim()).filter(Boolean)
   };
 
@@ -1666,6 +2799,7 @@ function renderAdminState() {
     renderCmsGrantsTable();
     renderCmsServicesTable();
     renderCmsInboxTable();
+    renderCmsUsersTable();
   } else {
     if (loginBox) loginBox.style.display = 'block';
     if (dashBox) dashBox.style.display = 'none';
@@ -1701,11 +2835,22 @@ async function handleAdminLogin(e) {
   }
 }
 
-function adminLogout() {
+async function adminLogout() {
+  if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.logout) {
+    try {
+      await window.NGOHUB_FIREBASE.logout();
+    } catch (e) {}
+  }
   adminAuthenticated = false;
-  document.getElementById('adminLoginForm').reset();
+  currentUserSession = null;
+  localStorage.removeItem('ngohub_user_session');
+  document.body.classList.remove('admin-authenticated');
+  updateHeaderAuthState();
+  const form = document.getElementById('adminLoginForm');
+  if (form) form.reset();
   renderAdminState();
   showToast("تم تسجيل الخروج من لوحة التحكم");
+  switchTab('home', true);
 }
 
 function switchAdminSubTab(subTab) {
@@ -1726,10 +2871,258 @@ function updateAdminStats() {
   const gCount = ACTIVE_GRANTS.length;
   const sCount = SERVICES_DATA.length;
   const subCount = JSON.parse(localStorage.getItem('ngohub_submitted_requests') || '[]').length;
+  const users = getRegisteredUsers();
 
-  document.getElementById('cmsTotalGrants').innerText = gCount;
-  document.getElementById('cmsTotalServices').innerText = sCount;
-  document.getElementById('cmsTotalSubmissions').innerText = subCount;
+  const totalGrantsEl = document.getElementById('cmsTotalGrants');
+  const totalServicesEl = document.getElementById('cmsTotalServices');
+  const totalSubmissionsEl = document.getElementById('cmsTotalSubmissions');
+  const usersBadge = document.getElementById('cmsUsersCountBadge');
+
+  if (totalGrantsEl) totalGrantsEl.innerText = gCount;
+  if (totalServicesEl) totalServicesEl.innerText = sCount;
+  if (totalSubmissionsEl) totalSubmissionsEl.innerText = subCount;
+  if (usersBadge) usersBadge.innerText = users.length;
+
+  // Users Subview Stats
+  const statTotal = document.getElementById('cmsStatTotalUsers');
+  const statNgos = document.getElementById('cmsStatTotalNgos');
+  const statClients = document.getElementById('cmsStatTotalClients');
+
+  if (statTotal) statTotal.innerText = users.length;
+  if (statNgos) statNgos.innerText = users.filter(u => u.isNGO || u.role === 'ngo').length;
+  if (statClients) statClients.innerText = users.filter(u => !u.isNGO && u.role !== 'ngo').length;
+}
+
+// --- CMS Users & NGOs Management Engine ---
+async function renderCmsUsersTable(customList = null) {
+  const tbody = document.getElementById('cmsUsersTbody');
+  if (!tbody) return;
+
+  let users = customList;
+  if (!users) {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.getUsersList) {
+      try {
+        users = await window.NGOHUB_FIREBASE.getUsersList();
+      } catch (err) {
+        console.warn("Could not fetch users from Firebase, fallback to local:", err);
+        users = getRegisteredUsers();
+      }
+    } else {
+      users = getRegisteredUsers();
+    }
+  }
+
+  if (!users || users.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">لا يوجد مستخدمون مسجلون حتى الآن.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = users.map(user => {
+    const userId = user.id || user.uid;
+    const isNGO = user.isNGO || user.role === 'ngo';
+    const isAdm = user.role === 'admin' || ADMIN_AUTHORIZED_EMAILS.includes((user.email || '').toLowerCase().trim());
+    const isSuspended = user.status === 'suspended';
+    const phone = user.ngoData ? user.ngoData.ngoPhone : '-';
+    const gov = user.ngoData ? user.ngoData.ngoGov : '-';
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+
+    const roleBadge = isAdm 
+      ? `<span class="service-badge" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a;"><i class="fa-solid fa-crown"></i> مشرف عام (Admin)</span>`
+      : (isNGO 
+          ? `<span class="service-badge badge-tier"><i class="fa-solid fa-building-flag"></i> جمعية أهلية معتمدة</span>`
+          : `<span class="service-badge" style="background:#e0f2fe; color:#0369a1;"><i class="fa-solid fa-user"></i> حساب فردي</span>`);
+
+    const statusBadge = isSuspended
+      ? `<span class="service-badge badge-status-suspended" style="background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; margin-top:4px; display:inline-block;"><i class="fa-solid fa-snowflake"></i> مجمد</span>`
+      : `<span class="service-badge badge-status-active" style="background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; margin-top:4px; display:inline-block;"><i class="fa-solid fa-circle-check"></i> نشط</span>`;
+
+    const waBtn = (cleanPhone && cleanPhone !== '-')
+      ? `<a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-table-sm" style="background:#22c55e; color:#fff; text-decoration:none;" title="مراسلة عبر واتساب"><i class="fa-brands fa-whatsapp"></i> ${phone}</a>`
+      : `<span style="color:var(--text-muted); font-size:0.85rem;">-</span>`;
+
+    const emailLink = `<a href="mailto:${user.email}" style="color:var(--text-dark); text-decoration:underline; font-size:0.88rem;">${user.email}</a>`;
+
+    const dateVal = user.createdAtIso || user.createdAt;
+    const dateStr = dateVal ? new Date(dateVal).toLocaleDateString('ar-EG') : 'حديثاً';
+
+    const freezeBtn = !isAdm ? (
+      isSuspended
+        ? `<button class="btn-table-sm btn-user-unfreeze" style="background:#16a34a; color:#fff;" onclick="toggleFreezeCmsUser('${userId}', 'suspended')" title="إلغاء التجميد وتنشيط الحساب"><i class="fa-solid fa-play"></i> تنشيط</button>`
+        : `<button class="btn-table-sm btn-user-freeze" style="background:#f59e0b; color:#fff;" onclick="toggleFreezeCmsUser('${userId}', 'active')" title="تجميد الحساب مؤقتاً"><i class="fa-solid fa-snowflake"></i> تجميد</button>`
+    ) : '';
+
+    const deleteBtn = !isAdm 
+      ? `<button class="btn-table-sm btn-table-delete" onclick="deleteCmsUser('${userId}')" title="إزالة المستخدم وبياناته نهائياً"><i class="fa-solid fa-trash"></i></button>`
+      : '<span style="font-size:0.75rem; color:var(--text-muted);">محمي 👑</span>';
+
+    return `
+      <tr>
+        <td>
+          <strong>${user.name || user.displayName || 'مستخدم'}</strong>
+          ${user.ngoData ? `<div style="font-size:0.8rem; color:var(--primary-green); font-weight:600;">${user.ngoData.ngoName}</div>` : ''}
+        </td>
+        <td>
+          ${roleBadge}
+          <div>${statusBadge}</div>
+        </td>
+        <td>
+          ${emailLink}
+          <div style="font-size:0.75rem; color:var(--text-muted);"><i class="${user.provider === 'google' ? 'fa-brands fa-google text-rose' : 'fa-solid fa-key'}"></i> ${user.provider || 'email'}</div>
+        </td>
+        <td>${waBtn}</td>
+        <td><span style="font-size:0.85rem;">${gov}</span></td>
+        <td style="font-size:0.8rem;">${dateStr}</td>
+        <td>
+          <div class="table-actions">
+            ${user.ngoData ? `<button class="btn-table-sm" style="background:#0ea5e9; color:#fff;" onclick="viewCmsUserDetails('${userId}')" title="عرض تفاصيل الاستمارة"><i class="fa-solid fa-eye"></i> تفاصيل</button>` : ''}
+            ${freezeBtn}
+            ${deleteBtn}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function toggleFreezeCmsUser(userId, currentStatus) {
+  const newStatus = (currentStatus === 'suspended') ? 'active' : 'suspended';
+  const actionName = (newStatus === 'suspended') ? 'تجميد' : 'إلغاء تجميد وتنشيط';
+  
+  if (!confirm(`هل أنت متأكد من ${actionName} هذا الحساب؟\n${newStatus === 'suspended' ? 'لن يتمكن المستخدم من الدخول للمنصة حتى رفع التجميد.' : 'سيتمكن المستخدم من تسجيل الدخول فوراً.'}`)) {
+    return;
+  }
+  
+  try {
+    if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.updateUserStatus) {
+      await window.NGOHUB_FIREBASE.updateUserStatus(userId, newStatus);
+    }
+    
+    // Also update local storage cache if present
+    const allUsers = getRegisteredUsers();
+    const idx = allUsers.findIndex(u => (u.id === userId || u.uid === userId));
+    if (idx !== -1) {
+      allUsers[idx].status = newStatus;
+      localStorage.setItem('ngohub_registered_users', JSON.stringify(allUsers));
+    }
+    
+    await renderCmsUsersTable();
+    showToast(`✅ تم ${actionName} الحساب بنجاح.`);
+  } catch (err) {
+    console.error("Error updating user status:", err);
+    alert("تعذر تحديث حالة الحساب: " + (err.message || err));
+  }
+}
+
+function filterCmsUsers() {
+  const searchInput = document.getElementById('cmsUserSearchInput');
+  const roleFilter = document.getElementById('cmsUserRoleFilter');
+  if (!searchInput || !roleFilter) return;
+
+  const query = searchInput.value.trim().toLowerCase();
+  const role = roleFilter.value;
+
+  const allUsers = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.cachedUsersList) || getRegisteredUsers();
+
+  const filtered = allUsers.filter(u => {
+    const matchesRole = (role === 'all') 
+      || (role === 'ngo' && (u.isNGO || u.role === 'ngo'))
+      || (role === 'individual' && (!u.isNGO && u.role !== 'ngo'));
+
+    const searchTarget = `
+      ${u.name || u.displayName || ''} 
+      ${u.email || ''} 
+      ${u.ngoData ? (u.ngoData.ngoName + ' ' + u.ngoData.ngoGov + ' ' + u.ngoData.ngoRegNum) : ''}
+    `.toLowerCase();
+
+    const matchesQuery = !query || searchTarget.includes(query);
+
+    return matchesRole && matchesQuery;
+  });
+
+  renderCmsUsersTable(filtered);
+}
+
+function refreshCmsUsersTable() {
+  updateAdminStats();
+  renderCmsUsersTable();
+  showToast("تم تحديث قائمة المستخدمين والجمعيات.");
+}
+
+async function deleteCmsUser(userId) {
+  const allUsers = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.cachedUsersList) || getRegisteredUsers();
+  const target = allUsers.find(u => (u.id === userId || u.uid === userId));
+  const targetName = target ? (target.name || target.displayName || target.email) : userId;
+
+  if (target && (target.role === 'admin' || ADMIN_AUTHORIZED_EMAILS.includes((target.email || '').toLowerCase().trim()))) {
+    alert("لا يمكن حذف حساب المسؤول العام.");
+    return;
+  }
+
+  if (confirm(`هل أنت متأكد من حذف حساب (${targetName}) وبياناته نهائياً؟ هذا الإجراء لا يمكن التراجع عنه.`)) {
+    try {
+      if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.deleteUserAccount) {
+        await window.NGOHUB_FIREBASE.deleteUserAccount(userId);
+      }
+      
+      const localUsers = getRegisteredUsers();
+      const updated = localUsers.filter(u => u.id !== userId && u.uid !== userId);
+      localStorage.setItem('ngohub_registered_users', JSON.stringify(updated));
+
+      updateAdminStats();
+      await renderCmsUsersTable();
+      showToast("تم حذف المستخدم وبياناته بنجاح.");
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      alert("تعذر حذف المستخدم: " + (err.message || err));
+    }
+  }
+}
+
+function viewCmsUserDetails(userId) {
+  const allUsers = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.cachedUsersList) || getRegisteredUsers();
+  const user = allUsers.find(u => (u.id === userId || u.uid === userId));
+  if (!user || !user.ngoData) {
+    alert("لا توجد استمارة تفصيلية لهذا الحساب.");
+    return;
+  }
+
+  const d = user.ngoData;
+  const modal = document.getElementById('adminUserDetailModal');
+  const title = document.getElementById('audmTitle');
+  const sub = document.getElementById('audmSubtitle');
+  const body = document.getElementById('audmBody');
+
+  if (title) title.innerText = d.ngoName || user.name || user.displayName;
+  if (sub) sub.innerText = `مسؤول التواصل: ${d.ngoContact || user.name || user.displayName} (${user.email})`;
+
+  if (body) {
+    body.innerHTML = `
+      <div style="background:var(--bg-card-alt); padding:16px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:14px;">
+        <p><strong>1. اسم الجمعية المشهرة:</strong> ${d.ngoName || '-'}</p>
+        <p><strong>2. المحافظة:</strong> ${d.ngoGov || '-'}</p>
+        <p><strong>3. العنوان بالتفصيل:</strong> ${d.ngoAddress || '-'}</p>
+        <p><strong>4. رقم وتاريخ قيد / إشهار الجمعية:</strong> ${d.ngoRegNum || '-'}</p>
+        <p><strong>5. مسؤول التواصل والصفة:</strong> ${d.ngoContact || '-'}</p>
+        <p><strong>6. رقم الهاتف / واتساب:</strong> <a href="https://wa.me/${(d.ngoPhone||'').replace(/[^0-9]/g, '')}" target="_blank" style="color:green; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> ${d.ngoPhone || '-'}</a></p>
+        <p><strong>7. البريد الإلكتروني:</strong> <a href="mailto:${user.email}">${user.email}</a></p>
+        <p><strong>طريقة التسجيل:</strong> ${user.provider || 'email'}</p>
+        <p><strong>حالة الحساب:</strong> ${user.status === 'suspended' ? '❄️ مجمد' : '🟢 نشط'}</p>
+        <p><strong>تاريخ التسجيل:</strong> ${user.createdAt || user.createdAtIso ? new Date(user.createdAtIso || user.createdAt).toLocaleString('ar-EG') : '-'}</p>
+      </div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn-primary" onclick="closeAdminUserDetailModal()"><i class="fa-solid fa-check"></i> إغلاق</button>
+      </div>
+    `;
+  }
+
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function closeAdminUserDetailModal() {
+  const modal = document.getElementById('adminUserDetailModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function renderCmsGrantsTable() {
@@ -1918,17 +3311,23 @@ function exportData(format) {
     downloadAnchor.remove();
     showToast("تم تصدير المنح بصيغة JSON");
   } else if (format === 'csv') {
-    const headers = ["العنوان", "الجهة المانحة", "النوع", "القطاع", "التمويل", "الموعد", "النطاق", "رابط التقديم"];
-    const rows = ACTIVE_GRANTS.map(g => [
-      `"${(g.title || '').replace(/"/g, '""')}"`,
-      `"${(g.donor || '').replace(/"/g, '""')}"`,
-      `"${g.badge || ''}"`,
-      `"${g.sector || ''}"`,
-      `"${g.amount || ''}"`,
-      `"${g.deadline || ''}"`,
-      `"${g.location || ''}"`,
-      `"${g.link || ''}"`
-    ]);
+    const headers = ["العنوان", "الجهة المانحة", "النوع", "القطاع", "التمويل", "الموعد", "النطاق", "الوسوم", "الشروط والمعايير", "رابط التقديم"];
+    const rows = ACTIVE_GRANTS.map(g => {
+      const tagsList = (Array.isArray(g.tags) && g.tags.length > 0) ? g.tags : deriveGrantTags(g);
+      const eligList = Array.isArray(g.eligibility) ? g.eligibility : [];
+      return [
+        `"${(g.title || '').replace(/"/g, '""')}"`,
+        `"${(g.donor || '').replace(/"/g, '""')}"`,
+        `"${g.badge || ''}"`,
+        `"${g.sector || ''}"`,
+        `"${(g.amount || '').replace(/"/g, '""')}"`,
+        `"${(g.deadline || '').replace(/"/g, '""')}"`,
+        `"${(g.location || '').replace(/"/g, '""')}"`,
+        `"${tagsList.join('، ').replace(/"/g, '""')}"`,
+        `"${eligList.join(' | ').replace(/"/g, '""')}"`,
+        `"${g.link || ''}"`
+      ];
+    });
 
     const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
