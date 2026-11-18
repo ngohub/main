@@ -290,25 +290,6 @@ body {
   transform: translateY(-2px);
 }
 
-.btn-theme-toggle {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  color: var(--text-dark);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  transition: var(--transition);
-}
-.btn-theme-toggle:hover {
-  background: var(--bg-card-alt);
-  transform: rotate(20deg);
-}
-
 .btn-header-wa {
   background: #25D366;
   color: #ffffff;
@@ -475,20 +456,6 @@ body {
   gap: 10px;
   padding-top: 16px;
   border-top: 1px solid var(--border-color);
-}
-.btn-drawer-theme {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card-alt);
-  color: var(--text-dark);
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
 }
 .btn-drawer-wa {
   display: flex;
@@ -3313,7 +3280,6 @@ body {
   .brand-text h1, .brand-text .brand-title { font-size: 1.15rem !important; }
   .brand-text span, .brand-text .brand-subtitle { font-size: 0.68rem !important; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap !important; }
   .header-action-group { gap: 6px !important; }
-  .btn-theme-toggle { width: 36px !important; height: 36px !important; }
   .btn-header-wa { padding: 6px 10px !important; height: 36px !important; }
   .hero-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -4535,18 +4501,6 @@ input, textarea, select {
   box-shadow: 0 0 16px rgba(16, 185, 129, 0.22) !important;
   font-weight: 800;
 }
-[data-theme="glass"] .btn-theme-toggle {
-  background: rgba(30, 41, 59, 0.65) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: #F8FAFC !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
-}
-[data-theme="glass"] .btn-theme-toggle:hover {
-  background: rgba(16, 185, 129, 0.2) !important;
-  border-color: rgba(16, 185, 129, 0.45) !important;
-  color: #10B981 !important;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35) !important;
-}
 
 /* 4. Frosted Glass Cards & Containers */
 [data-theme="glass"] .hero-search-box-card,
@@ -4784,8 +4738,7 @@ input, textarea, select {
 }
 
 /* 13. Mobile Menu & Drawer Glass Buttons */
-[data-theme="glass"] .btn-mobile-toggle,
-[data-theme="glass"] .btn-drawer-theme {
+[data-theme="glass"] .btn-mobile-toggle {
   background: rgba(30, 41, 59, 0.65) !important;
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
   color: #F8FAFC !important;
@@ -4793,8 +4746,7 @@ input, textarea, select {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-[data-theme="glass"] .btn-mobile-toggle:hover,
-[data-theme="glass"] .btn-drawer-theme:hover {
+[data-theme="glass"] .btn-mobile-toggle:hover {
   background: rgba(16, 185, 129, 0.2) !important;
   border-color: rgba(16, 185, 129, 0.45) !important;
   color: #10B981 !important;

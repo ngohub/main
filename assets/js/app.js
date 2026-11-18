@@ -251,7 +251,7 @@ function getStoredUserSession() {
 
 // --- 3. DOM Content Loaded Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
+  document.documentElement.setAttribute('data-theme', 'light');
   calculateHomeAudit();
   initGrantsDatabase();
   initServices();
@@ -391,55 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- 4. Tri-Theme Engine (Light / Dark / Glass) ---
-function initTheme() {
-  const savedTheme = localStorage.getItem('ngohub_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeIcon(savedTheme);
-}
-
-function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  let newTheme = 'dark';
-  if (currentTheme === 'light') {
-    newTheme = 'dark';
-  } else if (currentTheme === 'dark') {
-    newTheme = 'glass';
-  } else {
-    newTheme = 'light';
-  }
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('ngohub_theme', newTheme);
-  updateThemeIcon(newTheme);
-
-  let label = 'المؤسسي الفاخر ☀️';
-  if (newTheme === 'dark') label = 'الداكن 🌙';
-  if (newTheme === 'glass') label = 'الزجاجي ✨';
-  showToast(`تم التبديل إلى المظهر ${label}`);
-}
-
-function updateThemeIcon(theme) {
-  const icon = document.getElementById('themeIcon');
-  const mIcon = document.getElementById('mThemeIcon');
-  const toggleBtn = document.getElementById('btnThemeToggle');
-
-  let iconClass = 'fa-solid fa-moon';
-  let titleText = 'تبديل المظهر (المظهر الحالي: المؤسسي الفاخر)';
-
-  if (theme === 'dark') {
-    iconClass = 'fa-solid fa-wand-magic-sparkles';
-    titleText = 'تبديل المظهر (المظهر الحالي: الداكن)';
-  } else if (theme === 'glass') {
-    iconClass = 'fa-solid fa-sun';
-    titleText = 'تبديل المظهر (المظهر الحالي: الزجاجي)';
-  }
-
-  if (icon) icon.className = iconClass;
-  if (mIcon) mIcon.className = iconClass;
-  if (toggleBtn) toggleBtn.setAttribute('title', titleText);
-}
-
-// --- 5. Mobile Drawer Navigation ---
+// --- 4. Mobile Drawer Navigation ---
 function toggleMobileDrawer() {
   const drawer = document.getElementById('mobileNavDrawer');
   const overlay = document.getElementById('mobileNavOverlay');
