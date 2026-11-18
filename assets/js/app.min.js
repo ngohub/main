@@ -2177,14 +2177,27 @@ function saveUserSessionAndLogin(user, isNew = false) {
   }
 }
 
+function handleHeaderAuthClick() {
+  const session = currentUserSession || getStoredUserSession();
+  if (session) {
+    window.location.href = 'profile.html';
+  } else {
+    openAuthModal('login');
+  }
+}
+window.handleHeaderAuthClick = handleHeaderAuthClick;
+
 function updateHeaderAuthState() {
   const authBtn = document.getElementById('headerAuthBtn');
   const authText = document.getElementById('headerAuthText');
   const mNavText = document.getElementById('mNavAuthText');
   const mNavAuth = document.getElementById('mNav-auth');
 
-  if (currentUserSession) {
-    const isAdm = currentUserSession.role === 'admin';
+  const session = currentUserSession || getStoredUserSession();
+
+  if (session) {
+    currentUserSession = session;
+    const isAdm = session.role === 'admin';
     if (isAdm) {
       adminAuthenticated = true;
       document.body.classList.add('admin-authenticated');
@@ -2192,11 +2205,11 @@ function updateHeaderAuthState() {
       adminAuthenticated = false;
       document.body.classList.remove('admin-authenticated');
     }
-    const label = isAdm ? `الإدارة (${currentUserSession.name})` : currentUserSession.name;
+    const label = isAdm ? `الإدارة (${session.name})` : session.name;
     if (authText) authText.innerText = label;
     if (mNavText) mNavText.innerText = label;
     if (authBtn) {
-      authBtn.title = `حسابي (${currentUserSession.name})`;
+      authBtn.title = `حسابي (${session.name})`;
       authBtn.className = isAdm ? 'btn-header-auth admin-active' : 'btn-header-auth user-active';
       authBtn.innerHTML = isAdm 
         ? '<i class="fa-solid fa-user-shield" style="color:#d97706;"></i>' 
