@@ -701,6 +701,39 @@ function initGrantsDatabase() {
   if (cmsBadge) cmsBadge.innerText = totalCount;
 
   renderGrants();
+
+  // Resilient Dual-Source Sync: Automatically fetch grants.json if memory DB is empty or outdated (< 50 items)
+  if (typeof fetch === 'function' && ACTIVE_GRANTS.length < 50) {
+    const jsonPaths = ['grants.json?v=20261121_v11', 'assets/data/grants.json?v=20261121_v11'];
+    const tryFetchGrants = (index) => {
+      if (index >= jsonPaths.length) return;
+      fetch(jsonPaths[index])
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          if (Array.isArray(data) && data.length > ACTIVE_GRANTS.length) {
+            window.GRANTS_DATABASE = data;
+            const updatedCustom = localStorage.getItem('ngohub_custom_grants');
+            if (updatedCustom) {
+              try {
+                ACTIVE_GRANTS = [...JSON.parse(updatedCustom), ...data];
+              } catch (err) {
+                ACTIVE_GRANTS = data;
+              }
+            } else {
+              ACTIVE_GRANTS = data;
+            }
+            if (totalBadge) totalBadge.innerText = ACTIVE_GRANTS.length;
+            if (cmsBadge) cmsBadge.innerText = ACTIVE_GRANTS.length;
+            renderGrants();
+          }
+        })
+        .catch(() => tryFetchGrants(index + 1));
+    };
+    tryFetchGrants(0);
+  }
 }
 
 function setGrantTypeFilter(type) {
@@ -1055,36 +1088,6 @@ function renderGrants() {
         <button type="button" class="tag-pill-btn active" onclick="resetAllGrantsFilters()" style="margin-top: 16px; padding: 8px 22px; cursor: pointer;">
           <i class="fa-solid fa-arrow-rotate-left"></i> إعادة ضبط كافة الفلاتر والوسوم
         </button>
-      </div>
-    `;
-    return;
-  }
-
-  // Sign-In Wall for Grants: require login to view full grants database
-  if (!currentUserSession) {
-    const previewGrants = filtered.slice(0, 2);
-    let previewHtml = previewGrants.map(g => generateGrantCardHTML(g)).join('');
-    
-    container.innerHTML = `
-      ${previewHtml}
-      <div class="grants-signin-wall" style="grid-column: 1/-1; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.05)); border: 2px dashed var(--primary-green); border-radius: var(--radius-xl, 16px); padding: 48px 24px; text-align: center; margin: 20px 0; box-shadow: var(--shadow-lg);">
-        <div style="width: 70px; height: 70px; margin: 0 auto 18px; background: rgba(16, 185, 129, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary-green);">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h3 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px;">
-          قاعدة بيانات المنح والفرص التمويلية الكاملة مقفلة للزوار
-        </h3>
-        <p style="max-width: 620px; margin: 0 auto 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
-          للوصول إلى تفاصيل المنح، شروط التقديم، المواعيد النهائية، وروابط الجهات المانحة الرسمية، يرجى تسجيل الدخول أو إنشاء حساب لجمعيتكم الأهلية مجاناً في دقيقة واحدة.
-        </p>
-        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-          <button type="button" class="btn-primary" onclick="openAuthModal('register')" style="padding: 14px 32px; font-size: 1.05rem; border-radius: 10px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-md);">
-            <i class="fa-solid fa-user-plus"></i> إنشاء حساب جمعية مجاناً
-          </button>
-          <button type="button" class="btn-secondary" onclick="openAuthModal('login')" style="padding: 14px 28px; font-size: 1.05rem; border-radius: 10px; font-weight: 700; cursor: pointer;">
-            <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
-          </button>
-        </div>
       </div>
     `;
     return;
@@ -3163,12 +3166,6 @@ function closeServiceModal() {
 }
 
 function openGrantModal(grantId) {
-  if (!currentUserSession) {
-    openAuthModal('register');
-    if (window.showToast) showToast("🔒 يرجى تسجيل الدخول أو إنشاء حساب للاطلاع على كامل تفاصيل المنحة ورابط التقديم.", "warning");
-    return;
-  }
-
   const grant = ACTIVE_GRANTS.find(g => g.id === grantId);
   if (!grant) return;
 
