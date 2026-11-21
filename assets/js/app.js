@@ -249,6 +249,25 @@ function getStoredUserSession() {
   return null;
 }
 
+// --- Tri-Theme (Light / Dark / Glass) Toggle Engine ---
+function toggleTriTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  let newTheme = 'light';
+  if (current === 'light') {
+    newTheme = 'glass';
+  } else if (current === 'glass') {
+    newTheme = 'dark';
+  } else {
+    newTheme = 'light';
+  }
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('ngohub_theme', newTheme);
+  const icon = document.querySelector('#themeToggleBtn i');
+  if (icon) {
+    icon.className = newTheme === 'glass' ? 'fa-solid fa-wand-magic-sparkles' : (newTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun');
+  }
+}
+
 // --- 3. DOM Content Loaded Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.setAttribute('data-theme', 'light');
