@@ -275,9 +275,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initGrantsDatabase();
   initServices();
   calculateEcoImpact();
+  calculateFeasibility();
   calculateReadinessScore();
-  calculateHomeAudit();
+  calculateGrantMatching();
   calculateNgohubWater();
+  calculateGrantBudget();
+  calculateVolunteerValue();
   calculateServicesImpact();
   loadSubmissionsInboxCount();
   checkComplianceNotice();
@@ -1289,6 +1292,8 @@ function switchCalcSubTab(calcId) {
   else if (calcId === 'readiness') calculateReadinessScore();
   else if (calcId === 'matching') calculateGrantMatching();
   else if (calcId === 'water') calculateNgohubWater();
+  else if (calcId === 'budget') calculateGrantBudget();
+  else if (calcId === 'volunteers') calculateVolunteerValue();
   else if (calcId === 'services') calculateServicesImpact();
 }
 
@@ -1298,9 +1303,11 @@ function calculateFeasibility() {
   const paperRange = document.getElementById('feasPaper');
   const budgetInput = document.getElementById('feasBudget');
 
-  const staff = parseFloat(staffInput ? staffInput.value : '20') || 20;
-  const monthlyPaper = parseFloat(paperRange ? paperRange.value : '1500') || 1500;
-  const annualAidBudget = parseFloat(budgetInput ? budgetInput.value : '500000') || 500000;
+  if (!paperRange && !staffInput && !budgetInput) return;
+
+  const staff = Math.max(1, parseFloat(staffInput ? staffInput.value : '20') || 20);
+  const monthlyPaper = Math.max(100, parseFloat(paperRange ? paperRange.value : '1500') || 1500);
+  const annualAidBudget = Math.max(10000, parseFloat(budgetInput ? budgetInput.value : '500000') || 500000);
 
   const paperLabel = document.getElementById('feasPaperValText');
   if (paperLabel) {
@@ -1311,66 +1318,97 @@ function calculateFeasibility() {
   const annualPaperSheets = monthlyPaper * 12;
   const directPaperWaste = Math.round(annualPaperSheets * 2.5);
 
-  // 2. Administrative hours lost in manual paperwork (15 minutes = 0.25 hour per transaction)
-  const annualAdminHours = Math.round(annualPaperSheets * 0.25);
+  // 2. Administrative hours saved (0.25 hr/transaction + 12 hrs/year coordination saved per staff/volunteer)
+  const annualAdminHours = Math.round(annualPaperSheets * 0.25 + staff * 12);
 
   // 3. Duplicate aid & uncoordinated distribution leakage prevented (10% standard saving)
   const duplicateAidPrevented = Math.round(annualAidBudget * 0.10);
 
-  // 4. Total Operational Value Recovered
+  // 4. Total Operational Value Recovered & dynamic efficiency growth
   const totalSavings = directPaperWaste + duplicateAidPrevented;
+  const efficiencyPct = Math.min(85, Math.max(18, Math.round(15 + (monthlyPaper / 10000) * 35 + Math.min(staff, 200) / 200 * 25 + Math.min(annualAidBudget, 5000000) / 5000000 * 15)));
 
   // DOM Outputs
   const elemDirect = document.getElementById('resFeasDirectMoney');
   const elemHours = document.getElementById('resFeasAdminHours');
   const elemDuplicate = document.getElementById('resFeasDuplicateAid');
   const elemTotal = document.getElementById('resFeasTotalSavings');
+  const elemEff = document.getElementById('resFeasEfficiency');
 
   if (elemDirect) elemDirect.innerText = Number(directPaperWaste).toLocaleString('ar-EG') + " ج.م";
   if (elemHours) elemHours.innerText = Number(annualAdminHours).toLocaleString('ar-EG') + " ساعة عمل";
   if (elemDuplicate) elemDuplicate.innerText = Number(duplicateAidPrevented).toLocaleString('ar-EG') + " ج.م";
-  if (elemTotal) elemTotal.innerText = Number(totalSavings).toLocaleString('ar-EG') + " ج.م سنوياً";
+  if (elemTotal) elemTotal.innerText = Number(totalSavings).toLocaleString('ar-EG') + " ج.م";
+  if (elemEff) elemEff.innerText = "+" + efficiencyPct + "% نمو كفاءة";
 }
 
-// --- 8.2.2 Grant Matching Engine Calculator ---
+// --- 8.2.2 Grant Matching Engine Calculator (Live Grants Integration) ---
 function calculateGrantMatching() {
   const sectorElem = document.getElementById('matchingSector');
   const regionElem = document.getElementById('matchingRegion');
   const ageElem = document.getElementById('matchingAge');
 
-  const sector = sectorElem ? sectorElem.value : 'climate';
+  if (!sectorElem) return;
+
+  const sector = sectorElem.value || 'climate';
   const region = regionElem ? regionElem.value : 'all';
   const age = ageElem ? ageElem.value : 'established';
 
-  let matchScore = 84;
-  let matchCount = 14;
+  const sectorKeywords = {
+    climate: ['بيئ', 'مناخ', 'زراع', 'مياه', 'طاقة', 'أخضر', 'climate', 'water', 'environment', 'green'],
+    digital: ['رقم', 'تكنولوج', 'ابتكار', 'تقن', 'digital', 'tech', 'innovation'],
+    economic: ['اقتصاد', 'تمكين', 'مشروع', 'عمل', 'رياد', 'economic', 'livelihood', 'micro'],
+    education: ['تعليم', 'شباب', 'قدرات', 'تدريب', 'education', 'youth', 'capacity'],
+    health: ['صح', 'إعاق', 'إغاث', 'مجتمع', 'health', 'disability', 'relief']
+  };
 
-  if (sector === 'climate') {
-    matchScore += 8;
-    matchCount = 19;
-  } else if (sector === 'digital' || sector === 'economic') {
-    matchScore += 6;
-    matchCount = 16;
-  } else if (sector === 'education' || sector === 'health') {
-    matchScore += 4;
-    matchCount = 15;
+  const regionKeywords = {
+    upper_egypt: ['صعيد', 'جنوب', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان', 'منيا', 'مصر'],
+    delta: ['دلتا', 'بحري', 'إسكندرية', 'بحيرة', 'غربية', 'دقهلية', 'شرقية', 'مصر'],
+    border: ['حدود', 'سيناء', 'مطروح', 'الوادي', 'البحر الأحمر', 'مصر'],
+    all: ['مصر', 'egypt', 'عالم', 'دولي', 'كافة']
+  };
+
+  let grantsPool = (typeof ACTIVE_GRANTS !== 'undefined' && Array.isArray(ACTIVE_GRANTS)) ? ACTIVE_GRANTS : [];
+  let matchedGrants = grantsPool.filter(g => {
+    const text = `${g.title || ''} ${g.category || ''} ${g.sector || ''} ${g.summary || ''} ${(g.tags || []).join(' ')}`.toLowerCase();
+    const sKeys = sectorKeywords[sector] || [];
+    return sKeys.some(k => text.includes(k));
+  });
+
+  // Refine by region if pool has enough matches
+  if (matchedGrants.length > 3 && region !== 'all') {
+    const rKeys = regionKeywords[region] || [];
+    const regionFiltered = matchedGrants.filter(g => {
+      const locText = `${g.location || ''} ${g.region || ''} ${g.summary || ''}`.toLowerCase();
+      return rKeys.some(k => locText.includes(k));
+    });
+    if (regionFiltered.length >= 2) matchedGrants = regionFiltered;
   }
 
-  if (age === 'established') {
-    matchScore += 4;
-  } else if (age === 'new') {
-    matchScore -= 6;
-    matchCount = Math.max(6, matchCount - 4);
-  }
+  let matchScore = 80;
+  if (sector === 'climate') matchScore += 9;
+  else if (sector === 'digital' || sector === 'economic') matchScore += 7;
+  else matchScore += 5;
 
-  if (matchScore > 98) matchScore = 98;
+  if (region === 'upper_egypt' || region === 'border') matchScore += 5;
+  else if (region === 'all') matchScore += 3;
+  else matchScore += 2;
+
+  if (age === 'established') matchScore += 4;
+  else if (age === 'new') matchScore -= 6;
+
+  matchScore = Math.min(98, Math.max(65, matchScore));
+
+  const matchCount = matchedGrants.length > 0 ? matchedGrants.length : (age === 'new' ? 8 : 14);
 
   const scoreElem = document.getElementById('resMatchScore');
   const countElem = document.getElementById('resMatchCount');
   const badgeElem = document.getElementById('resMatchBadge');
+  const previewElem = document.getElementById('matchingGrantsPreview');
 
   if (scoreElem) scoreElem.innerText = matchScore + "%";
-  if (countElem) countElem.innerText = matchCount + " منحة مطابقة";
+  if (countElem) countElem.innerText = matchCount + " منحة مطابقة في بوابتنا";
   if (badgeElem) {
     if (matchScore >= 88) {
       badgeElem.innerText = "تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري";
@@ -1378,6 +1416,20 @@ function calculateGrantMatching() {
     } else {
       badgeElem.innerText = "تطابق جيد يتطلب استكمال بعض وثائق الجاهزية";
       badgeElem.style.color = "#d97706";
+    }
+  }
+
+  if (previewElem) {
+    const topMatches = (matchedGrants.length > 0 ? matchedGrants : grantsPool).slice(0, 3);
+    if (topMatches.length > 0) {
+      previewElem.innerHTML = topMatches.map(g => `
+        <a href="grants.html" class="matching-grant-preview-item">
+          <div class="mgp-title">${g.title}</div>
+          <div class="mgp-meta">${g.donor || 'جهة مانحة دولية'} ${g.fundingAmount ? '• ' + g.fundingAmount : ''}</div>
+        </a>
+      `).join('');
+    } else {
+      previewElem.innerHTML = '';
     }
   }
 }
@@ -2792,20 +2844,32 @@ function scrollToEcoDashboard() {
 }
 
 // --- 9. Enhanced Specialized NGO Readiness Assessment & Diagnostic Tool ---
+function getReadinessCriterionScore(id) {
+  const el = document.getElementById(id);
+  if (!el) return 0;
+  if (el.type === 'checkbox') return el.checked ? 16.67 : 0;
+  return parseFloat(el.value || '0');
+}
+
 function calculateReadinessScore() {
-  const q1 = parseFloat(document.getElementById('rq1')?.value || '0');
-  const q2 = parseFloat(document.getElementById('rq2')?.value || '0');
-  const q3 = parseFloat(document.getElementById('rq3')?.value || '0');
-  const q4 = parseFloat(document.getElementById('rq4')?.value || '0');
-  const q5 = parseFloat(document.getElementById('rq5')?.value || '0');
-  const q6 = parseFloat(document.getElementById('rq6')?.value || '0');
+  const q1 = getReadinessCriterionScore('rq1');
+  const q2 = getReadinessCriterionScore('rq2');
+  const q3 = getReadinessCriterionScore('rq3');
+  const q4 = getReadinessCriterionScore('rq4');
+  const q5 = getReadinessCriterionScore('rq5');
+  const q6 = getReadinessCriterionScore('rq6');
 
   const total = Math.round(q1 + q2 + q3 + q4 + q5 + q6);
   const dialElem = document.getElementById('readinessScoreVal');
+  const barElem = document.getElementById('readinessProgressBar');
   const titleElem = document.getElementById('readinessStatusTitle');
   const adviceElem = document.getElementById('readinessAdviceText');
 
   if (dialElem) dialElem.innerText = total + "%";
+  if (barElem) {
+    barElem.style.width = total + "%";
+    barElem.className = 'gauge-bar-fill ' + (total <= 35 ? 'fill-pain' : (total <= 70 ? 'fill-warn' : 'fill-good'));
+  }
 
   if (total <= 35) {
     if (titleElem) titleElem.innerText = "المستوى التأسيسي (تحتاج لتدخل ودعم تقني عاجل)";
@@ -2819,14 +2883,112 @@ function calculateReadinessScore() {
   }
 }
 
+// --- 9.1 Grant Budget & Donor Compliance Calculator ---
+function calculateGrantBudget() {
+  const totalInput = document.getElementById('budgetTotalInput');
+  const adminRange = document.getElementById('budgetAdminRange');
+  const meRange = document.getElementById('budgetMeRange');
+  const greenSwitch = document.getElementById('budgetGreenSwitch');
+  if (!totalInput || !adminRange || !meRange) return;
+
+  const totalBudget = Math.max(50000, parseFloat(totalInput.value || '1000000') || 1000000);
+  const adminPct = parseFloat(adminRange.value || '12');
+  const mePct = parseFloat(meRange.value || '6');
+  const greenPct = (greenSwitch && greenSwitch.checked) ? 5 : 0;
+  const directPct = Math.max(0, 100 - adminPct - mePct - greenPct);
+
+  const adminValText = document.getElementById('budgetAdminValText');
+  const meValText = document.getElementById('budgetMeValText');
+  if (adminValText) adminValText.innerText = adminPct + "%";
+  if (meValText) meValText.innerText = mePct + "%";
+
+  const directAmt = Math.round(totalBudget * (directPct / 100));
+  const adminAmt = Math.round(totalBudget * (adminPct / 100));
+  const meAmt = Math.round(totalBudget * (mePct / 100));
+  const greenAmt = Math.round(totalBudget * (greenPct / 100));
+
+  let complianceScore = 95;
+  let statusTitle = "هيكل ميزانية متوازن ومطابق للمعايير";
+  let adviceText = "النسب الموزعة متوافقة مع اشتراطات المانحين الدوليين وتعظم الصرف على الأنشطة المباشرة.";
+  let barClass = "fill-good";
+
+  if (adminPct > 15) {
+    complianceScore -= Math.min(40, (adminPct - 15) * 4);
+    statusTitle = "تحذير: تجاوز سقف المصاريف الإدارية (خطر استبعاد)";
+    adviceText = "معظم الجهات المانحة ترفض المقترح إذا تخطت المصاريف الإدارية 15%. يُنصح بخفضها إلى 10%–12%.";
+    barClass = "fill-pain";
+  } else if (mePct < 5) {
+    complianceScore -= 18;
+    statusTitle = "تنبيه: مخصص الرصد والتقييم (M&E) أقل من الموصى به";
+    adviceText = "لجان التقييم الدولية تفضل تخصيص 5% على الأقل لقياس الأثر والتقييم الميداني.";
+    barClass = "fill-warn";
+  }
+  if (!greenSwitch || !greenSwitch.checked) complianceScore -= 5;
+  complianceScore = Math.max(35, Math.min(100, complianceScore));
+
+  const elScore = document.getElementById('resBudgetComplianceScore');
+  const elBar = document.getElementById('budgetComplianceBar');
+  const elTitle = document.getElementById('resBudgetStatusTitle');
+  const elAdvice = document.getElementById('resBudgetAdviceText');
+  const elDirect = document.getElementById('resBudgetDirectAmount');
+  const elAdmin = document.getElementById('resBudgetAdminAmount');
+  const elMe = document.getElementById('resBudgetMeAmount');
+  const elGreen = document.getElementById('resBudgetGreenAmount');
+
+  if (elScore) elScore.innerText = complianceScore + "%";
+  if (elBar) {
+    elBar.style.width = complianceScore + "%";
+    elBar.className = "gauge-bar-fill " + barClass;
+  }
+  if (elTitle) elTitle.innerText = statusTitle;
+  if (elAdvice) elAdvice.innerText = adviceText;
+  if (elDirect) elDirect.innerText = Number(directAmt).toLocaleString('ar-EG') + ` ج.م (${directPct}%)`;
+  if (elAdmin) elAdmin.innerText = Number(adminAmt).toLocaleString('ar-EG') + ` ج.م (${adminPct}%)`;
+  if (elMe) elMe.innerText = Number(meAmt).toLocaleString('ar-EG') + ` ج.م (${mePct}%)`;
+  if (elGreen) elGreen.innerText = Number(greenAmt).toLocaleString('ar-EG') + ` ج.م (${greenPct}%)`;
+}
+
+// --- 9.2 Volunteer Economic Value & In-Kind Contribution Calculator ---
+function calculateVolunteerValue() {
+  const countInput = document.getElementById('volCountInput');
+  const hoursRange = document.getElementById('volHoursRange');
+  const rateSelect = document.getElementById('volRateSelect');
+  if (!countInput || !hoursRange || !rateSelect) return;
+
+  const volCount = Math.max(1, parseFloat(countInput.value || '25') || 25);
+  const monthlyHours = Math.max(2, parseFloat(hoursRange.value || '12') || 12);
+  const hourlyRate = Math.max(50, parseFloat(rateSelect.value || '150') || 150);
+
+  const hoursText = document.getElementById('volHoursValText');
+  if (hoursText) hoursText.innerText = Number(monthlyHours).toLocaleString('ar-EG') + " ساعة/شهر";
+
+  const annualHours = Math.round(volCount * monthlyHours * 12);
+  const totalValue = Math.round(annualHours * hourlyRate);
+  const fte = (annualHours / 1920).toFixed(1);
+
+  let boostText = "مساهمة عينية تأسيسية";
+  if (totalValue >= 500000) boostText = "مساهمة عينية قوية جداً (+15% تنافسية)";
+  else if (totalValue >= 200000) boostText = "مساهمة عينية داعمة (+10% تنافسية)";
+
+  const elVal = document.getElementById('resVolTotalValue');
+  const elHours = document.getElementById('resVolAnnualHours');
+  const elFte = document.getElementById('resVolFte');
+  const elBoost = document.getElementById('resVolBoost');
+
+  if (elVal) elVal.innerText = Number(totalValue).toLocaleString('ar-EG') + " ج.م";
+  if (elHours) elHours.innerText = Number(annualHours).toLocaleString('ar-EG') + " ساعة/سنة";
+  if (elFte) elFte.innerText = Number(fte).toLocaleString('ar-EG') + " موظف متفرغ";
+  if (elBoost) elBoost.innerText = boostText;
+}
+
 // Interactive Diagnostic Pop-up Report Modal
 function openDiagnosticReportModal() {
-  const q1 = parseFloat(document.getElementById('rq1')?.value || '0');
-  const q2 = parseFloat(document.getElementById('rq2')?.value || '0');
-  const q3 = parseFloat(document.getElementById('rq3')?.value || '0');
-  const q4 = parseFloat(document.getElementById('rq4')?.value || '0');
-  const q5 = parseFloat(document.getElementById('rq5')?.value || '0');
-  const q6 = parseFloat(document.getElementById('rq6')?.value || '0');
+  const q1 = getReadinessCriterionScore('rq1');
+  const q2 = getReadinessCriterionScore('rq2');
+  const q3 = getReadinessCriterionScore('rq3');
+  const q4 = getReadinessCriterionScore('rq4');
+  const q5 = getReadinessCriterionScore('rq5');
+  const q6 = getReadinessCriterionScore('rq6');
 
   const total = Math.round(q1 + q2 + q3 + q4 + q5 + q6);
 

@@ -61,19 +61,19 @@
   <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- ==================== 1. MAIN GLOBAL HEADER ==================== -->
-  <header class="main-header" id="mainHeader">
-    <div class="header-inner">
-      <div class="header-brand-group">
-        <a href="index.html" class="header-brand" title="الرئيسية | NGOHUB">
-          <img src="assets/images/logo_header.png?v=20261003b" alt="NGOHUB" width="40" height="40" fetchpriority="high">
-          <div class="header-brand-text">
-            <span class="brand-title">NGOHUB</span>
-            <span class="brand-sub">تحالف التمكين الأهلي المستدام</span>
-          </div>
-        </a>
-      </div>
+  <header class="site-header main-header" id="siteHeader">
+    <div class="container header-wrapper header-container">
+      <a href="index.html" class="brand-logo header-brand" title="الرئيسية - NGOHUB">
+        <div class="brand-logo-frame">
+          <img src="assets/images/logo_header.png?v=20261003b" alt="شعار منصة NGOHUB" id="headerLogoImg" class="brand-logo-img" width="44" height="44" fetchpriority="high">
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">NGOHUB</span>
+          <span class="brand-subtitle">تحالف ومنصة تمكين الجمعيات الأهلية</span>
+        </div>
+      </a>
 
-      <nav class="header-nav" id="mainNavMenu" aria-label="شريط التنقل الرئيسي">
+      <nav class="main-nav nav-links" id="mainNav" aria-label="التنقل الرئيسي">
         <a href="index.html" class="nav-btn" id="nav-home">
           <i class="fa-solid fa-house"></i> الرئيسية
         </a>
@@ -101,7 +101,7 @@
       </nav>
 
       <div class="header-action-group">
-        <button class="btn-header-auth" id="headerAuthBtn" onclick="handleHeaderAuthClick()" title="تسجيل الدخول / حسابي" aria-label="حسابي">
+        <button class="btn-header-auth" id="headerAuthBtn" onclick="handleHeaderAuthClick()" title="حسابي / تسجيل الدخول" aria-label="حسابي">
           <i class="fa-solid fa-user-circle" id="headerAuthIcon"></i>
         </button>
 
@@ -134,7 +134,7 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-    <div class="mobile-drawer-content">
+    <nav class="mobile-nav-list">
       <a href="javascript:void(0)" class="mobile-nav-item active" id="mNav-auth" onclick="window.location.href='profile.html'; closeMobileDrawer();">
         <i class="fa-solid fa-user-circle text-emerald"></i>
         <span id="mNavAuthText">تسجيل الدخول / حسابي</span>
@@ -171,7 +171,7 @@
         <i class="fa-solid fa-envelope"></i>
         <span>تواصل معنا</span>
       </a>
-    </div>
+    </nav>
   </aside>
 
   <!-- ==================== 3. BREADCRUMBS ==================== -->

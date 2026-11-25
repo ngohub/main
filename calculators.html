@@ -77,8 +77,8 @@
   
   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261119_v3">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261119_v3">
+  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261125_v2">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261125_v2">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -241,205 +241,223 @@
   <section id="section-calculators" class="page-section active-section">
     <div class="calculators-page-container">
       <div class="container">
-        <!-- Interactive Dropdown Selector & Synced Tab Switcher -->
-        <div class="calc-switcher-wrapper">
-          <div class="calc-switcher-header">
-            <div class="calc-switcher-label">
-              <i class="fa-solid fa-layer-group"></i>
-              <span>اختر الحاسبة أو نوع التحليل المؤسسي المطلوب:</span>
-            </div>
-            <button class="btn-hero-register" onclick="openNgoRegisterModal()" style="padding: 8px 18px !important; font-size: 0.92rem !important;">
-              <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لتطبيق النتائج
-            </button>
-          </div>
-          
-          <select id="calculatorDropdownSelector" class="calc-switcher-select" onchange="onCalculatorSelectChange(this.value)">
-            <option value="feasibility" selected>📊 1. حاسبة الجدوى الاقتصادية والوفر التشغيلي (حساب الهدر المالي والورقي والإداري ومنع ازدواجية الصرف)</option>
-            <option value="readiness">🎯 2. حاسبة التدقيق المؤسسي والجاهزية الشاملة للمنح (تشخيص فجوات الجمعية ومعايير المانحين والقانون 149)</option>
-            <option value="matching">🌐 3. حاسبة مطابقة المنح والفرص التمويلية (محرك اكتشاف ومطابقة المنح المناسبة لجمعيتك)</option>
-            <option value="water">🌿 4. حاسبة الأثر وصون الموارد (قياس وفر المياه والبصمة البيئية والورقية)</option>
-          </select>
-
-          <!-- Synced Subtabs Navigator -->
-          <div class="calc-subtabs-nav" style="margin-top: 10px;">
-            <button class="calc-tab-btn active" data-calc="feasibility" onclick="switchCalcSubTab('feasibility')">
-              <i class="fa-solid fa-chart-pie text-emerald"></i> حاسبة الجدوى والوفر المالي
-            </button>
-            <button class="calc-tab-btn" data-calc="readiness" onclick="switchCalcSubTab('readiness')">
-              <i class="fa-solid fa-stethoscope text-gold"></i> التدقيق والجاهزية للمنح
-            </button>
-            <button class="calc-tab-btn" data-calc="matching" onclick="switchCalcSubTab('matching')">
-              <i class="fa-solid fa-bullseye text-purple"></i> مطابقة قطاعات المنح
-            </button>
-            <button class="calc-tab-btn" data-calc="water" onclick="switchCalcSubTab('water')">
-              <i class="fa-solid fa-droplet text-emerald"></i> الأثر وصون الموارد
-            </button>
-          </div>
+        <!-- Single Unified Scrollable Tabs Navigator (Zero Duplication, Mobile-First) -->
+        <div class="calc-tabs-shell" role="tablist" aria-label="اختر الحاسبة التفاعلية">
+          <button type="button" role="tab" class="calc-tab-btn active" data-calc="feasibility" onclick="switchCalcSubTab('feasibility')">
+            <i class="fa-solid fa-chart-pie text-emerald"></i>
+            <span>الجدوى والوفر المالي</span>
+          </button>
+          <button type="button" role="tab" class="calc-tab-btn" data-calc="readiness" onclick="switchCalcSubTab('readiness')">
+            <i class="fa-solid fa-stethoscope text-gold"></i>
+            <span>التدقيق والجاهزية للمنح</span>
+          </button>
+          <button type="button" role="tab" class="calc-tab-btn" data-calc="matching" onclick="switchCalcSubTab('matching')">
+            <i class="fa-solid fa-bullseye text-purple"></i>
+            <span>مطابقة المنح الحية</span>
+          </button>
+          <button type="button" role="tab" class="calc-tab-btn" data-calc="water" onclick="switchCalcSubTab('water')">
+            <i class="fa-solid fa-droplet text-emerald"></i>
+            <span>الأثر وصون المياه</span>
+          </button>
+          <button type="button" role="tab" class="calc-tab-btn" data-calc="budget" onclick="switchCalcSubTab('budget')">
+            <i class="fa-solid fa-coins text-gold"></i>
+            <span>هيكلة ميزانية المنحة</span>
+          </button>
+          <button type="button" role="tab" class="calc-tab-btn" data-calc="volunteers" onclick="switchCalcSubTab('volunteers')">
+            <i class="fa-solid fa-hands-helping text-purple"></i>
+            <span>عائد المتطوعين</span>
+          </button>
         </div>
 
         <!-- ==================== SUB-PANEL 1: ECONOMIC FEASIBILITY & OPERATIONAL SAVINGS ==================== -->
         <div class="calc-panel active-panel" id="calc-panel-feasibility">
-          <div class="water-calc-grid">
+          <div class="audit-card calc-unified-card">
             <!-- Inputs Column -->
-            <div class="water-branches-container">
-              <div class="water-branch-box">
-                <div class="water-branch-header">
-                  <div class="water-branch-title">
-                    <i class="fa-solid fa-calculator text-emerald"></i>
-                    <span>معاملات التشغيل والميزانية بالجمعية</span>
-                  </div>
-                  <span class="calc-section-label">حساب الهدر المؤسسي</span>
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 20px;">
-                  <label for="feasStaff" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-users text-purple"></i> إجمالي عدد الموظفين والمتطوعين الدائمين:
-                  </label>
-                  <input type="number" id="feasStaff" min="1" max="500" value="20" class="form-input" oninput="calculateFeasibility()">
-                  <small class="input-hint">إجمالي الكادر الإداري والميداني العامل على ملفات المشروعات والمساعدات</small>
-                </div>
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-calculator text-emerald"></i> معاملات التشغيل والميزانية بالجمعية</h3>
+                <p>عدّل القيم وفق واقع جمعيتك لحساب الهدر التشغيلي والوفورات السنوية بدقة:</p>
+              </div>
 
-                <div class="eco-input-group" style="margin-bottom: 20px;">
-                  <div class="eco-input-label-row">
-                    <label for="feasPaper"><i class="fa-solid fa-file-invoice text-emerald"></i> عدد المعاملات والاستمارات والسجلات الورقية شهرياً:</label>
-                    <span class="eco-val-badge" id="feasPaperValText">1,500 معاملة/شهرياً</span>
-                  </div>
-                  <input type="range" id="feasPaper" min="100" max="10000" step="100" value="1500" class="eco-slider" oninput="calculateFeasibility()">
-                  <small class="input-hint">استمارات حصر الأسر، كشوف المساعدات، محاضر مجلس الإدارة، أذون الصرف، وأوراق الأرشيف</small>
-                </div>
+              <div class="calc-input-row">
+                <label for="feasStaff" class="calc-input-label">
+                  <i class="fa-solid fa-users text-purple"></i> إجمالي عدد الموظفين والمتطوعين الدائمين:
+                </label>
+                <input type="number" id="feasStaff" min="1" max="500" value="20" class="form-input" oninput="calculateFeasibility()">
+                <small class="input-hint">يُحتسب أثره في تقليص ساعات التنسيق الإداري والمراجعة بين الكوادر</small>
+              </div>
 
-                <div class="form-group">
-                  <label for="feasBudget" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-coins text-gold"></i> حجم ميزانية المساعدات والبرامج السنوية التقديرية (ج.م):
-                  </label>
-                  <input type="number" id="feasBudget" min="10000" max="50000000" step="50000" value="500000" class="form-input" oninput="calculateFeasibility()">
-                  <small class="input-hint">إجمالي أموال المساعدات، الصناديق التنموية، والتبرعات الموجهة للأنشطة الميدانية سنوياً</small>
+              <div class="calc-input-row">
+                <div class="eco-input-label-row">
+                  <label for="feasPaper" class="calc-input-label"><i class="fa-solid fa-file-invoice text-emerald"></i> المعاملات والسجلات الورقية شهرياً:</label>
+                  <span class="eco-val-badge" id="feasPaperValText">1,500 معاملة/شهرياً</span>
                 </div>
+                <input type="range" id="feasPaper" min="100" max="10000" step="100" value="1500" class="eco-slider" oninput="calculateFeasibility()">
+                <small class="input-hint">استمارات حصر الأسر، كشوف المساعدات، محاضر مجلس الإدارة، وأذون الصرف</small>
+              </div>
+
+              <div class="calc-input-row">
+                <label for="feasBudget" class="calc-input-label">
+                  <i class="fa-solid fa-coins text-gold"></i> ميزانية المساعدات والبرامج السنوية (ج.م):
+                </label>
+                <input type="number" id="feasBudget" min="10000" max="50000000" step="50000" value="500000" class="form-input" oninput="calculateFeasibility()">
+                <small class="input-hint">إجمالي أموال المساعدات والتبرعات الموجهة للأنشطة الميدانية سنوياً</small>
               </div>
             </div>
 
-            <!-- Output Dashboard Column -->
-            <div class="water-summary-card">
-              <div class="water-summary-total">
-                <span class="summary-header-badge" style="background: rgba(47, 110, 58, 0.15); color: var(--primary-green);">
-                  <i class="fa-solid fa-wallet"></i> إجمالي الوفر المالي والتشغيلي المحقق
-                </span>
-                <div class="water-big-num" id="resFeasTotalSavings" style="color: var(--primary-green);">95,000 ج.م سنوياً</div>
-                <small style="color: var(--text-muted);">أموال وموارد مستردة لصالح الفئات الأكثر احتياجاً بدلاً من الهدر الإداري</small>
-              </div>
+            <!-- Output Column -->
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">إجمالي الوفر المالي والتشغيلي السنوي</span>
+                  <span class="gauge-score-value calc-headline-val" id="resFeasTotalSavings">95,000 ج.م</span>
+                </div>
+                <p class="calc-formula-note">أموال وموارد مستردة لدعم أنشطة الجمعية بدلاً من الهدر الإداري والورقي.</p>
 
-              <div class="water-breakdown-list">
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-file-excel text-purple"></i> وفر الطباعة والأوراق والأرشفة:</span>
-                  <strong id="resFeasDirectMoney" style="color: #0284c7;">45,000 ج.م</strong>
+                <div class="calc-metrics-list">
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-file-excel text-purple"></i> وفر الطباعة والأوراق والأرشفة:</span>
+                    <strong id="resFeasDirectMoney">45,000 ج.م</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-clock text-emerald"></i> ساعات عمل إداري مستعادة:</span>
+                    <strong id="resFeasAdminHours">4,740 ساعة عمل</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-shield-halved text-gold"></i> منع ازدواجية صرف المساعدات (10%):</span>
+                    <strong id="resFeasDuplicateAid">50,000 ج.م</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-chart-line text-purple"></i> مؤشر كفاءة التشغيل المحسوب:</span>
+                    <strong id="resFeasEfficiency" style="color: var(--primary-green);">+42% نمو كفاءة</strong>
+                  </div>
                 </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-clock text-emerald"></i> ساعات عمل إداري مهدرة مستعادة:</span>
-                  <strong id="resFeasAdminHours" style="color: #10b981;">4,500 ساعة عمل</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-shield-halved text-gold"></i> منع ازدواجية صرف المساعدات (10%):</span>
-                  <strong id="resFeasDuplicateAid" style="color: #b45309;">50,000 ج.م</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-chart-line text-purple"></i> مؤشر كفاءة التشغيل الرقمي:</span>
-                  <strong style="color: var(--primary-green);">+68% نمو كفاءة</strong>
+
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <span>سجّل جمعيتك لحماية مواردك التشغيلية</span>
+                  </button>
+                  <button type="button" class="btn-calc-print" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                  </button>
                 </div>
               </div>
-
-              <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center; margin-top: 15px;">
-                <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لحماية مواردك التشغيلية
-              </button>
             </div>
           </div>
         </div>
 
         <!-- ==================== SUB-PANEL 2: READINESS & INSTITUTIONAL AUDIT ==================== -->
         <div class="calc-panel" id="calc-panel-readiness">
-          <div class="readiness-card" style="box-shadow: none; border: 1px solid var(--border-color); background: var(--bg-card);">
-            <div class="readiness-header">
-              <span class="service-modal-badge"><i class="fa-solid fa-stethoscope"></i> فحص الجاهزية المؤسسية المعتمد</span>
-              <h3>حاسبة الجاهزية الرقمية والتأهيل للمنح للجمعيات الأهلية</h3>
-              <p>أجب على المعايير الستة أدناه لتشخيص الوضع المؤسسي لجمعيتك واستخراج تقرير فوري بنقاط القوة، نقاط الضعف، وخطة العمل التالية:</p>
+          <div class="audit-card calc-unified-card">
+            <!-- Inputs Column: 6 iOS Toggle Switches (Matching Homepage Audit Style) -->
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-stethoscope text-gold"></i> معايير التدقيق المؤسسي للمنح (6 ركائز)</h3>
+                <p>حرّك مفاتيح الفحص وفق وضع جمعيتكم الفعلي لاستخراج التقييم الفوري وخطة العمل:</p>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-globe text-purple"></i> 1. موقع إلكتروني رسمي وهوية رقمية نشطة</span>
+                  <span class="switch-desc">نطاق رسمي (.org / .com) يوثق أنشطة وسابقة أعمال الجمعية أمام المانحين.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq1">
+                    <input type="checkbox" id="rq1" checked onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-database text-emerald"></i> 2. أتمتة قواعد البيانات والعمليات المؤسسية</span>
+                  <span class="switch-desc">منظومة سحابية منظمة بدلاً من الدفاتر الورقية والملفات المبعثرة.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq2">
+                    <input type="checkbox" id="rq2" onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-users-gear text-purple"></i> 3. تنظيم وتوثيق ساعات برامج المتطوعين</span>
+                  <span class="switch-desc">استمارات رقمية وسجلات ساعات معتمدة تثبت الجاهزية التنفيذية الميدانية.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq3">
+                    <input type="checkbox" id="rq3" onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-scale-balanced text-emerald"></i> 4. قوائم مالية مدققة ولائحة شفافية إدارية</span>
+                  <span class="switch-desc">تقارير مالية مراجعة لآخر عامين لإثبات النزاهة والقدرة على استيعاب المنح.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq4">
+                    <input type="checkbox" id="rq4" checked onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-lightbulb text-gold"></i> 5. مقترحات مشروعات بمكون ذكي أو بيئي</span>
+                  <span class="switch-desc">ملفات مشروعات مصاغة وفق معايير المانحين وإطار النتائج المنطقي (LogFrame).</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq5">
+                    <input type="checkbox" id="rq5" onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="audit-switch-item">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-chart-line text-purple"></i> 6. منظومة رصد وقياس الأثر التنموي (M&amp;E)</span>
+                  <span class="switch-desc">مؤشرات أداء رقمية وتقرير أثر سنوي منشور يوثق نتائج المشروعات.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="rq6">
+                    <input type="checkbox" id="rq6" onchange="calculateReadinessScore()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
+                  </label>
+                </div>
+              </div>
             </div>
 
-            <div class="readiness-questions-grid">
-              <!-- Criterion 1 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-globe text-purple"></i> 1. الموقع الإلكتروني والهوية الرقمية الرسمية:</label>
-                <select id="rq1" onchange="calculateReadinessScore()">
-                  <option value="0">لا نمتلك موقعاً، نعتمد على السوشيال ميديا فقط (0%)</option>
-                  <option value="8">لدينا موقع قديم أو غير مكتمل التحديث (8%)</option>
-                  <option value="16.67" selected>نعم، موقع رسمي متجاوب بنطاق (.org / .com) يوثق مشروعاتنا (16.7%)</option>
-                </select>
-              </div>
+            <!-- Output Column -->
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">مؤشر الجاهزية المؤسسية</span>
+                  <span class="gauge-score-value" id="readinessScoreVal">33%</span>
+                </div>
+                <div class="gauge-bar-track">
+                  <div class="gauge-bar-fill fill-pain" id="readinessProgressBar" style="width: 33%;"></div>
+                </div>
+                <div class="audit-feedback-box">
+                  <h4 id="readinessStatusTitle">المستوى التأسيسي (تحتاج لتدخل ودعم تقني عاجل)</h4>
+                  <p id="readinessAdviceText">الجمعية تفتقر لبعض ركائز البنية الرقمية والتوثيق المشروطة لدى المانحين الدوليين.</p>
+                </div>
 
-              <!-- Criterion 2 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-database text-emerald"></i> 2. أتمتة قواعد البيانات والعمليات المؤسسية:</label>
-                <select id="rq2" onchange="calculateReadinessScore()">
-                  <option value="0">نعتمد على الدفاتر والسجلات الورقية (0%)</option>
-                  <option value="8">نستخدم ملفات Excel غير مؤمنة ومبعثرة (8%)</option>
-                  <option value="16.67" selected>نعم، منظومة وقواعد بيانات سحابية مشفرة ومنظمة (16.7%)</option>
-                </select>
-              </div>
-
-              <!-- Criterion 3 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-users-gear text-purple"></i> 3. تنظيم وتوثيق ساعات برامج المتطوعين:</label>
-                <select id="rq3" onchange="calculateReadinessScore()">
-                  <option value="0">التطوع غير منظم برمجياً ولا نملك سجلات ساعات (0%)</option>
-                  <option value="8">حصر يدوي غير منتظم للفعاليات (8%)</option>
-                  <option value="16.67" selected>نعم، استمارات رقمية وساعات موثقة وتصنيف للمهارات (16.7%)</option>
-                </select>
-              </div>
-
-              <!-- Criterion 4 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-scale-balanced text-emerald"></i> 4. الشفافية الإدارية والتقارير المالية السنوية:</label>
-                <select id="rq4" onchange="calculateReadinessScore()">
-                  <option value="0">لا توجد قوائم مالية مدققة منشورة (0%)</option>
-                  <option value="8">توجد ميزانية داخلية غير مدققة أو منشورة (8%)</option>
-                  <option value="16.67" selected>نعم، قوائم مالية مدققة سنوياً ولائحة إدارية معتمدة (16.7%)</option>
-                </select>
-              </div>
-
-              <!-- Criterion 5 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-lightbulb text-gold"></i> 5. المكون الذكي والمقترحات البيئية للمنح:</label>
-                <select id="rq5" onchange="calculateReadinessScore()">
-                  <option value="0">لا نملك مقترحات مكتوبة بمكون ذكي أو بيئي (0%)</option>
-                  <option value="8">لدينا أفكار مكتوبة تحتاج صياغة وفق معايير المانحين (8%)</option>
-                  <option value="16.67" selected>نعم، مقترحات مشروعات جاهزة ومطابقة لمعايير المنح (16.7%)</option>
-                </select>
-              </div>
-
-              <!-- Criterion 6 -->
-              <div class="r-question-item">
-                <label><i class="fa-solid fa-chart-line text-purple"></i> 6. قياس الأثر المجتمعي والتقارير السنوية (M&E):</label>
-                <select id="rq6" onchange="calculateReadinessScore()">
-                  <option value="0">لا نطبق منظومة لقياس الأثر وتوثيق المؤشرات (0%)</option>
-                  <option value="8">توثيق بالصور فقط دون مؤشرات أداء رقمية (8%)</option>
-                  <option value="16.67" selected>نعم، لوحة رصد للمؤشرات وتقرير أثر سنوي منشور (16.7%)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="readiness-result-card" id="readinessResultBox">
-              <div class="readiness-score-dial">
-                <span class="dial-val" id="readinessScoreVal">100%</span>
-                <small>نسبة الجاهزية</small>
-              </div>
-              <div class="readiness-advice">
-                <h5 id="readinessStatusTitle">جاهزية متقدمة ومكتملة</h5>
-                <p id="readinessAdviceText">جمعيتك تحقق كافة المتطلبات الأساسية للمنافسة على المنح الكبرى والشراكات الدولية المرموقة.</p>
-                
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;">
-                  <button class="btn-primary" onclick="openDiagnosticReportModal()">
-                    <i class="fa-solid fa-file-invoice"></i> عرض التقرير التشخيصي الشامل وخطة العمل
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openDiagnosticReportModal()">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>عرض التقرير التشخيصي وخطة العمل</span>
                   </button>
-                  <button class="btn-hero-register" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لسد الفجوات وتأهيلها للمنح
+                  <button type="button" class="btn-secondary full-width" onclick="openNgoRegisterModal()" style="justify-content: center;">
+                    <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لسد الفجوات
                   </button>
                 </div>
               </div>
@@ -447,100 +465,80 @@
           </div>
         </div>
 
-        <!-- ==================== SUB-PANEL 3: GRANT MATCHING ENGINE ==================== -->
+        <!-- ==================== SUB-PANEL 3: LIVE GRANT MATCHING ENGINE ==================== -->
         <div class="calc-panel" id="calc-panel-matching">
-          <div class="water-calc-grid">
+          <div class="audit-card calc-unified-card">
             <!-- Inputs Column -->
-            <div class="water-branches-container">
-              <div class="water-branch-box">
-                <div class="water-branch-header">
-                  <div class="water-branch-title">
-                    <i class="fa-solid fa-bullseye text-purple"></i>
-                    <span>محددات مطابقة المنح والتمويل الدولي</span>
-                  </div>
-                  <span class="calc-section-label">قاعدة بيانات المنح المعتمدة</span>
-                </div>
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-bullseye text-purple"></i> محددات مطابقة المنح والتمويل الدولي</h3>
+                <p>اختر بيانات جمعيتكم لمطابقتها لحظياً مع الفرص الحية في قاعدة بيانات المنح:</p>
+              </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                  <label for="matchingSector" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-shapes text-emerald"></i> مجال ونشاط الجمعية الأساسي:
-                  </label>
-                  <select id="matchingSector" class="form-input" onchange="calculateGrantMatching()">
-                    <option value="climate" selected>البيئة، المناخ، الزراعة، والطاقة المتجددة (أعلى تمويل متاح)</option>
-                    <option value="digital">التحول الرقمي، الابتكار، والتكنولوجيا المجتمعية</option>
-                    <option value="economic">التمكين الاقتصادي والمشروعات متناهية الصغر</option>
-                    <option value="education">التعليم، محو الأمية، وبناء القدرات</option>
-                    <option value="health">الرعاية الصحية والإغاثة الاجتماعية</option>
-                  </select>
-                  <small class="input-hint">المجال الرئيسي المسجل في لائحة النظام الأساسي لجمعيتكم</small>
-                </div>
+              <div class="calc-input-row">
+                <label for="matchingSector" class="calc-input-label">
+                  <i class="fa-solid fa-shapes text-emerald"></i> مجال ونشاط الجمعية الأساسي:
+                </label>
+                <select id="matchingSector" class="form-input" onchange="calculateGrantMatching()">
+                  <option value="climate" selected>البيئة، المناخ، الزراعة، والطاقة المتجددة</option>
+                  <option value="digital">التحول الرقمي، الابتكار، والتكنولوجيا المجتمعية</option>
+                  <option value="economic">التمكين الاقتصادي والمشروعات متناهية الصغر</option>
+                  <option value="education">التعليم، الشباب، وبناء القدرات</option>
+                  <option value="health">الرعاية الصحية، ذوي الإعاقة، والإغاثة</option>
+                </select>
+                <small class="input-hint">المجال الرئيسي المسجل في لائحة النظام الأساسي لجمعيتكم</small>
+              </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                  <label for="matchingRegion" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-map-location-dot text-purple"></i> النطاق الجغرافي لعمليات الجمعية:
-                  </label>
-                  <select id="matchingRegion" class="form-input" onchange="calculateGrantMatching()">
-                    <option value="all" selected>كافة محافظات الجمهورية (نطاق مركزي أو وطني)</option>
-                    <option value="upper_egypt">محافظات صعيد مصر (أولوية قصوى لدى المانحين)</option>
-                    <option value="delta">محافظات الدلتا والوجه البحري</option>
-                    <option value="border">المحافظات الحدودية والمناطق النائية</option>
-                  </select>
-                  <small class="input-hint">النطاق الجغرافي المحدد في ترخيص إشهار الجمعية</small>
-                </div>
+              <div class="calc-input-row">
+                <label for="matchingRegion" class="calc-input-label">
+                  <i class="fa-solid fa-map-location-dot text-purple"></i> النطاق الجغرافي لعمليات الجمعية:
+                </label>
+                <select id="matchingRegion" class="form-input" onchange="calculateGrantMatching()">
+                  <option value="all" selected>كافة محافظات الجمهورية (نطاق وطني / عام)</option>
+                  <option value="upper_egypt">محافظات صعيد مصر (أولوية لدى المانحين)</option>
+                  <option value="delta">محافظات الدلتا والوجه البحري</option>
+                  <option value="border">المحافظات الحدودية والمناطق النائية</option>
+                </select>
+                <small class="input-hint">يؤثر النطاق الجغرافي في أولوية القبول ونسبة التطابق مع المانحين</small>
+              </div>
 
-                <div class="form-group">
-                  <label for="matchingAge" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-calendar-check text-gold"></i> العمر الإشهاري والخبرة المؤسسية:
-                  </label>
-                  <select id="matchingAge" class="form-input" onchange="calculateGrantMatching()">
-                    <option value="established" selected>مشهرة منذ 3 سنوات فأكثر ولديها ميزانيات مدققة (أعلى نقاط تأهيل)</option>
-                    <option value="medium">مشهرة منذ سنة إلى 3 سنوات ولديها نشاط ميداني</option>
-                    <option value="new">حديثة الإشهار (أقل من عام - مسار الحاضنات والتمويل التأسيسي)</option>
-                  </select>
-                  <small class="input-hint">المعيار المحدد لقيمة سقف المنح التي يحق للجمعية التقديم عليها</small>
-                </div>
+              <div class="calc-input-row">
+                <label for="matchingAge" class="calc-input-label">
+                  <i class="fa-solid fa-calendar-check text-gold"></i> العمر الإشهاري والخبرة المؤسسية:
+                </label>
+                <select id="matchingAge" class="form-input" onchange="calculateGrantMatching()">
+                  <option value="established" selected>مشهرة منذ 3 سنوات فأكثر بميزانيات مدققة</option>
+                  <option value="medium">مشهرة منذ سنة إلى 3 سنوات بنشاط ميداني</option>
+                  <option value="new">حديثة الإشهار (أقل من عام - مسار التمويل التأسيسي)</option>
+                </select>
+                <small class="input-hint">المعيار المحدد لسقف المنح التي يحق للجمعية التقديم عليها</small>
               </div>
             </div>
 
-            <!-- Output Dashboard Column -->
-            <div class="water-summary-card">
-              <div class="water-summary-total">
-                <span class="summary-header-badge" style="background: rgba(122, 75, 163, 0.15); color: var(--primary-purple);">
-                  <i class="fa-solid fa-magnifying-glass-chart"></i> نتيجة المطابقة اللحظية
-                </span>
-                <div class="water-big-num" id="resMatchScore" style="color: var(--primary-purple);">96%</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: var(--primary-green);" id="resMatchCount">19 منحة مطابقة</div>
-                <small id="resMatchBadge" style="color: var(--primary-green); font-weight: 700; display: block; margin-top: 6px;">
+            <!-- Output Column -->
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">نسبة التطابق التقديرية</span>
+                  <span class="gauge-score-value" id="resMatchScore" style="color: var(--primary-purple);">96%</span>
+                </div>
+                <div style="font-size: 1.05rem; font-weight: 800; color: var(--primary-green); margin-bottom: 4px;" id="resMatchCount">جاري فحص المنح...</div>
+                <small id="resMatchBadge" style="color: var(--primary-green); font-weight: 700; display: block; margin-bottom: 14px;">
                   تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري
                 </small>
-              </div>
 
-              <div class="water-breakdown-list">
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-database text-purple"></i> إجمالي الفرص بقاعدتنا:</span>
-                  <strong>منح دولية موثقة</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-check-double text-emerald"></i> نوع الدعم المتاح:</span>
-                  <strong style="color: var(--primary-green);">منح لا تُرد (Non-repayable)</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-globe text-gold"></i> جهات التمويل المطابقة:</span>
-                  <strong style="color: #b45309;">GEF, UNDP, EU, سفارات</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-award text-purple"></i> دور تحالف NGOHUB:</span>
-                  <strong style="color: var(--primary-purple);">صياغة وتأهيل وملف كامل</strong>
-                </div>
-              </div>
+                <!-- Live Matching Grants Preview from grants.json -->
+                <div id="matchingGrantsPreview" class="matching-grants-preview"></div>
 
-              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center;">
-                  <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك للمنافسة على هذه المنح
-                </button>
-                <a href="grants.html" class="btn-secondary full-width" style="width: 100%; justify-content: center; text-decoration: none; text-align: center;">
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض تفاصيل كافة المنح
-                </a>
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <span>سجّل جمعيتك للمنافسة على هذه المنح</span>
+                  </button>
+                  <a href="grants.html" class="btn-secondary full-width" style="justify-content: center; text-decoration: none;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض كافة الفرص في بوابة المنح
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -548,94 +546,245 @@
 
         <!-- ==================== SUB-PANEL 4: NGOHUB WATER & ENVIRONMENTAL CONSERVATION ==================== -->
         <div class="calc-panel" id="calc-panel-water">
-          <div class="water-calc-grid">
+          <div class="audit-card calc-unified-card">
             <!-- Inputs Column -->
-            <div class="water-branches-container">
-              <!-- Branch 1: Indirect Water (Paperless Transformation) -->
-              <div class="water-branch-box">
-                <div class="water-branch-header">
-                  <div class="water-branch-title">
-                    <i class="fa-solid fa-file-invoice text-purple"></i>
-                    <span>1. الترشيد غير المباشر (إلغاء المعاملات الورقية بالجمعية)</span>
-                  </div>
-                  <span class="calc-section-label">10 لتر / ورقة</span>
-                </div>
-                
-                <div class="eco-input-group">
-                  <div class="eco-input-label-row">
-                    <label for="waterPaperRange"><i class="fa-solid fa-file-lines text-purple"></i> عدد المعاملات والسجلات الورقية شهرياً:</label>
-                    <span class="eco-val-badge" id="waterPaperValText">1,000 معاملة/شهر</span>
-                  </div>
-                  <input type="range" id="waterPaperRange" min="100" max="10000" step="100" value="1000" class="eco-slider" oninput="calculateNgohubWater()">
-                  <small class="input-hint">استمارات حصر الأسر، كشوف التسليم، إيصالات المساعدات، محاضر مجلس الإدارة، وأوراق الأرشيف</small>
-                </div>
-                
-                <div style="background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 15px; font-size: 0.88rem; color: var(--text-muted);">
-                  <i class="fa-solid fa-circle-info text-emerald"></i> كل معاملة ورقية يتم الاستغناء عنها عبر منصة NGOHUB توفر 10 لترات من المياه النقية المستهلكة في صناعة الورق وتوفر 2.5 ج.م تكلفة طباعة وأرشفة.
-                </div>
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-droplet text-emerald"></i> حساب الوفر المائي والأثر البيئي للجمعية</h3>
+                <p>قياس الوفر المائي غير المباشر (التحول الرقمي) والمباشر (الورش الميدانية مع GCT):</p>
               </div>
 
-              <!-- Branch 2: Direct Water (GCT Irrigation Workshops & Agriculture) -->
-              <div class="water-branch-box">
-                <div class="water-branch-header">
-                  <div class="water-branch-title">
-                    <i class="fa-solid fa-seedling text-emerald"></i>
-                    <span>2. الترشيد المباشر (ورش وحقول ترشيد مياه الري والتسميد بالأزولا مع GCT)</span>
+              <div class="calc-input-row">
+                <div class="eco-input-label-row">
+                  <label for="waterPaperRange" class="calc-input-label"><i class="fa-solid fa-file-lines text-purple"></i> المعاملات والسجلات الورقية شهرياً:</label>
+                  <span class="eco-val-badge" id="waterPaperValText">1,000 معاملة/شهر</span>
+                </div>
+                <input type="range" id="waterPaperRange" min="100" max="10000" step="100" value="1000" class="eco-slider" oninput="calculateNgohubWater()">
+                <small class="input-hint">كل ورقة تُستبدل رقمياً توفر 10 لترات مياه نقية و 2.5 ج.م تكلفة طباعة وأرشفة</small>
+              </div>
+
+              <div class="calc-input-row">
+                <label for="waterGctWorkshops" class="calc-input-label">
+                  <i class="fa-solid fa-seedling text-emerald"></i> ورش وحقول ترشيد مياه الري سنوياً (GCT):
+                </label>
+                <input type="number" id="waterGctWorkshops" min="0" max="100" value="8" class="form-input" oninput="calculateNgohubWater()">
+                <small class="input-hint">كل ورشة إرشادية توفر نحو 50,000 لتر مياه ري عبر الري الحديث والتسميد الحيوي</small>
+              </div>
+            </div>
+
+            <!-- Output Column -->
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">إجمالي الوفر المائي السنوي</span>
+                  <span class="gauge-score-value calc-headline-val" id="resWaterTotalLiters">520,000 لتر</span>
+                </div>
+                <div style="font-size: 1rem; font-weight: 800; color: var(--primary-green); margin-bottom: 12px;" id="resWaterTotalM3">520.0 م³ مياه عذبة مصانة</div>
+
+                <div class="calc-metrics-list">
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-file-invoice text-purple"></i> وفر مائي غير مباشر (رقمي):</span>
+                    <strong id="resWaterIndirect">120,000 لتر</strong>
                   </div>
-                  <span class="calc-section-label">Green Cap Team</span>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-water text-emerald"></i> وفر مائي مباشر (GCT):</span>
+                    <strong id="resWaterDirect">400,000 لتر</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-coins text-gold"></i> وفر مالي تشغيلي سنوي:</span>
+                    <strong id="resWaterMoneySaved">30,000 ج.م</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-house-chimney-user text-purple"></i> يعادل استهلاك يومي لـ:</span>
+                    <strong id="resWaterFamilies">1,485 أسرة</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-tree text-emerald"></i> حماية من قطع الأشجار:</span>
+                    <strong id="resWaterTrees">1.4 شجرة</strong>
+                  </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="waterGctWorkshops" style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; display: block;">
-                    <i class="fa-solid fa-seedling text-emerald"></i> عدد ورش وحقول ترشيد مياه الري للمزارعين سنوياً (GCT):
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <span>سجّل جمعيتك لتطبيق صون الموارد</span>
+                  </button>
+                  <a href="impact.html" class="btn-secondary full-width" style="justify-content: center; text-decoration: none;">
+                    <i class="fa-solid fa-award text-gold"></i> عرض التقرير البيئي المعتمد (NISGP)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 5 (NEW): GRANT BUDGET & DONOR COMPLIANCE CALCULATOR ==================== -->
+        <div class="calc-panel" id="calc-panel-budget">
+          <div class="audit-card calc-unified-card">
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-coins text-gold"></i> هيكلة ميزانية المنحة ونسب الامتثال للمانحين</h3>
+                <p>وزّع ميزانية مقترح المشروع وفق السقوف المعيارية للمنح الدولية لتجنب الرفض المالي:</p>
+              </div>
+
+              <div class="calc-input-row">
+                <label for="budgetTotalInput" class="calc-input-label">
+                  <i class="fa-solid fa-sack-dollar text-emerald"></i> إجمالي ميزانية المشروع المطلوبة (ج.م):
+                </label>
+                <input type="number" id="budgetTotalInput" min="50000" max="50000000" step="50000" value="1000000" class="form-input" oninput="calculateGrantBudget()">
+                <small class="input-hint">القيمة الإجمالية للتمويل المطلوب في مقترح المنحة</small>
+              </div>
+
+              <div class="calc-input-row">
+                <div class="eco-input-label-row">
+                  <label for="budgetAdminRange" class="calc-input-label"><i class="fa-solid fa-building text-purple"></i> نسبة المصاريف الإدارية والتشغيلية (Overhead):</label>
+                  <span class="eco-val-badge" id="budgetAdminValText">12%</span>
+                </div>
+                <input type="range" id="budgetAdminRange" min="0" max="30" step="1" value="12" class="eco-slider" oninput="calculateGrantBudget()">
+                <small class="input-hint">معظم الجهات المانحة (EU / UNDP / السفارات) تشترط ألا تتجاوز 10%–15%</small>
+              </div>
+
+              <div class="calc-input-row">
+                <div class="eco-input-label-row">
+                  <label for="budgetMeRange" class="calc-input-label"><i class="fa-solid fa-chart-simple text-emerald"></i> نسبة الرصد والتقييم وتوثيق الأثر (M&amp;E):</label>
+                  <span class="eco-val-badge" id="budgetMeValText">6%</span>
+                </div>
+                <input type="range" id="budgetMeRange" min="0" max="15" step="1" value="6" class="eco-slider" oninput="calculateGrantBudget()">
+                <small class="input-hint">المعيار الدولي الموصى به لتقييم الأثر لا يقل عن 5%</small>
+              </div>
+
+              <div class="audit-switch-item" style="margin-top: 8px; margin-bottom: 0;">
+                <div class="switch-info">
+                  <span class="switch-title"><i class="fa-solid fa-leaf text-emerald"></i> تخصيص 5% للمكون الذكي والاستدامة الرقمية</span>
+                  <span class="switch-desc">يعزز نقاط التقييم الفني في منح التحول الأخضر والمناخ والابتكار.</span>
+                </div>
+                <div class="ios-switch-wrap">
+                  <label class="ios-switch" for="budgetGreenSwitch">
+                    <input type="checkbox" id="budgetGreenSwitch" checked onchange="calculateGrantBudget()">
+                    <span class="ios-slider"><span class="switch-label-state state-yes">نعم</span><span class="switch-label-state state-no">لا</span></span>
                   </label>
-                  <input type="number" id="waterGctWorkshops" min="0" max="100" value="8" class="form-input" oninput="calculateNgohubWater()">
-                  <small class="input-hint">تسهم كل ورشة وحقل إرشادي في توفير ما يقارب 50,000 لتر مياه ري عبر ممارسات الري الحديث والتسميد الحيوي (أزولا مصر)</small>
                 </div>
               </div>
             </div>
 
-            <!-- Output Dashboard Column -->
-            <div class="water-summary-card">
-              <div class="water-summary-total">
-                <span class="summary-header-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">
-                  <i class="fa-solid fa-droplet"></i> إجمالي الوفر المائي السنوي المحقق
-                </span>
-                <div class="water-big-num" id="resWaterTotalLiters">520,000 لتر</div>
-                <div style="font-size: 1.1rem; font-weight: 800; color: #10b981;" id="resWaterTotalM3">520.0 م³</div>
-                <small style="color: var(--text-muted);">مياه عذبة نقية تمت حمايتها وصونها من الهدر</small>
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">درجة الامتثال المالي للمانح</span>
+                  <span class="gauge-score-value" id="resBudgetComplianceScore">95%</span>
+                </div>
+                <div class="gauge-bar-track">
+                  <div class="gauge-bar-fill fill-good" id="budgetComplianceBar" style="width: 95%;"></div>
+                </div>
+                <div class="audit-feedback-box">
+                  <h4 id="resBudgetStatusTitle">هيكل ميزانية متوازن ومطابق للمعايير</h4>
+                  <p id="resBudgetAdviceText">النسب الموزعة متوافقة مع اشتراطات المانحين الدوليين وتعظم الصرف على الأنشطة المباشرة.</p>
+                </div>
+
+                <div class="calc-metrics-list">
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-hand-holding-heart text-emerald"></i> موازنة الأنشطة الميدانية المباشرة:</span>
+                    <strong id="resBudgetDirectAmount">770,000 ج.م (77%)</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-building text-purple"></i> المصاريف الإدارية (Overhead):</span>
+                    <strong id="resBudgetAdminAmount">120,000 ج.م (12%)</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-chart-simple text-gold"></i> مخصص الرصد والتقييم (M&amp;E):</span>
+                    <strong id="resBudgetMeAmount">60,000 ج.م (6%)</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-leaf text-emerald"></i> مخصص المكون الذكي والأخضر:</span>
+                    <strong id="resBudgetGreenAmount">50,000 ج.م (5%)</strong>
+                  </div>
+                </div>
+
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-good-action" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <span>اطلب مراجعة واعتماد ميزانية مقترحكم</span>
+                  </button>
+                  <button type="button" class="btn-calc-print" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 6 (NEW): VOLUNTEER ECONOMIC VALUE & IN-KIND CONTRIBUTION ==================== -->
+        <div class="calc-panel" id="calc-panel-volunteers">
+          <div class="audit-card calc-unified-card">
+            <div class="audit-criteria-col">
+              <div class="audit-col-header">
+                <h3><i class="fa-solid fa-hands-helping text-purple"></i> القيمة الاقتصادية للمتطوعين والمساهمة العينية</h3>
+                <p>احسب المكافئ المالي لساعات التطوع لإدراجه كمساهمة عينية (In-Kind) ترفع فرص فوزكم بالمنحة:</p>
               </div>
 
-              <div class="water-breakdown-list">
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-file-invoice text-purple"></i> وفر مائي غير مباشر (رقمي):</span>
-                  <strong id="resWaterIndirect" style="color: #0284c7;">120,000 لتر</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-water text-emerald"></i> وفر مائي مباشر (GCT):</span>
-                  <strong id="resWaterDirect" style="color: #10b981;">400,000 لتر</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-coins text-gold"></i> وفر مالي تشغيلي سنوي:</span>
-                  <strong id="resWaterMoneySaved" style="color: #10b981;">30,000 ج.م</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-house-chimney-user text-purple"></i> يعادل استهلاك شهري لـ:</span>
-                  <strong id="resWaterFamilies">1,485 أسرة</strong>
-                </div>
-                <div class="water-breakdown-item">
-                  <span><i class="fa-solid fa-tree text-emerald"></i> حماية من قطع الأشجار:</span>
-                  <strong id="resWaterTrees">1.4 شجرة</strong>
-                </div>
+              <div class="calc-input-row">
+                <label for="volCountInput" class="calc-input-label">
+                  <i class="fa-solid fa-users text-emerald"></i> عدد المتطوعين النشطين بالجمعية:
+                </label>
+                <input type="number" id="volCountInput" min="1" max="5000" value="25" class="form-input" oninput="calculateVolunteerValue()">
+                <small class="input-hint">الكوادر التطوعية الميدانية والإدارية المشاركة في تنفيذ البرامج</small>
               </div>
 
-              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                <button class="btn-hero-register full-width" onclick="openNgoRegisterModal()" style="width: 100%; justify-content: center;">
-                  <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لتطبيق ممارسات صون الموارد
-                </button>
-                <a href="impact.html" class="btn-secondary full-width" style="width: 100%; justify-content: center; text-decoration: none; text-align: center;">
-                  <i class="fa-solid fa-award text-gold"></i> عرض التقرير البيئي والمائي المعتمد (NISGP)
-                </a>
+              <div class="calc-input-row">
+                <div class="eco-input-label-row">
+                  <label for="volHoursRange" class="calc-input-label"><i class="fa-solid fa-clock text-purple"></i> متوسط ساعات التطوع للمتطوع شهرياً:</label>
+                  <span class="eco-val-badge" id="volHoursValText">12 ساعة/شهر</span>
+                </div>
+                <input type="range" id="volHoursRange" min="2" max="80" step="2" value="12" class="eco-slider" oninput="calculateVolunteerValue()">
+                <small class="input-hint">إجمالي الساعات الميدانية والتنظيمية المسجلة شهرياً</small>
+              </div>
+
+              <div class="calc-input-row">
+                <label for="volRateSelect" class="calc-input-label">
+                  <i class="fa-solid fa-briefcase text-gold"></i> طبيعة ونوعية العمل التطوعي:
+                </label>
+                <select id="volRateSelect" class="form-input" onchange="calculateVolunteerValue()">
+                  <option value="75">تطوع ميداني وتنظيمي عام (75 ج.م / ساعة)</option>
+                  <option value="150" selected>تطوع تخصصي وتدريب وتأهيل (150 ج.م / ساعة)</option>
+                  <option value="250">خبرات استشارية وهندسية وطبية (250 ج.م / ساعة)</option>
+                </select>
+                <small class="input-hint">تُحتسب القيمة المكافئة وفق متوسط أجر الساعة التخصصية في سوق العمل</small>
+              </div>
+            </div>
+
+            <div class="audit-result-col">
+              <div class="audit-gauge-box">
+                <div class="gauge-head">
+                  <span class="gauge-label">القيمة الاقتصادية السنوية (In-Kind)</span>
+                  <span class="gauge-score-value calc-headline-val" id="resVolTotalValue">540,000 ج.م</span>
+                </div>
+                <p class="calc-formula-note">قيمة مساهمة عينية موثقة تعزز ملف التمويل الذاتي أمام لجان تقييم المنح الدولية.</p>
+
+                <div class="calc-metrics-list">
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-stopwatch text-emerald"></i> إجمالي ساعات التطوع السنوية:</span>
+                    <strong id="resVolAnnualHours">3,600 ساعة/سنة</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-user-check text-purple"></i> مكافئ الموظفين بدوام كامل (FTE):</span>
+                    <strong id="resVolFte">1.9 موظف متفرغ</strong>
+                  </div>
+                  <div class="calc-metric-row">
+                    <span><i class="fa-solid fa-award text-gold"></i> الأثر على ملف المنحة (Co-financing):</span>
+                    <strong id="resVolBoost" style="color: var(--primary-green);">مساهمة عينية قوية</strong>
+                  </div>
+                </div>
+
+                <div class="calc-result-actions">
+                  <button type="button" class="btn-audit-action btn-good-action" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <span>وثّق ساعات متطوعيك مع NGOHUB</span>
+                  </button>
+                  <button type="button" class="btn-calc-print" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1261,6 +1410,6 @@
   <!-- Scripts -->
   <script type="module" src="assets/js/firebase-config.js?v=20261119_v3"></script>
   <script src="assets/js/grants_data.min.js?v=20261121_v11" defer></script>
-  <script src="assets/js/app.min.js?v=20261121_v11" defer></script>
+  <script src="assets/js/app.min.js?v=20261125_v2" defer></script>
 </body>
 </html>
