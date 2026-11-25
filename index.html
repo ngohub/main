@@ -866,7 +866,7 @@
               يتم إرسال كافة طلبات واستمارات الجمعيات تلقائياً إلى رابط الـ Webhook الخاص بك في Google Sheets فور إرسالها.
             </p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-              <input type="url" id="cmsWebhookUrlInput" value="https://script.google.com/macros/s/AKfycbynU9c1SDeXkdEWMGQUJzsc9ERcYfPnhQ9yhorcEvgIZ2byHLtNRM1lHlLA3z-m7iYV/exec" placeholder="https://script.google.com/macros/s/.../exec" style="flex: 1; min-width: 280px; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-dark); font-size: 0.88rem;">
+              <input type="url" id="cmsWebhookUrlInput" value="" placeholder="https://script.google.com/macros/s/.../exec" style="flex: 1; min-width: 280px; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-dark); font-size: 0.88rem;">
               <button class="btn-primary" onclick="saveWebhookUrlFromCms()"><i class="fa-solid fa-floppy-disk"></i> حفظ الرابط</button>
               <button class="btn-secondary" onclick="testSendSampleToSheets()"><i class="fa-solid fa-paper-plane"></i> إرسال تجربة للجدول</button>
             </div>
@@ -1073,7 +1073,7 @@
           <p><i class="fa-solid fa-shield-halved"></i> بريد الحماية والشكاوى: youssefkhedr92@gmail.com</p>
           <!-- Discrete Admin Portal Access Link in Footer -->
           <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #334155;">
-            <a href="index.html#admin" onclick="switchTab('admin')" class="footer-admin-link" title="دخول إدارة المنصة">
+            <a href="admin.html" class="footer-admin-link" title="دخول إدارة المنصة">
               <i class="fa-solid fa-lock"></i> دخول لوحة تحكم الإدارة (CMS)
             </a>
           </div>
@@ -1668,5 +1668,6 @@
   <script type="module" src="assets/js/firebase-config.js?v=20261119_v3"></script>
   <script src="assets/js/grants_data.min.js?v=20261121_v11" defer></script>
   <script src="assets/js/app.min.js?v=20261121_v11" defer></script>
+  <script src="assets/js/site-cms.js?v=20261125_v1" defer></script>
 </body>
 </html>

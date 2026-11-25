@@ -1,24 +1,719 @@
 ﻿<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "ysm6ahffne");
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=index.html#admin">
-  <title>NGOHUB | لوحة تحكم إدارة المحتوى (CMS)</title>
-  <script>
-    window.location.replace("index.html#admin");
-  </script>
+  <title>لوحة إدارة المنصة | NGOHUB</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+  <!-- Google Fonts: IBM Plex Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261125_v3">
+
+  <style>
+    body.admin-cms-body {
+      margin: 0;
+      background: var(--bg-body, #f8fafc);
+      color: var(--text-dark, #0f172a);
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Zero-Secret Admin Gate (No Modal Trap, Empty Fields, No Hints) */
+    .admin-gate-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #0b1422 0%, #0f2922 100%);
+    }
+
+    .admin-gate-card {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card, #ffffff);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color, #e2e8f0);
+      text-align: center;
+    }
+
+    .admin-gate-close {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color, #e2e8f0);
+      background: var(--bg-card-alt, #f1f5f9);
+      color: var(--text-dark, #0f172a);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .admin-gate-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 16px;
+      background: rgba(5, 150, 105, 0.12);
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .admin-gate-field {
+      text-align: right;
+      margin: 16px 0;
+    }
+
+    .admin-gate-field label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .admin-gate-field input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color, #cbd5e1);
+      background: var(--bg-card, #ffffff);
+      color: var(--text-dark, #0f172a);
+      font-family: inherit;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+
+    .admin-gate-return {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .admin-gate-return:hover {
+      color: #059669;
+      text-decoration: underline;
+    }
+
+    /* Full Admin Workspace Layout */
+    .admin-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card, #ffffff);
+      border-bottom: 1px solid var(--border-color, #e2e8f0);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-topbar-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .admin-topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .unsaved-badge {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .unsaved-badge.visible {
+      display: inline-flex;
+    }
+
+    .admin-shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: calc(100vh - 65px);
+    }
+
+    .admin-shell.split-open {
+      grid-template-columns: 230px 1fr 44%;
+    }
+
+    .admin-sidebar {
+      background: var(--bg-card, #ffffff);
+      border-left: 1px solid var(--border-color, #e2e8f0);
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .admin-nav-item button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--text-dark, #0f172a);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: right;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .admin-nav-item button:hover {
+      background: rgba(5, 150, 105, 0.08);
+    }
+
+    .admin-nav-item button.active {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    .admin-workspace {
+      padding: 24px;
+      max-width: 980px;
+      width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .admin-search-wrap {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .admin-search-wrap input {
+      width: 100%;
+      padding: 12px 42px 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color, #cbd5e1);
+      background: var(--bg-card, #ffffff);
+      color: var(--text-dark, #0f172a);
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 600;
+      box-sizing: border-box;
+    }
+
+    .admin-search-wrap i {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted, #64748b);
+    }
+
+    .admin-search-results {
+      position: absolute;
+      top: calc(100% + 6px);
+      inset-inline: 0;
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #cbd5e1);
+      border-radius: 14px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+      z-index: 40;
+      display: none;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .admin-search-item {
+      width: 100%;
+      padding: 10px 14px;
+      border: none;
+      border-bottom: 1px solid var(--border-color, #e2e8f0);
+      background: transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: right;
+    }
+
+    .admin-search-item:hover {
+      background: rgba(5, 150, 105, 0.08);
+    }
+
+    .admin-page-pane {
+      display: none;
+    }
+
+    .admin-page-pane.active {
+      display: block;
+    }
+
+    .admin-card {
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .admin-card.search-highlight {
+      border-color: #059669;
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.2);
+    }
+
+    .admin-card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-field-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .admin-field {
+      margin-bottom: 14px;
+    }
+
+    .admin-field label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-dark, #0f172a);
+    }
+
+    .admin-field input[type="text"],
+    .admin-field input[type="url"],
+    .admin-field input[type="email"],
+    .admin-field select,
+    .admin-field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color, #cbd5e1);
+      background: var(--bg-surface-secondary, #f8fafc);
+      color: var(--text-dark, #0f172a);
+      font-family: inherit;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+    }
+
+    .admin-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--bg-surface-secondary, #f8fafc);
+      border: 1px solid var(--border-color, #e2e8f0);
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .admin-preview-pane {
+      display: none;
+      border-right: 1px solid var(--border-color, #e2e8f0);
+      background: #e2e8f0;
+      position: sticky;
+      top: 65px;
+      height: calc(100vh - 65px);
+    }
+
+    .admin-shell.split-open .admin-preview-pane {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-preview-pane iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #ffffff;
+    }
+
+    .btn-cms-publish {
+      background: #059669;
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-cms-secondary {
+      background: var(--bg-card-alt, #f1f5f9);
+      color: var(--text-dark, #0f172a);
+      border: 1px solid var(--border-color, #cbd5e1);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 1024px) {
+      .admin-shell,
+      .admin-shell.split-open {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        border-left: none;
+        border-bottom: 1px solid var(--border-color, #e2e8f0);
+      }
+
+      .admin-nav-item button {
+        white-space: nowrap;
+      }
+
+      .admin-preview-pane {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
-<body style="font-family: 'IBM Plex Sans Arabic', sans-serif; text-align: center; padding: 50px; background: #0f172a; color: #ffffff;">
-  <h2>جاري التوجيه إلى لوحة تحكم إدارة المحتوى (CMS)...</h2>
-  <p><a href="index.html#admin" style="color: #4ade80;">اضغط هنا إذا لم يتم التحويل تلقائياً</a></p>
+<body class="admin-cms-body">
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- 1. ZERO-SECRET ADMIN GATE -->
+  <div id="adminGateScreen" class="admin-gate-screen">
+    <div class="admin-gate-card">
+      <a href="index.html" class="admin-gate-close" title="إغلاق والعودة للموقع" aria-label="إغلاق">✕</a>
+      <div class="admin-gate-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h1 style="font-size:1.35rem; font-weight:800; margin:0 0 8px;">دخول لوحة تحكم المنصة</h1>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 18px;">مخصصة للمسؤول العام لتعديل محتوى المنصة ونشر التحديثات سحابياً بأمان.</p>
+
+      <div id="adminGateFirebaseChecking" style="display:none; padding:10px; font-size:0.88rem; color:#059669; font-weight:700;">
+        <i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق من جلسة المسؤول...
+      </div>
+
+      <form id="adminGateForm" autocomplete="off" onsubmit="handleCmsGateLogin(event)">
+        <div class="admin-gate-field">
+          <label for="cmsWorkerUrlInput">عنوان وسيط النشر السحابي (اختياري أثناء التحضير المحلي):</label>
+          <input type="url" id="cmsWorkerUrlInput" value="" autocomplete="off" placeholder="https://ngohub-cms-worker.workers.dev">
+        </div>
+        <div class="admin-gate-field">
+          <label for="cmsAdminPasswordInput">كلمة مرور الإدارة:</label>
+          <input type="password" id="cmsAdminPasswordInput" value="" autocomplete="new-password" required placeholder="أدخل كلمة المرور السرية">
+        </div>
+        <button type="submit" class="btn-cms-publish" style="width:100%; justify-content:center; padding:12px;">
+          <i class="fa-solid fa-lock-open"></i> دخول آمن إلى لوحة الإدارة
+        </button>
+      </form>
+
+      <div style="margin-top:14px; border-top:1px solid var(--border-color); padding-top:14px;">
+        <button type="button" class="btn-cms-secondary" style="width:100%; justify-content:center;" onclick="loginAdminViaFirebaseGoogle()">
+          <i class="fa-solid fa-user-shield text-emerald"></i> أو الدخول بحساب الإدارة الموثق (Firebase Admin)
+        </button>
+      </div>
+
+      <a href="index.html" class="admin-gate-return"><i class="fa-solid fa-arrow-right"></i> العودة إلى الموقع الرئيسي</a>
+    </div>
+  </div>
+
+  <!-- 2. FULL-SITE FRIENDLY ADMIN DASHBOARD -->
+  <div id="adminCmsApp" style="display:none;">
+    <header class="admin-topbar">
+      <div class="admin-topbar-brand">
+        <img src="assets/images/logo_header.png?v=20261003b" alt="NGOHUB">
+        <div>
+          <strong style="display:block; font-size:1rem;">لوحة إدارة منصة NGOHUB</strong>
+          <small style="color:var(--text-muted); font-size:0.78rem;">تحكم كامل في الهوية والمحتوى والنشر المباشر</small>
+        </div>
+      </div>
+
+      <div class="admin-topbar-actions">
+        <span id="cmsUnsavedBadge" class="unsaved-badge">● توجد تغييرات غير منشورة</span>
+        <button type="button" class="btn-cms-secondary" onclick="toggleSplitPreview()">
+          <i class="fa-solid fa-columns"></i> <span id="splitPreviewBtnLabel">معاينة حية</span>
+        </button>
+        <button type="button" class="btn-cms-secondary" onclick="saveCmsDraft(true)">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مسودة
+        </button>
+        <button type="button" class="btn-cms-publish" onclick="publishCmsToLiveSite()">
+          <i class="fa-solid fa-rocket"></i> نشر التعديلات للموقع
+        </button>
+        <a href="index.html" target="_blank" class="btn-cms-secondary" title="عرض الموقع">
+          <i class="fa-solid fa-external-link-alt"></i> عرض الموقع
+        </a>
+        <button type="button" class="btn-cms-secondary" onclick="logoutCmsAdmin()" title="خروج">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-shell" id="adminShellGrid">
+      <!-- Sidebar Navigation (Non-Technical Arabic Labels) -->
+      <aside class="admin-sidebar">
+        <div class="admin-nav-item"><button type="button" class="active" data-page-target="pane-branding" onclick="switchAdminPage('pane-branding')"><i class="fa-solid fa-palette"></i> الهوية والألوان والشعار</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-navigation" onclick="switchAdminPage('pane-navigation')"><i class="fa-solid fa-bars"></i> القوائم والتنقل العلوي</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-homepage" onclick="switchAdminPage('pane-homepage')"><i class="fa-solid fa-house"></i> واجهة الترحيب والأقسام</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-blocks" onclick="switchAdminPage('pane-blocks')"><i class="fa-solid fa-puzzle-piece"></i> إضافة أقسام ومحتوى حر</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-records" onclick="switchAdminPage('pane-records')"><i class="fa-solid fa-building-flag"></i> الجمعيات والمنح والطلبات</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-footer" onclick="switchAdminPage('pane-footer')"><i class="fa-solid fa-address-card"></i> التذييل وبيانات التواصل</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-publish" onclick="switchAdminPage('pane-publish')"><i class="fa-solid fa-cloud-arrow-up"></i> النشر السحابي والنسخ الاحتياطي</button></div>
+      </aside>
+
+      <!-- Workspace -->
+      <main class="admin-workspace">
+        <!-- Quick Settings Search -->
+        <div class="admin-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminQuickSearch" oninput="handleAdminQuickSearch(this.value)" placeholder="ابحث سريعاً عن أي إعداد (مثل: الشعار، الألوان، الترحيب، الواتساب، النشر)...">
+          <div id="adminQuickSearchResults" class="admin-search-results"></div>
+        </div>
+
+        <!-- PANE 1: BRANDING -->
+        <section id="pane-branding" class="admin-page-pane active">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-palette text-emerald"></i> الألوان الأساسية والمظهر العام</h2>
+            <div class="admin-field-grid">
+              <div class="admin-field">
+                <label for="cmsBrandName">اسم المنصة في الترويسة:</label>
+                <input type="text" id="cmsBrandName" oninput="onCmsFieldChange()">
+              </div>
+              <div class="admin-field">
+                <label for="cmsBrandSub">العبارة التعريفية أسفل الاسم:</label>
+                <input type="text" id="cmsBrandSub" oninput="onCmsFieldChange()">
+              </div>
+              <div class="admin-field">
+                <label for="cmsColorGreen">اللون الرئيسي للمنصة:</label>
+                <input type="color" id="cmsColorGreen" value="#059669" oninput="onCmsFieldChange()" style="height:44px; width:100%; border-radius:10px; border:1px solid #cbd5e1;">
+              </div>
+              <div class="admin-field">
+                <label for="cmsColorPurple">اللون الثانوي:</label>
+                <input type="color" id="cmsColorPurple" value="#7a4ba3" oninput="onCmsFieldChange()" style="height:44px; width:100%; border-radius:10px; border:1px solid #cbd5e1;">
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-image text-purple"></i> شعار المنصة (رفع وضغط تلقائي)</h2>
+            <div class="admin-field">
+              <label for="cmsLogoUrl">رابط أو بيانات الشعار الحالي:</label>
+              <input type="text" id="cmsLogoUrl" oninput="onCmsFieldChange()">
+            </div>
+            <div class="admin-field">
+              <label for="cmsLogoUpload">أو ارفع صورة شعار جديدة من جهازك (تُضغط تلقائياً):</label>
+              <input type="file" id="cmsLogoUpload" accept="image/*" onchange="handleCmsImageUpload(event, 'cmsLogoUrl', 400)">
+            </div>
+          </div>
+        </section>
+
+        <!-- PANE 2: NAVIGATION -->
+        <section id="pane-navigation" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-bars text-emerald"></i> زر الإجراء الرئيسي وروابط القائمة</h2>
+            <div class="admin-field">
+              <label for="cmsHeaderCta">نص زر التسجيل في الشريط العلوي:</label>
+              <input type="text" id="cmsHeaderCta" oninput="onCmsFieldChange()">
+            </div>
+            <div id="cmsNavItemsEditor"></div>
+          </div>
+        </section>
+
+        <!-- PANE 3: HOMEPAGE & SECTIONS -->
+        <section id="pane-homepage" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-star text-gold"></i> واجهة الترحيب الرئيسية</h2>
+            <div class="admin-field-grid">
+              <div class="admin-field">
+                <label for="cmsHeroMain">العنوان الرئيسي (السطر الأول):</label>
+                <input type="text" id="cmsHeroMain" oninput="onCmsFieldChange()">
+              </div>
+              <div class="admin-field">
+                <label for="cmsHeroHighlight">العنوان المميز (السطر الثاني):</label>
+                <input type="text" id="cmsHeroHighlight" oninput="onCmsFieldChange()">
+              </div>
+            </div>
+            <div class="admin-field">
+              <label for="cmsHeroDesc">النص التعريفي تحت العنوان:</label>
+              <textarea id="cmsHeroDesc" rows="3" oninput="onCmsFieldChange()"></textarea>
+            </div>
+            <div class="admin-field-grid">
+              <div class="admin-field">
+                <label for="cmsHeroCta">نص الزر الرئيسي:</label>
+                <input type="text" id="cmsHeroCta" oninput="onCmsFieldChange()">
+              </div>
+              <div class="admin-field">
+                <label for="cmsHeroImage">صورة الخلفية (مسار أو رفع مضغوط):</label>
+                <input type="text" id="cmsHeroImage" oninput="onCmsFieldChange()">
+              </div>
+            </div>
+            <div class="admin-field">
+              <label for="cmsHeroImageUpload">رفع صورة خلفية جديدة (تُضغط تلقائياً بعرض 1000px):</label>
+              <input type="file" id="cmsHeroImageUpload" accept="image/*" onchange="handleCmsImageUpload(event, 'cmsHeroImage', 1000)">
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-eye text-purple"></i> إظهار وإخفاء أقسام الصفحة الرئيسية</h2>
+            <div class="admin-toggle-row"><span>إظهار واجهة الترحيب الرئيسية</span><input type="checkbox" id="secShowHero" onchange="onCmsFieldChange()"></div>
+            <div class="admin-toggle-row"><span>إظهار قسم السؤال الأول (تحديات التمويل)</span><input type="checkbox" id="secShowQ1" onchange="onCmsFieldChange()"></div>
+            <div class="admin-toggle-row"><span>إظهار حاسبة فحص الجاهزية التفاعلية</span><input type="checkbox" id="secShowAudit" onchange="onCmsFieldChange()"></div>
+            <div class="admin-toggle-row"><span>إظهار قسم السؤال الثاني (مقومات القبول)</span><input type="checkbox" id="secShowQ2" onchange="onCmsFieldChange()"></div>
+            <div class="admin-toggle-row"><span>إظهار قسم أرقام الإنجازات والنجاح</span><input type="checkbox" id="secShowQ3" onchange="onCmsFieldChange()"></div>
+            <div class="admin-toggle-row"><span>إظهار قسم الدعوة الختامية للتسجيل</span><input type="checkbox" id="secShowClosing" onchange="onCmsFieldChange()"></div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-pen-to-square text-emerald"></i> عناوين الأسئلة التوجيهية والختام</h2>
+            <div class="admin-field"><label for="cmsQ1Title">عنوان السؤال الأول:</label><input type="text" id="cmsQ1Title" oninput="onCmsFieldChange()"></div>
+            <div class="admin-field"><label for="cmsAuditTitle">عنوان حاسبة فحص الجاهزية:</label><input type="text" id="cmsAuditTitle" oninput="onCmsFieldChange()"></div>
+            <div class="admin-field"><label for="cmsQ2Title">عنوان السؤال الثاني:</label><input type="text" id="cmsQ2Title" oninput="onCmsFieldChange()"></div>
+            <div class="admin-field"><label for="cmsQ3Title">عنوان أرقام الإنجازات:</label><input type="text" id="cmsQ3Title" oninput="onCmsFieldChange()"></div>
+            <div class="admin-field-grid">
+              <div class="admin-field"><label for="cmsClosingTitle">عنوان القسم الختامي:</label><input type="text" id="cmsClosingTitle" oninput="onCmsFieldChange()"></div>
+              <div class="admin-field"><label for="cmsClosingCta">نص الزر الختامي:</label><input type="text" id="cmsClosingCta" oninput="onCmsFieldChange()"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANE 4: BLOCK BUILDER -->
+        <section id="pane-blocks" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-puzzle-piece text-emerald"></i> إضافة أقسام ومحتوى حر بالصفحة الرئيسية</h2>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">أضف إعلانات أو فقرات تعريفية أو بطاقات أو صور إضافية وتظهر مباشرة أعلى القسم الختامي.</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+              <button type="button" class="btn-cms-secondary" onclick="addCmsBlock('card')"><i class="fa-solid fa-square-plus text-emerald"></i> إضافة بطاقة</button>
+              <button type="button" class="btn-cms-secondary" onclick="addCmsBlock('text')"><i class="fa-solid fa-align-right text-purple"></i> إضافة فقرة نصية</button>
+              <button type="button" class="btn-cms-secondary" onclick="addCmsBlock('media')"><i class="fa-solid fa-image text-gold"></i> إضافة صورة وعنوان</button>
+              <button type="button" class="btn-cms-secondary" onclick="addCmsBlock('heading')"><i class="fa-solid fa-heading"></i> إضافة عنوان بارز</button>
+            </div>
+            <div id="cmsBlocksList"></div>
+          </div>
+        </section>
+
+        <!-- PANE 5: NGOs, GRANTS & REQUESTS -->
+        <section id="pane-records" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-building-flag text-emerald"></i> سجل الجمعيات والمستخدمين (من السحابة)</h2>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:12px;">يعرض الحسابات والجمعيات الأهلية المسجلة عند الدخول بحساب المشرف العام.</p>
+            <button type="button" class="btn-cms-secondary" onclick="loadCmsFirestoreUsers()" style="margin-bottom:14px;">
+              <i class="fa-solid fa-rotate"></i> تحديث قائمة الجمعيات
+            </button>
+            <div id="cmsAdminUsersContainer" style="overflow-x:auto;"></div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-globe text-purple"></i> ملخص المنح الدولية المتاحة</h2>
+            <p id="cmsGrantsSummaryText" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:12px;">جاري قراءة قاعدة المنح...</p>
+            <a href="grants.html" target="_blank" class="btn-cms-secondary"><i class="fa-solid fa-external-link-alt"></i> فتح بوابة المنح</a>
+          </div>
+        </section>
+
+        <!-- PANE 6: FOOTER & CONTACT -->
+        <section id="pane-footer" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-address-card text-emerald"></i> التذييل وبيانات التواصل الرسمية</h2>
+            <div class="admin-field">
+              <label for="cmsFooterTagline">النبذة التعريفية في أسفل الموقع:</label>
+              <textarea id="cmsFooterTagline" rows="3" oninput="onCmsFieldChange()"></textarea>
+            </div>
+            <div class="admin-field-grid">
+              <div class="admin-field"><label for="cmsFooterEmail">البريد الرسمي:</label><input type="email" id="cmsFooterEmail" oninput="onCmsFieldChange()"></div>
+              <div class="admin-field"><label for="cmsFooterWhatsapp">رقم الواتساب الرسمي:</label><input type="text" id="cmsFooterWhatsapp" oninput="onCmsFieldChange()"></div>
+              <div class="admin-field"><label for="cmsFooterFacebook">رابط صفحة فيسبوك:</label><input type="url" id="cmsFooterFacebook" oninput="onCmsFieldChange()"></div>
+              <div class="admin-field"><label for="cmsFooterCopyright">سطر حقوق النشر:</label><input type="text" id="cmsFooterCopyright" oninput="onCmsFieldChange()"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANE 7: CLOUD PUBLISH & BACKUP -->
+        <section id="pane-publish" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-cloud-arrow-up text-emerald"></i> الربط السحابي (Cloudflare Worker)</h2>
+            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.7; margin-bottom:12px;">
+              تُحفظ كافة المفاتيح السرية (مفتاح النشر، كلمة مرور الإدارة، ورابط الربط بجوجل شيت) داخل إعدادات <strong>Cloudflare Worker Secrets</strong> ولا يُكتب أي سر في ملفات الموقع.
+            </p>
+            <div class="admin-field">
+              <label for="cmsWorkerUrlSetting">رابط الوسيط السحابي (Cloudflare Worker URL):</label>
+              <input type="url" id="cmsWorkerUrlSetting" oninput="onCmsFieldChange()" placeholder="https://ngohub-cms-worker.<subdomain>.workers.dev">
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-database text-purple"></i> النسخ الاحتياطي وسجل التعديلات</h2>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+              <button type="button" class="btn-cms-secondary" onclick="exportCmsSiteDataJson()"><i class="fa-solid fa-download"></i> تصدير ملف الموقع (JSON)</button>
+              <button type="button" class="btn-cms-secondary" onclick="document.getElementById('cmsImportJsonInput').click()"><i class="fa-solid fa-upload"></i> استيراد ملف (JSON)</button>
+              <input type="file" id="cmsImportJsonInput" accept=".json" style="display:none;" onchange="importCmsSiteDataJson(event)">
+              <button type="button" class="btn-cms-secondary" onclick="resetCmsToPublishedDefault()" style="color:#dc2626;"><i class="fa-solid fa-rotate-left"></i> تراجع / استعادة المنشور</button>
+            </div>
+            <div id="cmsAuditLogBox" style="background:var(--bg-surface-secondary); border:1px solid var(--border-color); border-radius:10px; padding:12px; font-size:0.84rem; color:var(--text-muted); max-height:180px; overflow-y:auto;">
+              سجل التعديلات جاهز.
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Live Split-View Preview Pane -->
+      <aside class="admin-preview-pane" id="adminPreviewPane">
+        <div style="padding:8px 14px; background:#0f172a; color:#fff; font-size:0.82rem; font-weight:700; display:flex; justify-content:space-between; align-items:center;">
+          <span><i class="fa-solid fa-desktop text-emerald"></i> معاينة حية للصفحة الرئيسية</span>
+          <button type="button" onclick="refreshPreviewIframe()" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-family:inherit; font-size:0.78rem;">تحديث</button>
+        </div>
+        <iframe id="cmsPreviewIframe" src="index.html" title="معاينة حية للموقع"></iframe>
+      </aside>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/firebase-config.js?v=20261119_v3"></script>
+  <script src="assets/js/admin-cms.js?v=20261125_v1" defer></script>
 </body>
 </html>

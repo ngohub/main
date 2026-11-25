@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-11-25T04:40:00Z",
+  "workerUrl": "",
+  "brand": {
+    "siteName": "NGOHUB",
+    "siteSubtitle": "تحالف ومنصة تمكين الجمعيات الأهلية",
+    "primaryGreen": "#059669",
+    "primaryPurple": "#7a4ba3",
+    "defaultTheme": "light",
+    "logoUrl": "assets/images/logo_header.png?v=20261003b"
+  },
+  "header": {
+    "ctaText": "سجّل جمعيتك",
+    "nav": {
+      "home": { "label": "الرئيسية", "visible": true },
+      "about": { "label": "عن المنصة", "visible": true },
+      "services": { "label": "دليل الخدمات", "visible": true },
+      "impact": { "label": "الأثر وصون المياه", "visible": true },
+      "calculators": { "label": "الحاسبات التفاعلية", "visible": true },
+      "grants": { "label": "بوابة المنح", "visible": true },
+      "partners": { "label": "الشركاء", "visible": true },
+      "contact": { "label": "تواصل معنا", "visible": true }
+    }
+  },
+  "home": {
+    "heroTitleMain": "المنصة المظلية",
+    "heroTitleHighlight": "لتمكين الجمعيات الأهلية والتأهيل للمنح الدولية",
+    "heroDesc": "نبني الجاهزية المؤسسية والمالية لمنظمات العمل الأهلي، ونؤهلها لاستيفاء معايير الجهات المانحة وصياغة مشروعات تنموية مستدامة ذات أثر ميداني موثق.",
+    "heroCtaText": "ابدأ تأهيل جمعيتكم للمنح",
+    "heroImage": "assets/images/hero_field_team.jpg",
+    "sections": {
+      "showHero": true,
+      "showQ1": true,
+      "showAudit": true,
+      "showQ2": true,
+      "showQ3": true,
+      "showClosing": true
+    },
+    "q1Title": "لماذا تخسر معظم الجمعيات الأهلية فرص المنح والتمويل الدولي؟",
+    "q1Subtitle": "تشخيص الواقع الميداني الذي يواجه مجالس إدارات الجمعيات والحل العملي لتأمين المنح",
+    "auditTitle": "هل ملف جمعيتكم مؤهل للقبول أم مهدد بالاستبعاد المالي والفني؟",
+    "auditSubtitle": "حرّك مفاتيح الفحص وفق وضع جمعيتكم الحالي لتشخيص نقاط القوة والثغرات وفرص القبول فوراً",
+    "q2Title": "كيف نجعل مقترح جمعيتكم غير قابل للرفض أمام الجهات المانحة؟",
+    "q2Subtitle": "نُرفق بمقترح مشروعكم 4 مقومات قوة تنموية تثبت للمانحين الجدارة والأسبقية في نيل التمويل",
+    "q3Title": "ما هو برهان نجاحنا وتأثيرنا الميداني؟",
+    "q3Subtitle": "أرقام وإنجازات حقيقية موثقة تثبت قدرة NGOHUB على نقل الجمعيات للجاهزية والنجاح",
+    "closingTitle": "جاهز لنقل جمعيتك إلى رادار المانحين وتأمين التمويل القادم؟",
+    "closingCtaText": "سجّل جمعيتك الآن وابدأ التقييم"
+  },
+  "blocks": [],
+  "footer": {
+    "tagline": "منصة NGOHUB هي المنصة التنموية الرائدة في مصر لدعم وتمكين الجمعيات والمؤسسات الأهلية والمنظمات غير الربحية؛ نقدم خدمات متخصصة في التقديم على المنح التنموية، إدارة المشاريع غير الربحية، وتطوير البنية الرقمية والمواقع الرسمية.",
+    "location": "القاهرة، جمهورية مصر العربية",
+    "email": "youssefkhedr92@gmail.com",
+    "whatsapp": "+201026847508",
+    "facebookUrl": "https://www.facebook.com/ngohubar",
+    "copyrightText": "© 2026 NGOHUB. جميع الحقوق محفوظة للجمعيات والمجتمع المدني"
+  },
+  "seo": {
+    "homeTitle": "NGOHUB | منصة التمكين المؤسسي والتقديم على المنح وإدارة المشاريع للجمعيات الأهلية",
+    "homeDescription": "حلول متكاملة للجمعيات والمؤسسات غير الربحية: التقديم على المنح، إدارة المشاريع التنموية، وتصميم المواقع السحابية.",
+    "ogImage": "https://ngo-hub.com/assets/images/og-image.png?v=2"
+  }
+}

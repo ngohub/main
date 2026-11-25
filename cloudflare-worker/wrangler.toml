@@ -1,0 +1,15 @@
+name = "ngohub-cms-worker"
+main = "cms-worker.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+GITHUB_OWNER = "ngohub"
+GITHUB_REPO = "ngo-hub-cloudflare"
+GITHUB_MIRROR_REPO = "ngohub-platform"
+ALLOWED_ORIGIN = "https://ngo-hub.com"
+DATA_FILE_PATH = "site-data.json"
+
+# Secrets (set via `wrangler secret put <NAME>` or Cloudflare Dashboard -> Settings -> Variables and Secrets):
+# - GITHUB_TOKEN
+# - ADMIN_PASSWORD
+# - GOOGLE_SHEETS_WEBHOOK_URL

@@ -199,8 +199,8 @@ let currentTagFilter = 'all';
 let currentServiceFilter = 'all';
 let adminAuthenticated = false;
 
-// Google Sheets Webhook Endpoint (تم الربط مع الاسكريبت الحي المباشر)
-let GOOGLE_SHEETS_WEBHOOK_URL = localStorage.getItem('ngohub_google_sheets_webhook_url') || "https://script.google.com/macros/s/AKfycbynU9c1SDeXkdEWMGQUJzsc9ERcYfPnhQ9yhorcEvgIZ2byHLtNRM1lHlLA3z-m7iYV/exec";
+// Google Sheets submission routes through Cloudflare Worker Secret (`GOOGLE_SHEETS_WEBHOOK_URL`) — Zero secrets in client code
+let GOOGLE_SHEETS_WEBHOOK_URL = localStorage.getItem('ngohub_google_sheets_webhook_url') || "";
 
 // --- 2.1 Persistent Session Cookie & Cross-Session Storage Engine ---
 function setSessionCookie(name, value, days = 30) {
@@ -2438,7 +2438,7 @@ async function initProfilePage() {
         </div>
         
         <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;">
-          <a href="index.html#admin" class="btn-primary" style="padding: 12px 24px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+          <a href="admin.html" class="btn-primary" style="padding: 12px 24px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
             <i class="fa-solid fa-gauge-high"></i> فتح لوحة تحكم إدارة المحتوى (CMS Dashboard)
           </a>
           <button type="button" class="btn-secondary" onclick="exportRegisteredNgosCsv()" style="padding: 12px 20px; font-weight: 700; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
@@ -2510,7 +2510,7 @@ async function initProfilePage() {
       </div>
       
       <div class="profile-actions-bar">
-        ${isAdm ? `<a href="index.html#admin" class="btn-secondary" style="text-decoration:none;"><i class="fa-solid fa-sliders"></i> لوحة الإدارة</a>` : ''}
+        ${isAdm ? `<a href="admin.html" class="btn-secondary" style="text-decoration:none;"><i class="fa-solid fa-sliders"></i> لوحة الإدارة</a>` : ''}
         <button type="button" class="btn-table-sm" onclick="handleProfileLogout()" style="background: rgba(239, 68, 68, 0.12); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
         </button>
@@ -3571,8 +3571,22 @@ function handleServiceFormSubmit(e) {
 }
 
 function sendToGoogleSheets(data) {
+  const workerUrl = localStorage.getItem('ngohub_cms_worker_url') || (window.NGOHUB_SITE_DATA && window.NGOHUB_SITE_DATA.workerUrl) || '';
+
+  // Primary Secure Path: Forward via Cloudflare Worker Proxy (Webhook secret hidden server-side)
+  if (workerUrl) {
+    fetch(workerUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'submit', payload: data })
+    })
+    .then(() => console.log("[OK] Data forwarded securely via Cloudflare Worker."))
+    .catch(() => console.log("[Fallback] Worker request failed; submission preserved locally."));
+    return;
+  }
+
   if (!GOOGLE_SHEETS_WEBHOOK_URL || GOOGLE_SHEETS_WEBHOOK_URL.includes("DUMMY_WEBHOOK")) {
-    console.log("[Info] Google Sheets webhook URL not configured yet. Data saved locally in CMS.");
+    console.log("[Info] Cloud submission proxy not configured yet. Data saved locally in CMS.");
     return;
   }
 
@@ -3584,7 +3598,7 @@ function sendToGoogleSheets(data) {
       body: JSON.stringify(data)
     })
     .then(() => console.log("[OK] Data sent to Google Sheets webhook."))
-    .catch(err => console.log("[Fallback] Google sheets webhook fallback saved locally."));
+    .catch(() => console.log("[Fallback] Google sheets webhook fallback saved locally."));
   } catch (err) {
     console.log("[Local] Submission preserved locally.");
   }
@@ -3648,32 +3662,40 @@ function renderAdminState() {
   }
 }
 
-// Secure SHA-256 hash helper using browser Web Crypto API
-async function sha256Hash(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// Master Admin Auth Hash (Zero Plaintext Secrets in Client Code)
-const ADMIN_CREDENTIALS_HASH = "58e0ed995c18ba76856ed79fccd66d9143a9d1b89a04bc1c66ade05ae222581d";
-
+// Zero-Secret Client Auth: Verified via Cloudflare Worker Secrets or Firebase Admin session
 async function handleAdminLogin(e) {
   e.preventDefault();
-  const user = document.getElementById('adminUsername').value.trim();
   const pass = document.getElementById('adminPass').value;
+  const workerUrl = localStorage.getItem('ngohub_cms_worker_url') || (window.NGOHUB_SITE_DATA && window.NGOHUB_SITE_DATA.workerUrl) || '';
 
-  const combined = `${user}:${pass}`;
-  const computedHash = await sha256Hash(combined);
-  const customHash = localStorage.getItem('ngohub_admin_custom_hash');
-
-  if (computedHash === ADMIN_CREDENTIALS_HASH || (customHash && computedHash === customHash)) {
+  if (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.isCurrentUserAdmin && window.NGOHUB_FIREBASE.isCurrentUserAdmin()) {
     adminAuthenticated = true;
-    showToast("✅ تم تسجيل دخول الإدارة بنجاح");
+    showToast("✅ تم تأكيد جلسة المسؤول بنجاح");
     renderAdminState();
-  } else {
-    alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة!");
+    return;
+  }
+
+  if (!workerUrl) {
+    showToast("يرجى تسجيل الدخول بحساب الإدارة الموثق أو ضبط رابط Cloudflare Worker من admin.html.");
+    return;
+  }
+
+  try {
+    const res = await fetch(workerUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + pass },
+      body: JSON.stringify({ action: 'verify' })
+    });
+    if (res.ok) {
+      sessionStorage.setItem('ngohub_cms_token', pass);
+      adminAuthenticated = true;
+      showToast("✅ تم تسجيل دخول الإدارة بنجاح");
+      renderAdminState();
+    } else {
+      alert("❌ بيانات الدخول غير صحيحة!");
+    }
+  } catch {
+    alert("❌ تعذر الاتصال بخادم التحقق السحابي!");
   }
 }
 
