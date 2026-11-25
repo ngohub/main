@@ -77,8 +77,8 @@
   
   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261125_v2">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261125_v2">
+  <link rel="preload" as="style" href="assets/css/styles.min.css?v=20261125_v3">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=20261125_v3">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -230,12 +230,10 @@
   <!-- Page Hero Banner -->
   <div class="page-hero-banner">
     <div class="container">
-            <h1 class="page-hero-title">مركز المحاكاة والتحليل المؤسسي التفاعلي | اتخذ قرارات جمعيتك بالأرقام والجدوى</h1>
-      <p class="page-hero-subtitle">أدوات قياس استراتيجية فورية لمجالس إدارات وقيادات الجمعيات الأهلية؛ لتشخيص الهدر التشغيلي، فحص الجاهزية والامتثال للمنح الدولية، واكتشاف فرص التمويل المناسبة بالأرقام الموثقة لا بالتخمين.</p>
+      <h1 class="page-hero-title">مركز المحاكاة والتحليل المؤسسي التفاعلي</h1>
+      <p class="page-hero-subtitle">أدوات قياس استراتيجية فورية لمجالس إدارات وقيادات الجمعيات الأهلية؛ لتشخيص الهدر التشغيلي، فحص الجاهزية والامتثال للمنح الدولية، واكتشاف فرص التمويل المناسبة بالأرقام الموثقة.</p>
     </div>
   </div>
-
-
 
   <!-- ==================== 5. DEDICATED CALCULATORS HUB PAGE ==================== -->
   <section id="section-calculators" class="page-section active-section">
@@ -305,15 +303,20 @@
               </div>
             </div>
 
-            <!-- Output Column -->
+            <!-- Output Column (Exact Homepage Audit Style + Live Animations) -->
             <div class="audit-result-col">
               <div class="audit-gauge-box">
                 <div class="gauge-head">
                   <span class="gauge-label">إجمالي الوفر المالي والتشغيلي السنوي</span>
                   <span class="gauge-score-value calc-headline-val" id="resFeasTotalSavings">95,000 ج.م</span>
                 </div>
-                <p class="calc-formula-note">أموال وموارد مستردة لدعم أنشطة الجمعية بدلاً من الهدر الإداري والورقي.</p>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar" id="feasProgressBar" style="width: 42%; background-color: #059669;"></div>
+                </div>
+              </div>
 
+              <div class="audit-feedback-box">
+                <p class="feedback-text" style="margin-bottom: 12px;">أموال وموارد مستردة لدعم أنشطة الجمعية بدلاً من الهدر الإداري والورقي:</p>
                 <div class="calc-metrics-list">
                   <div class="calc-metric-row">
                     <span><i class="fa-solid fa-file-excel text-purple"></i> وفر الطباعة والأوراق والأرشفة:</span>
@@ -329,19 +332,20 @@
                   </div>
                   <div class="calc-metric-row">
                     <span><i class="fa-solid fa-chart-line text-purple"></i> مؤشر كفاءة التشغيل المحسوب:</span>
-                    <strong id="resFeasEfficiency" style="color: var(--primary-green);">+42% نمو كفاءة</strong>
+                    <strong id="resFeasEfficiency" style="color: var(--primary-green);">+24% نمو كفاءة</strong>
                   </div>
                 </div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-building-circle-check"></i>
-                    <span>سجّل جمعيتك لحماية مواردك التشغيلية</span>
-                  </button>
-                  <button type="button" class="btn-calc-print" onclick="window.print()">
-                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
-                  </button>
-                </div>
+              <div class="audit-action-group">
+                <button type="button" class="btn-screen-action audit-main-btn btn-success-tone" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-building-circle-check"></i>
+                  <span>سجّل جمعيتك لحماية مواردك التشغيلية</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn-calc-print" onclick="window.print()">
+                  <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                </button>
               </div>
             </div>
           </div>
@@ -350,7 +354,7 @@
         <!-- ==================== SUB-PANEL 2: READINESS & INSTITUTIONAL AUDIT ==================== -->
         <div class="calc-panel" id="calc-panel-readiness">
           <div class="audit-card calc-unified-card">
-            <!-- Inputs Column: 6 iOS Toggle Switches (Matching Homepage Audit Style) -->
+            <!-- Inputs Column: 6 iOS Toggle Switches -->
             <div class="audit-criteria-col">
               <div class="audit-col-header">
                 <h3><i class="fa-solid fa-stethoscope text-gold"></i> معايير التدقيق المؤسسي للمنح (6 ركائز)</h3>
@@ -443,22 +447,27 @@
                   <span class="gauge-label">مؤشر الجاهزية المؤسسية</span>
                   <span class="gauge-score-value" id="readinessScoreVal">33%</span>
                 </div>
-                <div class="gauge-bar-track">
-                  <div class="gauge-bar-fill fill-pain" id="readinessProgressBar" style="width: 33%;"></div>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar bar-danger" id="readinessProgressBar" style="width: 33%;"></div>
                 </div>
-                <div class="audit-feedback-box">
-                  <h4 id="readinessStatusTitle">المستوى التأسيسي (تحتاج لتدخل ودعم تقني عاجل)</h4>
-                  <p id="readinessAdviceText">الجمعية تفتقر لبعض ركائز البنية الرقمية والتوثيق المشروطة لدى المانحين الدوليين.</p>
-                </div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openDiagnosticReportModal()">
-                    <i class="fa-solid fa-file-invoice"></i>
-                    <span>عرض التقرير التشخيصي وخطة العمل</span>
-                  </button>
-                  <button type="button" class="btn-secondary full-width" onclick="openNgoRegisterModal()" style="justify-content: center;">
-                    <i class="fa-solid fa-building-circle-check"></i> سجّل جمعيتك لسد الفجوات
-                  </button>
+              <div class="audit-feedback-box">
+                <h4 id="readinessStatusTitle" class="calc-status-heading">المستوى التأسيسي (تحتاج لتدخل ودعم تقني عاجل)</h4>
+                <p id="readinessAdviceText" class="feedback-text">الجمعية تفتقر لبعض ركائز البنية الرقمية والتوثيق المشروطة لدى المانحين الدوليين.</p>
+              </div>
+
+              <div class="audit-action-group">
+                <button type="button" id="readinessMainBtn" class="btn-screen-action audit-main-btn btn-danger-tone" onclick="openDiagnosticReportModal()">
+                  <i class="fa-solid fa-file-invoice"></i>
+                  <span>عرض التقرير التشخيصي وخطة العمل</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="audit-secondary-links">
+                  <a href="javascript:void(0)" class="audit-secondary-link" onclick="openNgoRegisterModal()">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <span>أو سجّل جمعيتك الآن لسد الفجوات والتأهيل</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -522,21 +531,28 @@
                   <span class="gauge-label">نسبة التطابق التقديرية</span>
                   <span class="gauge-score-value" id="resMatchScore" style="color: var(--primary-purple);">96%</span>
                 </div>
-                <div style="font-size: 1.05rem; font-weight: 800; color: var(--primary-green); margin-bottom: 4px;" id="resMatchCount">جاري فحص المنح...</div>
-                <small id="resMatchBadge" style="color: var(--primary-green); font-weight: 700; display: block; margin-bottom: 14px;">
-                  تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري
-                </small>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar" id="matchProgressBar" style="width: 96%; background-color: #059669;"></div>
+                </div>
+              </div>
 
+              <div class="audit-feedback-box">
+                <h4 id="resMatchCount" class="calc-status-heading" style="color: var(--primary-green);">جاري فحص المنح...</h4>
+                <p id="resMatchBadge" class="feedback-text" style="margin-bottom: 12px;">تطابق ممتاز ومؤهل للتقديم المؤسسي الفوري</p>
                 <!-- Live Matching Grants Preview from grants.json -->
                 <div id="matchingGrantsPreview" class="matching-grants-preview"></div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-building-circle-check"></i>
-                    <span>سجّل جمعيتك للمنافسة على هذه المنح</span>
-                  </button>
-                  <a href="grants.html" class="btn-secondary full-width" style="justify-content: center; text-decoration: none;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض كافة الفرص في بوابة المنح
+              <div class="audit-action-group">
+                <button type="button" id="matchMainBtn" class="btn-screen-action audit-main-btn btn-success-tone" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-building-circle-check"></i>
+                  <span>سجّل جمعيتك للمنافسة على هذه المنح</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="audit-secondary-links">
+                  <a href="grants.html" class="audit-secondary-link">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>استعراض كافة الفرص في بوابة المنح</span>
                   </a>
                 </div>
               </div>
@@ -579,8 +595,13 @@
                   <span class="gauge-label">إجمالي الوفر المائي السنوي</span>
                   <span class="gauge-score-value calc-headline-val" id="resWaterTotalLiters">520,000 لتر</span>
                 </div>
-                <div style="font-size: 1rem; font-weight: 800; color: var(--primary-green); margin-bottom: 12px;" id="resWaterTotalM3">520.0 م³ مياه عذبة مصانة</div>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar" id="waterProgressBar" style="width: 55%; background-color: #059669;"></div>
+                </div>
+              </div>
 
+              <div class="audit-feedback-box">
+                <h4 id="resWaterTotalM3" class="calc-status-heading" style="color: var(--primary-green);">520.0 م³ مياه عذبة مصانة</h4>
                 <div class="calc-metrics-list">
                   <div class="calc-metric-row">
                     <span><i class="fa-solid fa-file-invoice text-purple"></i> وفر مائي غير مباشر (رقمي):</span>
@@ -603,14 +624,18 @@
                     <strong id="resWaterTrees">1.4 شجرة</strong>
                   </div>
                 </div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-pain-action" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-building-circle-check"></i>
-                    <span>سجّل جمعيتك لتطبيق صون الموارد</span>
-                  </button>
-                  <a href="impact.html" class="btn-secondary full-width" style="justify-content: center; text-decoration: none;">
-                    <i class="fa-solid fa-award text-gold"></i> عرض التقرير البيئي المعتمد (NISGP)
+              <div class="audit-action-group">
+                <button type="button" class="btn-screen-action audit-main-btn btn-success-tone" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-building-circle-check"></i>
+                  <span>سجّل جمعيتك لتطبيق صون الموارد</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="audit-secondary-links">
+                  <a href="impact.html" class="audit-secondary-link">
+                    <i class="fa-solid fa-award text-gold"></i>
+                    <span>عرض التقرير البيئي المعتمد (NISGP)</span>
                   </a>
                 </div>
               </div>
@@ -673,14 +698,14 @@
                   <span class="gauge-label">درجة الامتثال المالي للمانح</span>
                   <span class="gauge-score-value" id="resBudgetComplianceScore">95%</span>
                 </div>
-                <div class="gauge-bar-track">
-                  <div class="gauge-bar-fill fill-good" id="budgetComplianceBar" style="width: 95%;"></div>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar" id="budgetComplianceBar" style="width: 95%; background-color: #059669;"></div>
                 </div>
-                <div class="audit-feedback-box">
-                  <h4 id="resBudgetStatusTitle">هيكل ميزانية متوازن ومطابق للمعايير</h4>
-                  <p id="resBudgetAdviceText">النسب الموزعة متوافقة مع اشتراطات المانحين الدوليين وتعظم الصرف على الأنشطة المباشرة.</p>
-                </div>
+              </div>
 
+              <div class="audit-feedback-box">
+                <h4 id="resBudgetStatusTitle" class="calc-status-heading">هيكل ميزانية متوازن ومطابق للمعايير</h4>
+                <p id="resBudgetAdviceText" class="feedback-text" style="margin-bottom: 12px;">النسب الموزعة متوافقة مع اشتراطات المانحين الدوليين وتعظم الصرف على الأنشطة المباشرة.</p>
                 <div class="calc-metrics-list">
                   <div class="calc-metric-row">
                     <span><i class="fa-solid fa-hand-holding-heart text-emerald"></i> موازنة الأنشطة الميدانية المباشرة:</span>
@@ -699,16 +724,17 @@
                     <strong id="resBudgetGreenAmount">50,000 ج.م (5%)</strong>
                   </div>
                 </div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-good-action" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-file-signature"></i>
-                    <span>اطلب مراجعة واعتماد ميزانية مقترحكم</span>
-                  </button>
-                  <button type="button" class="btn-calc-print" onclick="window.print()">
-                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
-                  </button>
-                </div>
+              <div class="audit-action-group">
+                <button type="button" id="budgetMainBtn" class="btn-screen-action audit-main-btn btn-success-tone" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-file-signature"></i>
+                  <span>اطلب مراجعة واعتماد ميزانية مقترحكم</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn-calc-print" onclick="window.print()">
+                  <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                </button>
               </div>
             </div>
           </div>
@@ -759,8 +785,13 @@
                   <span class="gauge-label">القيمة الاقتصادية السنوية (In-Kind)</span>
                   <span class="gauge-score-value calc-headline-val" id="resVolTotalValue">540,000 ج.م</span>
                 </div>
-                <p class="calc-formula-note">قيمة مساهمة عينية موثقة تعزز ملف التمويل الذاتي أمام لجان تقييم المنح الدولية.</p>
+                <div class="gauge-progress-track">
+                  <div class="gauge-progress-bar" id="volProgressBar" style="width: 72%; background-color: #059669;"></div>
+                </div>
+              </div>
 
+              <div class="audit-feedback-box">
+                <p class="feedback-text" style="margin-bottom: 12px;">قيمة مساهمة عينية موثقة تعزز ملف التمويل الذاتي أمام لجان تقييم المنح الدولية:</p>
                 <div class="calc-metrics-list">
                   <div class="calc-metric-row">
                     <span><i class="fa-solid fa-stopwatch text-emerald"></i> إجمالي ساعات التطوع السنوية:</span>
@@ -775,16 +806,17 @@
                     <strong id="resVolBoost" style="color: var(--primary-green);">مساهمة عينية قوية</strong>
                   </div>
                 </div>
+              </div>
 
-                <div class="calc-result-actions">
-                  <button type="button" class="btn-audit-action btn-good-action" onclick="openNgoRegisterModal()">
-                    <i class="fa-solid fa-building-circle-check"></i>
-                    <span>وثّق ساعات متطوعيك مع NGOHUB</span>
-                  </button>
-                  <button type="button" class="btn-calc-print" onclick="window.print()">
-                    <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
-                  </button>
-                </div>
+              <div class="audit-action-group">
+                <button type="button" class="btn-screen-action audit-main-btn btn-success-tone" onclick="openNgoRegisterModal()">
+                  <i class="fa-solid fa-building-circle-check"></i>
+                  <span>وثّق ساعات متطوعيك مع NGOHUB</span>
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn-calc-print" onclick="window.print()">
+                  <i class="fa-solid fa-print"></i> طباعة / حفظ التقرير
+                </button>
               </div>
             </div>
           </div>
@@ -1410,6 +1442,6 @@
   <!-- Scripts -->
   <script type="module" src="assets/js/firebase-config.js?v=20261119_v3"></script>
   <script src="assets/js/grants_data.min.js?v=20261121_v11" defer></script>
-  <script src="assets/js/app.min.js?v=20261125_v2" defer></script>
+  <script src="assets/js/app.min.js?v=20261125_v3" defer></script>
 </body>
 </html>

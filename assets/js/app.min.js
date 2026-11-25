@@ -1297,6 +1297,40 @@ function switchCalcSubTab(calcId) {
   else if (calcId === 'services') calculateServicesImpact();
 }
 
+// Smooth animated number helper for calculator KPIs
+function animateCalcValue(el, targetVal, suffix, decimals = 0) {
+  if (!el) return;
+  const startVal = parseFloat(el.dataset.lastVal ?? targetVal);
+  el.dataset.lastVal = String(targetVal);
+
+  // Skip animation on initial render when start === target
+  if (Math.abs(startVal - targetVal) < 0.01) {
+    const formatted = decimals > 0 ? Number(targetVal.toFixed(decimals)).toLocaleString('ar-EG') : Math.round(targetVal).toLocaleString('ar-EG');
+    el.innerText = formatted + suffix;
+    return;
+  }
+
+  if (el._animRaf) cancelAnimationFrame(el._animRaf);
+  const startTime = performance.now();
+  const duration = 260;
+
+  function step(now) {
+    const t = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = startVal + (targetVal - startVal) * eased;
+    const formatted = decimals > 0 ? Number(current.toFixed(decimals)).toLocaleString('ar-EG') : Math.round(current).toLocaleString('ar-EG');
+    el.innerText = formatted + suffix;
+    if (t < 1) {
+      el._animRaf = requestAnimationFrame(step);
+    } else {
+      el.classList.remove('calc-val-pop');
+      void el.offsetWidth;
+      el.classList.add('calc-val-pop');
+    }
+  }
+  el._animRaf = requestAnimationFrame(step);
+}
+
 // --- 8.2.1 Economic Feasibility & Cost Savings Calculator ---
 function calculateFeasibility() {
   const staffInput = document.getElementById('feasStaff');
@@ -1334,12 +1368,17 @@ function calculateFeasibility() {
   const elemDuplicate = document.getElementById('resFeasDuplicateAid');
   const elemTotal = document.getElementById('resFeasTotalSavings');
   const elemEff = document.getElementById('resFeasEfficiency');
+  const barEl = document.getElementById('feasProgressBar');
 
   if (elemDirect) elemDirect.innerText = Number(directPaperWaste).toLocaleString('ar-EG') + " ج.م";
   if (elemHours) elemHours.innerText = Number(annualAdminHours).toLocaleString('ar-EG') + " ساعة عمل";
   if (elemDuplicate) elemDuplicate.innerText = Number(duplicateAidPrevented).toLocaleString('ar-EG') + " ج.م";
-  if (elemTotal) elemTotal.innerText = Number(totalSavings).toLocaleString('ar-EG') + " ج.م";
+  animateCalcValue(elemTotal, totalSavings, " ج.م");
   if (elemEff) elemEff.innerText = "+" + efficiencyPct + "% نمو كفاءة";
+  if (barEl) {
+    barEl.style.width = efficiencyPct + "%";
+    barEl.style.backgroundColor = efficiencyPct >= 50 ? '#059669' : '#d97706';
+  }
 }
 
 // --- 8.2.2 Grant Matching Engine Calculator (Live Grants Integration) ---
@@ -1376,7 +1415,6 @@ function calculateGrantMatching() {
     return sKeys.some(k => text.includes(k));
   });
 
-  // Refine by region if pool has enough matches
   if (matchedGrants.length > 3 && region !== 'all') {
     const rKeys = regionKeywords[region] || [];
     const regionFiltered = matchedGrants.filter(g => {
@@ -1405,9 +1443,18 @@ function calculateGrantMatching() {
   const scoreElem = document.getElementById('resMatchScore');
   const countElem = document.getElementById('resMatchCount');
   const badgeElem = document.getElementById('resMatchBadge');
+  const barElem = document.getElementById('matchProgressBar');
+  const btnElem = document.getElementById('matchMainBtn');
   const previewElem = document.getElementById('matchingGrantsPreview');
 
-  if (scoreElem) scoreElem.innerText = matchScore + "%";
+  animateCalcValue(scoreElem, matchScore, "%");
+  if (barElem) {
+    barElem.style.width = matchScore + "%";
+    barElem.style.backgroundColor = matchScore >= 88 ? '#059669' : '#d97706';
+  }
+  if (btnElem) {
+    btnElem.className = 'btn-screen-action audit-main-btn ' + (matchScore >= 88 ? 'btn-success-tone' : 'btn-warning-tone');
+  }
   if (countElem) countElem.innerText = matchCount + " منحة مطابقة في بوابتنا";
   if (badgeElem) {
     if (matchScore >= 88) {
@@ -2727,14 +2774,20 @@ function calculateNgohubWater() {
   const elemMoney = document.getElementById('resWaterMoneySaved');
   const elemFamilies = document.getElementById('resWaterFamilies');
   const elemTrees = document.getElementById('resWaterTrees');
+  const barWater = document.getElementById('waterProgressBar');
 
-  if (elemTotal) elemTotal.innerText = Number(totalWaterLiters).toLocaleString('ar-EG') + " لتر";
-  if (elemM3) elemM3.innerText = Number(totalWaterM3).toLocaleString('ar-EG') + " م³";
+  animateCalcValue(elemTotal, totalWaterLiters, " لتر");
+  if (elemM3) elemM3.innerText = Number(totalWaterM3).toLocaleString('ar-EG') + " م³ مياه عذبة مصانة";
   if (elemIndirect) elemIndirect.innerText = Number(indirectWaterLiters).toLocaleString('ar-EG') + " لتر";
   if (elemDirect) elemDirect.innerText = Number(directWaterLiters).toLocaleString('ar-EG') + " لتر";
   if (elemMoney) elemMoney.innerText = Number(indirectMoneySaved).toLocaleString('ar-EG') + " ج.م";
   if (elemFamilies) elemFamilies.innerText = Number(familiesDaily).toLocaleString('ar-EG') + " أسرة";
   if (elemTrees) elemTrees.innerText = Number(treesProtected).toLocaleString('ar-EG') + " شجرة";
+  if (barWater) {
+    const waterPct = Math.min(100, Math.max(15, Math.round((totalWaterLiters / 1200000) * 100)));
+    barWater.style.width = waterPct + "%";
+    barWater.style.backgroundColor = '#059669';
+  }
 }
 
 // --- 8.4 Services Impact Calculator for NGOs ---
@@ -2864,11 +2917,15 @@ function calculateReadinessScore() {
   const barElem = document.getElementById('readinessProgressBar');
   const titleElem = document.getElementById('readinessStatusTitle');
   const adviceElem = document.getElementById('readinessAdviceText');
+  const btnElem = document.getElementById('readinessMainBtn');
 
-  if (dialElem) dialElem.innerText = total + "%";
+  animateCalcValue(dialElem, total, "%");
   if (barElem) {
     barElem.style.width = total + "%";
-    barElem.className = 'gauge-bar-fill ' + (total <= 35 ? 'fill-pain' : (total <= 70 ? 'fill-warn' : 'fill-good'));
+    barElem.style.backgroundColor = total <= 35 ? '#ef4444' : (total <= 70 ? '#d97706' : '#059669');
+  }
+  if (btnElem) {
+    btnElem.className = 'btn-screen-action audit-main-btn ' + (total <= 35 ? 'btn-danger-tone' : (total <= 70 ? 'btn-warning-tone' : 'btn-success-tone'));
   }
 
   if (total <= 35) {
@@ -2910,18 +2967,21 @@ function calculateGrantBudget() {
   let complianceScore = 95;
   let statusTitle = "هيكل ميزانية متوازن ومطابق للمعايير";
   let adviceText = "النسب الموزعة متوافقة مع اشتراطات المانحين الدوليين وتعظم الصرف على الأنشطة المباشرة.";
-  let barClass = "fill-good";
+  let barColor = "#059669";
+  let btnTone = "btn-success-tone";
 
   if (adminPct > 15) {
     complianceScore -= Math.min(40, (adminPct - 15) * 4);
     statusTitle = "تحذير: تجاوز سقف المصاريف الإدارية (خطر استبعاد)";
     adviceText = "معظم الجهات المانحة ترفض المقترح إذا تخطت المصاريف الإدارية 15%. يُنصح بخفضها إلى 10%–12%.";
-    barClass = "fill-pain";
+    barColor = "#ef4444";
+    btnTone = "btn-danger-tone";
   } else if (mePct < 5) {
     complianceScore -= 18;
     statusTitle = "تنبيه: مخصص الرصد والتقييم (M&E) أقل من الموصى به";
     adviceText = "لجان التقييم الدولية تفضل تخصيص 5% على الأقل لقياس الأثر والتقييم الميداني.";
-    barClass = "fill-warn";
+    barColor = "#d97706";
+    btnTone = "btn-warning-tone";
   }
   if (!greenSwitch || !greenSwitch.checked) complianceScore -= 5;
   complianceScore = Math.max(35, Math.min(100, complianceScore));
@@ -2930,16 +2990,18 @@ function calculateGrantBudget() {
   const elBar = document.getElementById('budgetComplianceBar');
   const elTitle = document.getElementById('resBudgetStatusTitle');
   const elAdvice = document.getElementById('resBudgetAdviceText');
+  const elBtn = document.getElementById('budgetMainBtn');
   const elDirect = document.getElementById('resBudgetDirectAmount');
   const elAdmin = document.getElementById('resBudgetAdminAmount');
   const elMe = document.getElementById('resBudgetMeAmount');
   const elGreen = document.getElementById('resBudgetGreenAmount');
 
-  if (elScore) elScore.innerText = complianceScore + "%";
+  animateCalcValue(elScore, complianceScore, "%");
   if (elBar) {
     elBar.style.width = complianceScore + "%";
-    elBar.className = "gauge-bar-fill " + barClass;
+    elBar.style.backgroundColor = barColor;
   }
+  if (elBtn) elBtn.className = "btn-screen-action audit-main-btn " + btnTone;
   if (elTitle) elTitle.innerText = statusTitle;
   if (elAdvice) elAdvice.innerText = adviceText;
   if (elDirect) elDirect.innerText = Number(directAmt).toLocaleString('ar-EG') + ` ج.م (${directPct}%)`;
@@ -2974,11 +3036,17 @@ function calculateVolunteerValue() {
   const elHours = document.getElementById('resVolAnnualHours');
   const elFte = document.getElementById('resVolFte');
   const elBoost = document.getElementById('resVolBoost');
+  const elBar = document.getElementById('volProgressBar');
 
-  if (elVal) elVal.innerText = Number(totalValue).toLocaleString('ar-EG') + " ج.م";
+  animateCalcValue(elVal, totalValue, " ج.م");
   if (elHours) elHours.innerText = Number(annualHours).toLocaleString('ar-EG') + " ساعة/سنة";
   if (elFte) elFte.innerText = Number(fte).toLocaleString('ar-EG') + " موظف متفرغ";
   if (elBoost) elBoost.innerText = boostText;
+  if (elBar) {
+    const pct = Math.min(100, Math.max(18, Math.round((totalValue / 750000) * 100)));
+    elBar.style.width = pct + "%";
+    elBar.style.backgroundColor = totalValue >= 200000 ? '#059669' : '#d97706';
+  }
 }
 
 // Interactive Diagnostic Pop-up Report Modal
