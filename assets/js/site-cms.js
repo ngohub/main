@@ -1,7 +1,5 @@
 /**
- * NGOHUB — Live Site CMS Loader & Floating Admin Bar
- * Reads published `site-data.json` (or active admin preview draft) and applies
- * brand colors, navigation, home hero & sections, extra blocks, and footer info.
+ * NGOHUB — Live Site CMS Loader & Floating Admin Bar (Full-Site Coverage)
  */
 (function () {
   const DRAFT_KEY = 'ngohub_site_data_draft';
@@ -21,11 +19,23 @@
     return false;
   }
 
+  function detectCurrentPageKey() {
+    const p = window.location.pathname.toLowerCase();
+    if (p.includes('about')) return 'about';
+    if (p.includes('services')) return 'services';
+    if (p.includes('impact')) return 'impact';
+    if (p.includes('calculators')) return 'calculators';
+    if (p.includes('grants')) return 'grants';
+    if (p.includes('partners')) return 'partners';
+    if (p.includes('contact')) return 'contact';
+    if (p.includes('profile')) return 'profile';
+    return 'home';
+  }
+
   function applySiteData(data) {
     if (!data || typeof data !== 'object') return;
     window.NGOHUB_SITE_DATA = data;
 
-    // Persist workerUrl for form submissions (never contains any secret)
     if (data.workerUrl) {
       try { localStorage.setItem(WORKER_URL_KEY, data.workerUrl); } catch (e) {}
     }
@@ -72,60 +82,90 @@
             if (span) span.textContent = item.label;
             else {
               const icon = el.querySelector('i');
-              el.innerHTML = (icon ? icon.outerHTML + ' ' : '') + item.label;
+              el.innerHTML = (icon ? icon.outerHTML + ' ' : '') + escapeHtml(item.label);
             }
           }
         });
       });
     }
 
-    // 3. Homepage Sections & Copy (only runs when homepage elements exist)
-    const home = data.home || {};
-    const heroTitle = document.querySelector('.hero-fullbleed-title');
-    if (heroTitle && (home.heroTitleMain || home.heroTitleHighlight)) {
-      const mainTxt = home.heroTitleMain || 'المنصة المظلية';
-      const hiTxt = home.heroTitleHighlight || 'لتمكين الجمعيات الأهلية والتأهيل للمنح الدولية';
-      heroTitle.innerHTML = `${escapeHtml(mainTxt)}<br><span class="highlight-emerald">${escapeHtml(hiTxt)}</span>`;
-    }
-    const heroDesc = document.querySelector('.hero-fullbleed-desc');
-    if (heroDesc && home.heroDesc) heroDesc.textContent = home.heroDesc;
+    const pageKey = detectCurrentPageKey();
 
-    const heroCtaSpan = document.querySelector('.btn-hero-primary-wide span');
-    if (heroCtaSpan && home.heroCtaText) heroCtaSpan.textContent = home.heroCtaText;
-
-    const heroImg = document.querySelector('.hero-fullbleed-img');
-    if (heroImg && home.heroImage) heroImg.src = home.heroImage;
-
-    const sections = home.sections || {};
-    const sectionMap = {
-      showHero: '.hero-fullbleed',
-      showQ1: '#screen-q1-manifesto',
-      showAudit: '#screen-readiness-audit',
-      showQ2: '#screen-q2-dossier',
-      showQ3: '#screen-q3-proof',
-      showClosing: '#screen-closing-cta'
-    };
-    Object.keys(sectionMap).forEach(k => {
-      const el = document.querySelector(sectionMap[k]);
-      if (el && typeof sections[k] === 'boolean') {
-        el.style.display = sections[k] ? '' : 'none';
+    // 3. Homepage Sections & Copy
+    if (pageKey === 'home') {
+      const home = data.home || {};
+      const heroTitle = document.querySelector('.hero-fullbleed-title');
+      if (heroTitle && (home.heroTitleMain || home.heroTitleHighlight)) {
+        const mainTxt = home.heroTitleMain || 'المنصة المظلية';
+        const hiTxt = home.heroTitleHighlight || 'لتمكين الجمعيات الأهلية والتأهيل للمنح الدولية';
+        heroTitle.innerHTML = `${escapeHtml(mainTxt)}<br><span class="highlight-emerald">${escapeHtml(hiTxt)}</span>`;
       }
-    });
+      const heroDesc = document.querySelector('.hero-fullbleed-desc');
+      if (heroDesc && home.heroDesc) heroDesc.textContent = home.heroDesc;
 
-    setScreenHeader('#screen-q1-manifesto', home.q1Title, home.q1Subtitle);
-    setScreenHeader('#screen-readiness-audit', home.auditTitle, home.auditSubtitle);
-    setScreenHeader('#screen-q2-dossier', home.q2Title, home.q2Subtitle);
-    setScreenHeader('#screen-q3-proof', home.q3Title, home.q3Subtitle);
+      const heroCtaSpan = document.querySelector('.btn-hero-primary-wide span');
+      if (heroCtaSpan && home.heroCtaText) heroCtaSpan.textContent = home.heroCtaText;
 
-    const closingTitle = document.querySelector('.closing-title');
-    if (closingTitle && home.closingTitle) closingTitle.textContent = home.closingTitle;
-    const closingCtaSpan = document.querySelector('.btn-closing-huge span');
-    if (closingCtaSpan && home.closingCtaText) closingCtaSpan.textContent = home.closingCtaText;
+      const heroImg = document.querySelector('.hero-fullbleed-img');
+      if (heroImg && home.heroImage) heroImg.src = home.heroImage;
 
-    // 4. Custom Block Builder Sections
-    renderCustomBlocks(Array.isArray(data.blocks) ? data.blocks : []);
+      const sections = home.sections || {};
+      const sectionMap = {
+        showHero: '.hero-fullbleed',
+        showQ1: '#screen-q1-manifesto',
+        showAudit: '#screen-readiness-audit',
+        showQ2: '#screen-q2-dossier',
+        showQ3: '#screen-q3-proof',
+        showClosing: '#screen-closing-cta'
+      };
+      Object.keys(sectionMap).forEach(k => {
+        const el = document.querySelector(sectionMap[k]);
+        if (el && typeof sections[k] === 'boolean') {
+          el.style.display = sections[k] ? '' : 'none';
+        }
+      });
 
-    // 5. Footer Info
+      setScreenHeader('#screen-q1-manifesto', home.q1Title, home.q1Subtitle);
+      setScreenHeader('#screen-readiness-audit', home.auditTitle, home.auditSubtitle);
+      setScreenHeader('#screen-q2-dossier', home.q2Title, home.q2Subtitle);
+      setScreenHeader('#screen-q3-proof', home.q3Title, home.q3Subtitle);
+
+      const closingTitle = document.querySelector('.closing-title');
+      if (closingTitle && home.closingTitle) closingTitle.textContent = home.closingTitle;
+      const closingCtaSpan = document.querySelector('.btn-closing-huge span');
+      if (closingCtaSpan && home.closingCtaText) closingCtaSpan.textContent = home.closingCtaText;
+
+      if (data.seo) {
+        if (data.seo.homeTitle) document.title = data.seo.homeTitle;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc && data.seo.homeDescription) metaDesc.setAttribute('content', data.seo.homeDescription);
+      }
+
+      renderCustomBlocks(Array.isArray(data.blocks) ? data.blocks : []);
+    } else if (data.pages && data.pages[pageKey]) {
+      // 4. Inner Pages (about, services, impact, calculators, grants, partners, contact)
+      const pg = data.pages[pageKey];
+      const heroTitleEl = document.querySelector('.page-hero-title');
+      const heroSubEl = document.querySelector('.page-hero-subtitle');
+      if (heroTitleEl && pg.heroTitle) heroTitleEl.textContent = pg.heroTitle;
+      if (heroSubEl && pg.heroSubtitle) heroSubEl.textContent = pg.heroSubtitle;
+
+      const secTitleEl = document.querySelector('.section-header .section-title');
+      const secDescEl = document.querySelector('.section-header .section-desc');
+      if (secTitleEl && pg.sectionTitle) secTitleEl.textContent = pg.sectionTitle;
+      if (secDescEl && pg.sectionDesc) secDescEl.textContent = pg.sectionDesc;
+
+      if (pg.featuredImage) {
+        const featImg = document.querySelector('.about-photo-highlight img, .impact-field-photo-banner img');
+        if (featImg) featImg.src = pg.featuredImage;
+      }
+
+      if (pg.seoTitle) document.title = pg.seoTitle;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc && pg.seoDesc) metaDesc.setAttribute('content', pg.seoDesc);
+    }
+
+    // 5. Footer Info (all pages)
     const footer = data.footer || {};
     const footerTagline = document.querySelector('.site-footer .footer-col p');
     if (footerTagline && footer.tagline) footerTagline.textContent = footer.tagline;
@@ -198,15 +238,18 @@
   function injectFloatingAdminBar() {
     if (!isAdminSessionActive()) return;
     if (window.location.pathname.includes('admin')) return;
-    if (window.self !== window.top) return; // Do not show inside split preview iframe
+    if (window.self !== window.top) return;
     if (document.getElementById('ngohubFloatingAdminBar')) return;
+
+    const pageKey = detectCurrentPageKey();
+    const targetHref = pageKey === 'home' ? 'admin.html?page=pane-homepage' : `admin.html?page=pane-inner-pages&inner=${pageKey}`;
 
     const bar = document.createElement('div');
     bar.id = 'ngohubFloatingAdminBar';
     bar.style.cssText = 'position:fixed; bottom:18px; left:18px; z-index:9990; display:flex; align-items:center; gap:10px; background:#0f172a; color:#fff; padding:10px 16px; border-radius:14px; box-shadow:0 12px 30px rgba(0,0,0,0.28); border:1px solid rgba(52,211,153,0.4); font-size:0.86rem; font-weight:700;';
     bar.innerHTML = `
       <span style="display:inline-flex; align-items:center; gap:6px; color:#34d399;"><i class="fa-solid fa-shield-check"></i> وضع الإدارة نشط</span>
-      <a href="admin.html" style="background:#059669; color:#fff; text-decoration:none; padding:6px 12px; border-radius:8px; font-weight:800;">فتح لوحة التحكم</a>
+      <a href="${targetHref}" style="background:#059669; color:#fff; text-decoration:none; padding:6px 12px; border-radius:8px; font-weight:800;">تعديل هذه الصفحة</a>
     `;
     document.body.appendChild(bar);
   }
@@ -238,7 +281,6 @@
     injectFloatingAdminBar();
   }
 
-  // Live Split-Preview message listener from admin.html
   window.addEventListener('message', (event) => {
     if (event.origin !== window.location.origin) return;
     if (event.data && event.data.type === 'ngohub:cms-preview' && event.data.data) {
@@ -246,7 +288,6 @@
     }
   });
 
-  // Re-check floating bar once Firebase finishes restoring session
   window.addEventListener('ngohub:firebase-ready', () => {
     setTimeout(injectFloatingAdminBar, 350);
   });

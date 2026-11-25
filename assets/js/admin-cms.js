@@ -11,6 +11,7 @@ const CMS_LOG_KEY = 'ngohub_cms_activity_log';
 
 let cmsData = null;
 let cmsPublishedBaseline = null;
+let cmsGrantsList = [];
 let cmsUnsaved = false;
 
 function showCmsToast(msg) {
@@ -26,9 +27,29 @@ function showCmsToast(msg) {
 
 function logCmsActivity(actionText) {
   const logs = JSON.parse(localStorage.getItem(CMS_LOG_KEY) || '[]');
-  logs.unshift(`${new Date().toLocaleString('ar-EG')} — ${actionText}`);
-  localStorage.setItem(CMS_LOG_KEY, JSON.stringify(logs.slice(0, 30)));
+  const actor = (window.NGOHUB_FIREBASE && window.NGOHUB_FIREBASE.isCurrentUserAdmin && window.NGOHUB_FIREBASE.isCurrentUserAdmin()) ? 'المشرف العام' : 'مدير اللوحة';
+  logs.unshift(`[${new Date().toLocaleString('ar-EG')}] (${actor}) — ${actionText}`);
+  localStorage.setItem(CMS_LOG_KEY, JSON.stringify(logs.slice(0, 100)));
   renderCmsActivityLog();
+}
+
+function downloadCmsLogTxt() {
+  const logs = JSON.parse(localStorage.getItem(CMS_LOG_KEY) || '[]');
+  const txt = logs.length ? logs.join('\n') : 'لا توجد سجلات مسجلة.';
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cms_log.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearCmsActivityLog() {
+  if (!window.confirm('هل تريد مسح سجل التعديلات المحلي؟')) return;
+  localStorage.removeItem(CMS_LOG_KEY);
+  renderCmsActivityLog();
+  showCmsToast('تم مسح السجل.');
 }
 
 function renderCmsActivityLog() {
@@ -224,7 +245,53 @@ function populateCmsFormFields() {
 
   setVal('cmsWorkerUrlSetting', cmsData.workerUrl || localStorage.getItem(CMS_WORKER_URL_KEY) || '');
 
+  renderInnerPageEditorFields();
   renderCmsBlocksEditor();
+}
+
+function renderInnerPageEditorFields() {
+  if (!cmsData) return;
+  if (!cmsData.pages) cmsData.pages = {};
+  const key = document.getElementById('cmsInnerPageSelector')?.value || 'about';
+  const pg = cmsData.pages[key] || {};
+  setVal('cmsInnerHeroTitle', pg.heroTitle || '');
+  setVal('cmsInnerHeroSub', pg.heroSubtitle || '');
+  setVal('cmsInnerSecTitle', pg.sectionTitle || '');
+  setVal('cmsInnerSecDesc', pg.sectionDesc || '');
+  setVal('cmsInnerFeaturedImg', pg.featuredImage || '');
+  setVal('cmsInnerSeoTitle', pg.seoTitle || '');
+  setVal('cmsInnerSeoDesc', pg.seoDesc || '');
+}
+
+function onInnerPageFieldChange() {
+  if (!cmsData) return;
+  if (!cmsData.pages) cmsData.pages = {};
+  const key = document.getElementById('cmsInnerPageSelector')?.value || 'about';
+  cmsData.pages[key] = {
+    heroTitle: getVal('cmsInnerHeroTitle').trim(),
+    heroSubtitle: getVal('cmsInnerHeroSub').trim(),
+    sectionTitle: getVal('cmsInnerSecTitle').trim(),
+    sectionDesc: getVal('cmsInnerSecDesc').trim(),
+    featuredImage: getVal('cmsInnerFeaturedImg').trim(),
+    seoTitle: getVal('cmsInnerSeoTitle').trim(),
+    seoDesc: getVal('cmsInnerSeoDesc').trim()
+  };
+  saveCmsDraft(false);
+}
+
+function handleInnerPageImageUpload(event) {
+  handleCmsImageUpload(event, 'cmsInnerFeaturedImg', 1000, () => onInnerPageFieldChange());
+}
+
+function changePreviewIframePage(pageFile) {
+  const iframe = document.getElementById('cmsPreviewIframe');
+  if (iframe) iframe.src = pageFile + '?preview=' + Date.now();
+}
+
+function refreshPreviewIframe() {
+  const iframe = document.getElementById('cmsPreviewIframe');
+  const sel = document.getElementById('cmsPreviewPageSelect')?.value || 'index.html';
+  if (iframe) iframe.src = sel + '?preview=' + Date.now();
 }
 
 function setVal(id, val) {
@@ -455,7 +522,7 @@ function renderCmsBlocksEditor() {
 }
 
 // Canvas Image Compression -> Base64
-function handleCmsImageUpload(event, targetInputId, maxDim = 900) {
+function handleCmsImageUpload(event, targetInputId, maxDim = 900, afterCallback = null) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -475,7 +542,9 @@ function handleCmsImageUpload(event, targetInputId, maxDim = 900) {
       ctx.drawImage(img, 0, 0, width, height);
       const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
       setVal(targetInputId, dataUrl);
-      onCmsFieldChange();
+      if (typeof afterCallback === 'function') afterCallback();
+      else onCmsFieldChange();
+      logCmsActivity('تم رفع وضغط صورة جديدة بنجاح');
       showCmsToast('تم ضغط الصورة وإدراجها بنجاح.');
     };
     img.src = e.target.result;
@@ -587,18 +656,152 @@ function resetCmsToPublishedDefault() {
   showCmsToast('تمت استعادة النسخة المنشورة.');
 }
 
-// Grants & Firestore Users Integration
+// Grants Full CRUD & Live Publish to grants.json via Cloudflare Worker
 async function loadCmsGrantsSummary() {
-  const el = document.getElementById('cmsGrantsSummaryText');
-  if (!el) return;
   try {
     const res = await fetch('grants.json?t=' + Date.now());
     if (res.ok) {
-      const arr = await res.json();
-      el.textContent = `تحتوي بوابة المنح حالياً على ${arr.length} فرصة ومنحة دولية ومحلية موثقة.`;
+      cmsGrantsList = await res.json();
+      const countEl = document.getElementById('cmsGrantsTotalCount');
+      if (countEl) countEl.textContent = cmsGrantsList.length;
+      renderAdminGrantsList();
     }
+  } catch {}
+}
+
+function renderAdminGrantsList() {
+  const container = document.getElementById('cmsGrantsCrudList');
+  const countEl = document.getElementById('cmsGrantsTotalCount');
+  if (countEl) countEl.textContent = cmsGrantsList.length;
+  if (!container) return;
+
+  const q = (document.getElementById('cmsGrantsFilterInput')?.value || '').trim().toLowerCase();
+  const filtered = cmsGrantsList.map((g, idx) => ({ g, idx })).filter(({ g }) => {
+    if (!q) return true;
+    return `${g.title || ''} ${g.donor || ''} ${g.category || ''}`.toLowerCase().includes(q);
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = '<div style="padding:16px; text-align:center; color:#64748b;">لا توجد منح مطابقة.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(({ g, idx }) => `
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px; border:1px solid var(--border-color); border-radius:10px; margin-bottom:8px; background:var(--bg-surface-secondary);">
+      <div style="min-width:0; flex:1;">
+        <strong style="display:block; font-size:0.92rem;">${escapeHtml(g.title || 'منحة بدون عنوان')}</strong>
+        <small style="color:var(--text-muted);">${escapeHtml(g.donor || '')} ${g.amount ? '• ' + escapeHtml(g.amount) : ''}</small>
+      </div>
+      <div style="display:flex; gap:6px; flex-shrink:0;">
+        <button type="button" onclick="openGrantEditorForm(${idx})" class="btn-cms-secondary" style="padding:6px 10px; font-size:0.8rem;">تعديل</button>
+        <button type="button" onclick="deleteGrantEntry(${idx})" class="btn-cms-secondary" style="padding:6px 10px; font-size:0.8rem; color:#dc2626;">حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openGrantEditorForm(idx) {
+  const box = document.getElementById('cmsGrantFormBox');
+  if (!box) return;
+  box.style.display = 'block';
+  document.getElementById('cmsGrantEditIdx').value = String(idx);
+  const titleEl = document.getElementById('cmsGrantFormTitle');
+
+  if (idx >= 0 && cmsGrantsList[idx]) {
+    const g = cmsGrantsList[idx];
+    if (titleEl) titleEl.textContent = 'تعديل منحة: ' + (g.title || '');
+    setVal('gfTitle', g.title || '');
+    setVal('gfDonor', g.donor || '');
+    setVal('gfCategory', g.category || '');
+    setVal('gfAmount', g.amount || g.fundingAmount || '');
+    setVal('gfDeadline', g.deadline || '');
+    setVal('gfUrl', g.applyUrl || g.link || '');
+    setVal('gfSummary', g.summary || g.description || '');
+  } else {
+    if (titleEl) titleEl.textContent = 'إضافة منحة دولية جديدة';
+    ['gfTitle', 'gfDonor', 'gfCategory', 'gfAmount', 'gfDeadline', 'gfUrl', 'gfSummary'].forEach(id => setVal(id, ''));
+  }
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function saveGrantFormEntry() {
+  const idx = parseInt(document.getElementById('cmsGrantEditIdx')?.value || '-1', 10);
+  const title = getVal('gfTitle').trim();
+  const donor = getVal('gfDonor').trim();
+  if (!title) { showCmsToast('يرجى كتابة اسم المنحة.'); return; }
+
+  const entry = {
+    ...(idx >= 0 && cmsGrantsList[idx] ? cmsGrantsList[idx] : { id: 'grant_cms_' + Date.now(), type: 'ngo', region: 'egypt', addedAt: new Date().toISOString().slice(0, 10) }),
+    title,
+    donor: donor || 'جهة مانحة دولية',
+    category: getVal('gfCategory').trim() || 'تمكين مجتمعي',
+    amount: getVal('gfAmount').trim() || 'تمويل تنموي',
+    fundingAmount: getVal('gfAmount').trim() || 'تمويل تنموي',
+    deadline: getVal('gfDeadline').trim() || 'مفتوح',
+    applyUrl: getVal('gfUrl').trim() || 'grants.html',
+    link: getVal('gfUrl').trim() || 'grants.html',
+    summary: getVal('gfSummary').trim() || title,
+    description: getVal('gfSummary').trim() || title
+  };
+
+  if (idx >= 0 && cmsGrantsList[idx]) {
+    cmsGrantsList[idx] = entry;
+    logCmsActivity('تعديل منحة: ' + title);
+  } else {
+    cmsGrantsList.unshift(entry);
+    logCmsActivity('إضافة منحة جديدة: ' + title);
+  }
+
+  document.getElementById('cmsGrantFormBox').style.display = 'none';
+  renderAdminGrantsList();
+  setUnsavedState(true);
+  showCmsToast('تم حفظ المنحة! اضغط "نشر المنح للموقع" لتظهر لجميع الزوار.');
+}
+
+function deleteGrantEntry(idx) {
+  const g = cmsGrantsList[idx];
+  if (!g || !window.confirm(`هل أنت متأكد من حذف المنحة "${g.title}"؟`)) return;
+  cmsGrantsList.splice(idx, 1);
+  renderAdminGrantsList();
+  setUnsavedState(true);
+  logCmsActivity('حذف منحة: ' + (g.title || ''));
+  showCmsToast('تم حذف المنحة من القائمة.');
+}
+
+async function publishGrantsToLiveSite() {
+  const workerUrl = (cmsData?.workerUrl || localStorage.getItem(CMS_WORKER_URL_KEY) || '').trim();
+  if (!workerUrl) {
+    switchAdminPage('pane-publish');
+    showCmsToast('يرجى إدخال رابط الوسيط السحابي (Cloudflare Worker) أولاً.');
+    return;
+  }
+  let token = sessionStorage.getItem(CMS_TOKEN_SESSION_KEY);
+  if (!token) {
+    const entered = window.prompt('أدخل كلمة مرور النشر السرية الخاصة بـ Cloudflare Worker:');
+    if (!entered) return;
+    token = entered.trim();
+  }
+  try {
+    const res = await fetch(workerUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({
+        action: 'publish',
+        path: 'grants.json',
+        message: 'cms: update grants.json from NGOHUB Admin',
+        data: cmsGrantsList
+      })
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      showCmsToast(out.error || 'تعذر نشر المنح، تحقق من كلمة المرور.');
+      return;
+    }
+    sessionStorage.setItem(CMS_TOKEN_SESSION_KEY, token);
+    logCmsActivity(`تم نشر قاعدة المنح (${cmsGrantsList.length} منحة) إلى الموقع الحي عبر Cloudflare Worker`);
+    showCmsToast('تم نشر تحديثات المنح لجميع الزوار بنجاح!');
   } catch {
-    el.textContent = 'يمكن استعراض وتحديث الفرص عبر بوابة المنح.';
+    showCmsToast('تعذر الاتصال بالوسيط السحابي.');
   }
 }
 

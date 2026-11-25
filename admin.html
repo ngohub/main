@@ -503,10 +503,12 @@
         <div class="admin-nav-item"><button type="button" class="active" data-page-target="pane-branding" onclick="switchAdminPage('pane-branding')"><i class="fa-solid fa-palette"></i> الهوية والألوان والشعار</button></div>
         <div class="admin-nav-item"><button type="button" data-page-target="pane-navigation" onclick="switchAdminPage('pane-navigation')"><i class="fa-solid fa-bars"></i> القوائم والتنقل العلوي</button></div>
         <div class="admin-nav-item"><button type="button" data-page-target="pane-homepage" onclick="switchAdminPage('pane-homepage')"><i class="fa-solid fa-house"></i> واجهة الترحيب والأقسام</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-inner-pages" onclick="switchAdminPage('pane-inner-pages')"><i class="fa-solid fa-file-lines"></i> كافة الصفحات الداخلية والصور</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-grants-crud" onclick="switchAdminPage('pane-grants-crud')"><i class="fa-solid fa-globe"></i> إدارة المنح الكاملة</button></div>
         <div class="admin-nav-item"><button type="button" data-page-target="pane-blocks" onclick="switchAdminPage('pane-blocks')"><i class="fa-solid fa-puzzle-piece"></i> إضافة أقسام ومحتوى حر</button></div>
-        <div class="admin-nav-item"><button type="button" data-page-target="pane-records" onclick="switchAdminPage('pane-records')"><i class="fa-solid fa-building-flag"></i> الجمعيات والمنح والطلبات</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-records" onclick="switchAdminPage('pane-records')"><i class="fa-solid fa-building-flag"></i> سجل الجمعيات والمستخدمين</button></div>
         <div class="admin-nav-item"><button type="button" data-page-target="pane-footer" onclick="switchAdminPage('pane-footer')"><i class="fa-solid fa-address-card"></i> التذييل وبيانات التواصل</button></div>
-        <div class="admin-nav-item"><button type="button" data-page-target="pane-publish" onclick="switchAdminPage('pane-publish')"><i class="fa-solid fa-cloud-arrow-up"></i> النشر السحابي والنسخ الاحتياطي</button></div>
+        <div class="admin-nav-item"><button type="button" data-page-target="pane-publish" onclick="switchAdminPage('pane-publish')"><i class="fa-solid fa-clock-rotate-left"></i> النشر وسجل التعديلات</button></div>
       </aside>
 
       <!-- Workspace -->
@@ -624,6 +626,75 @@
           </div>
         </section>
 
+        <!-- PANE 3B: ALL INNER PAGES (TEXT, IMAGES & SEO) -->
+        <section id="pane-inner-pages" class="admin-page-pane">
+          <div class="admin-card">
+            <h2 class="admin-card-title"><i class="fa-solid fa-file-lines text-emerald"></i> تحرير الصفحات الداخلية (النصوص والصور والظهور)</h2>
+            <div class="admin-field">
+              <label for="cmsInnerPageSelector">اختر الصفحة المراد تعديلها:</label>
+              <select id="cmsInnerPageSelector" onchange="renderInnerPageEditorFields()">
+                <option value="about">عن المنصة والرسالة</option>
+                <option value="services">دليل الخدمات المؤسسية</option>
+                <option value="impact">الأثر وصون المياه</option>
+                <option value="calculators">الحاسبات التفاعلية</option>
+                <option value="grants">بوابة المنح الدولية</option>
+                <option value="partners">الشركاء والتحالف</option>
+                <option value="contact">تواصل معنا</option>
+              </select>
+            </div>
+            <div class="admin-field"><label for="cmsInnerHeroTitle">العنوان الرئيسي أعلى الصفحة:</label><input type="text" id="cmsInnerHeroTitle" oninput="onInnerPageFieldChange()"></div>
+            <div class="admin-field"><label for="cmsInnerHeroSub">الوصف التوضيحي أعلى الصفحة:</label><textarea id="cmsInnerHeroSub" rows="2" oninput="onInnerPageFieldChange()"></textarea></div>
+            <div class="admin-field-grid">
+              <div class="admin-field"><label for="cmsInnerSecTitle">عنوان القسم الرئيسي:</label><input type="text" id="cmsInnerSecTitle" oninput="onInnerPageFieldChange()"></div>
+              <div class="admin-field"><label for="cmsInnerSecDesc">وصف القسم الرئيسي:</label><input type="text" id="cmsInnerSecDesc" oninput="onInnerPageFieldChange()"></div>
+            </div>
+            <div class="admin-field-grid">
+              <div class="admin-field"><label for="cmsInnerFeaturedImg">صورة الصفحة البارزة (إن وجدت):</label><input type="text" id="cmsInnerFeaturedImg" oninput="onInnerPageFieldChange()"></div>
+              <div class="admin-field"><label for="cmsInnerImgUpload">رفع صورة جديدة مضغوطة تلقائياً:</label><input type="file" id="cmsInnerImgUpload" accept="image/*" onchange="handleInnerPageImageUpload(event)"></div>
+            </div>
+            <div class="admin-field-grid">
+              <div class="admin-field"><label for="cmsInnerSeoTitle">عنوان الصفحة في محركات البحث:</label><input type="text" id="cmsInnerSeoTitle" oninput="onInnerPageFieldChange()"></div>
+              <div class="admin-field"><label for="cmsInnerSeoDesc">وصف الصفحة في محركات البحث:</label><input type="text" id="cmsInnerSeoDesc" oninput="onInnerPageFieldChange()"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANE 3C: FULL GRANTS CRUD MANAGER -->
+        <section id="pane-grants-crud" class="admin-page-pane">
+          <div class="admin-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+              <h2 class="admin-card-title" style="margin:0;"><i class="fa-solid fa-globe text-purple"></i> إدارة المنح الدولية (<span id="cmsGrantsTotalCount">0</span> فرصة)</h2>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn-cms-secondary" onclick="openGrantEditorForm(-1)"><i class="fa-solid fa-plus text-emerald"></i> إضافة منحة جديدة</button>
+                <button type="button" class="btn-cms-publish" onclick="publishGrantsToLiveSite()"><i class="fa-solid fa-cloud-arrow-up"></i> نشر المنح للموقع</button>
+              </div>
+            </div>
+
+            <div id="cmsGrantFormBox" style="display:none; padding:16px; border:1px solid #059669; border-radius:12px; background:var(--bg-surface-secondary); margin-bottom:16px;">
+              <h3 id="cmsGrantFormTitle" style="margin:0 0 12px; font-size:1rem;">إضافة منحة جديدة</h3>
+              <input type="hidden" id="cmsGrantEditIdx" value="-1">
+              <div class="admin-field-grid">
+                <div class="admin-field"><label>اسم المنحة / البرنامج:</label><input type="text" id="gfTitle"></div>
+                <div class="admin-field"><label>الجهة المانحة:</label><input type="text" id="gfDonor"></div>
+                <div class="admin-field"><label>التصنيف / القطاع:</label><input type="text" id="gfCategory" placeholder="مثال: تمكين مجتمعي / مناخ ومياه"></div>
+                <div class="admin-field"><label>قيمة التمويل:</label><input type="text" id="gfAmount" placeholder="مثال: 10,000 إلى 50,000 دولار"></div>
+                <div class="admin-field"><label>الموعد النهائي:</label><input type="text" id="gfDeadline" placeholder="2026-12-31"></div>
+                <div class="admin-field"><label>رابط التقديم الرسمي:</label><input type="url" id="gfUrl" placeholder="https://..."></div>
+              </div>
+              <div class="admin-field"><label>ملخص المنحة وشروطها:</label><textarea id="gfSummary" rows="2"></textarea></div>
+              <div style="display:flex; gap:8px;">
+                <button type="button" class="btn-cms-publish" onclick="saveGrantFormEntry()"><i class="fa-solid fa-check"></i> حفظ المنحة</button>
+                <button type="button" class="btn-cms-secondary" onclick="document.getElementById('cmsGrantFormBox').style.display='none'">إلغاء</button>
+              </div>
+            </div>
+
+            <div class="admin-field">
+              <input type="text" id="cmsGrantsFilterInput" oninput="renderAdminGrantsList()" placeholder="ابحث في المنح بالعنوان أو الجهة المانحة...">
+            </div>
+            <div id="cmsGrantsCrudList" style="max-height:480px; overflow-y:auto;"></div>
+          </div>
+        </section>
+
         <!-- PANE 4: BLOCK BUILDER -->
         <section id="pane-blocks" class="admin-page-pane">
           <div class="admin-card">
@@ -688,14 +759,20 @@
           </div>
 
           <div class="admin-card">
-            <h2 class="admin-card-title"><i class="fa-solid fa-database text-purple"></i> النسخ الاحتياطي وسجل التعديلات</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+              <h2 class="admin-card-title" style="margin:0;"><i class="fa-solid fa-clock-rotate-left text-purple"></i> النسخ الاحتياطي وسجل التعديلات (CMS Log)</h2>
+              <div style="display:flex; gap:8px;">
+                <button type="button" class="btn-cms-secondary" onclick="downloadCmsLogTxt()"><i class="fa-solid fa-file-lines"></i> تحميل السجل</button>
+                <button type="button" class="btn-cms-secondary" onclick="clearCmsActivityLog()" style="color:#dc2626;"><i class="fa-solid fa-trash"></i> مسح السجل</button>
+              </div>
+            </div>
             <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
               <button type="button" class="btn-cms-secondary" onclick="exportCmsSiteDataJson()"><i class="fa-solid fa-download"></i> تصدير ملف الموقع (JSON)</button>
               <button type="button" class="btn-cms-secondary" onclick="document.getElementById('cmsImportJsonInput').click()"><i class="fa-solid fa-upload"></i> استيراد ملف (JSON)</button>
               <input type="file" id="cmsImportJsonInput" accept=".json" style="display:none;" onchange="importCmsSiteDataJson(event)">
               <button type="button" class="btn-cms-secondary" onclick="resetCmsToPublishedDefault()" style="color:#dc2626;"><i class="fa-solid fa-rotate-left"></i> تراجع / استعادة المنشور</button>
             </div>
-            <div id="cmsAuditLogBox" style="background:var(--bg-surface-secondary); border:1px solid var(--border-color); border-radius:10px; padding:12px; font-size:0.84rem; color:var(--text-muted); max-height:180px; overflow-y:auto;">
+            <div id="cmsAuditLogBox" style="background:var(--bg-surface-secondary); border:1px solid var(--border-color); border-radius:10px; padding:12px; font-size:0.84rem; color:var(--text-muted); max-height:240px; overflow-y:auto;">
               سجل التعديلات جاهز.
             </div>
           </div>
@@ -704,8 +781,18 @@
 
       <!-- Live Split-View Preview Pane -->
       <aside class="admin-preview-pane" id="adminPreviewPane">
-        <div style="padding:8px 14px; background:#0f172a; color:#fff; font-size:0.82rem; font-weight:700; display:flex; justify-content:space-between; align-items:center;">
-          <span><i class="fa-solid fa-desktop text-emerald"></i> معاينة حية للصفحة الرئيسية</span>
+        <div style="padding:8px 14px; background:#0f172a; color:#fff; font-size:0.82rem; font-weight:700; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <span><i class="fa-solid fa-desktop text-emerald"></i> معاينة حية:</span>
+          <select id="cmsPreviewPageSelect" onchange="changePreviewIframePage(this.value)" style="background:#1e293b; color:#fff; border:1px solid #334155; border-radius:6px; padding:4px 8px; font-family:inherit; font-size:0.78rem;">
+            <option value="index.html">الرئيسية</option>
+            <option value="about.html">عن المنصة</option>
+            <option value="services.html">دليل الخدمات</option>
+            <option value="impact.html">الأثر وصون المياه</option>
+            <option value="calculators.html">الحاسبات التفاعلية</option>
+            <option value="grants.html">بوابة المنح</option>
+            <option value="partners.html">الشركاء</option>
+            <option value="contact.html">تواصل معنا</option>
+          </select>
           <button type="button" onclick="refreshPreviewIframe()" style="background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-family:inherit; font-size:0.78rem;">تحديث</button>
         </div>
         <iframe id="cmsPreviewIframe" src="index.html" title="معاينة حية للموقع"></iframe>
